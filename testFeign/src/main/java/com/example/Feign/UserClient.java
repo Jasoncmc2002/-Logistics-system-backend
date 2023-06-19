@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @FeignClient(name = "user-application")
 public interface UserClient {
-  @RequestMapping(value = "/user/aa")
 
+
+  @RequestMapping(value = "/user/aa")
   ResponseEntity<Object>aa();
 
   @RequestMapping(value = "/user/a123")

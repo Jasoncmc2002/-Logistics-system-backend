@@ -1,9 +1,7 @@
-package com.example.user.entity;
+package com.example.customerservicecentre.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,10 +10,9 @@ import java.util.Date;
  * 管理员表
  * </p>
  *
- * @author yang
- * @since 2023-06-14
+ * @author yangfuchao
+ * @since 2023-06-19
  */
-@TableName("user")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -49,14 +46,11 @@ public class User implements Serializable {
     /**
      * 用户名
      */
-
-    @TableField(value = "`limit`")
     private Integer limit;
 
     /**
      * 是否删除(0-未删, 1-已删)
      */
-    @TableField(value = "`is_deleted`")
     private Byte isDeleted;
 
     public Long getId() {

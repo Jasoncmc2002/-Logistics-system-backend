@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.user.entity.User;
 import com.example.user.mapper.UserMapper;
 import com.example.user.service.UserService;
+import java.util.HashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
   @Override
   public List<User> getAllUser() {
+
     return userMapper.getAllUser();
+  }
+  @Override
+  public List<User> selectbyName(User user){
+    HashMap<String, Object> map = new HashMap<>();
+    map.put("username",user.getUsername());
+    map.put("password",user.getPassword());
+    return userMapper.selectByMap(map);
   }
 }
