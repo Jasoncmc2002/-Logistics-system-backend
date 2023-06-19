@@ -5,6 +5,7 @@ import com.example.customerservicecentre.entity.Customer;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Service;
 
 
 /**
@@ -21,5 +22,6 @@ public interface CustomerService extends IService<Customer> {
     Customer selectbyId(Long id);
     PageInfo selectAll(Map<String,Object> map);
     int  deletebyId(Long id);
-
+    PageInfo searchbykey(Map<String,Object> map);
+    PageInfo selectOrder(Map<String, Object> map);
 }

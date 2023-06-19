@@ -3,6 +3,10 @@ package com.example.customerservicecentre.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.customerservicecentre.entity.Customer;
 
+import java.util.List;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 
 /**
  * <p>
@@ -12,6 +16,8 @@ import com.example.customerservicecentre.entity.Customer;
  * @author yangfuchao
  * @since 2023-06-19
  */
+@Mapper
 public interface CustomerMapper extends BaseMapper<Customer> {
-
+   List<Customer> search(@Param("keyword")  String keyword);
+   List<Customer> getAllCustomer();
 }
