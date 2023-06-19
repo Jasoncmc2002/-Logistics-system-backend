@@ -3,6 +3,7 @@ package com.example.customerservicecentre.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -43,6 +44,7 @@ public class Return implements Serializable {
     /**
      * 用户名
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date orderDate;
 
     /**
@@ -63,7 +65,7 @@ public class Return implements Serializable {
     /**
      * 用户名
      */
-    private Integer sum;
+    private Long sum;
 
     /**
      * 用户名
@@ -78,6 +80,7 @@ public class Return implements Serializable {
     /**
      * 用户名
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date date;
 
     /**
@@ -159,11 +162,11 @@ public class Return implements Serializable {
         this.goodPrice = goodPrice;
     }
 
-    public Integer getSum() {
+    public Long getSum() {
         return sum;
     }
 
-    public void setSum(Integer sum) {
+    public void setSum(Long sum) {
         this.sum = sum;
     }
 

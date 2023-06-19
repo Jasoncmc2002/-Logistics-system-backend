@@ -1,6 +1,8 @@
 package com.example.customerservicecentre.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.customerservicecentre.entity.Orders;
+import com.example.customerservicecentre.entity.Return;
 import com.example.customerservicecentre.entity.Unsubscribe;
 
 
@@ -13,5 +15,6 @@ import com.example.customerservicecentre.entity.Unsubscribe;
  * @since 2023-06-19
  */
 public interface UnsubscribeService extends IService<Unsubscribe> {
-
+  int insert(Unsubscribe unsubscribe);
+  int check(Orders orders);
 }
