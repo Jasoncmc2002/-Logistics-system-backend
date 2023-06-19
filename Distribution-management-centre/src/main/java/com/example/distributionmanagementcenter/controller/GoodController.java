@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * @author jason_cai
  * @since 2023-06-19
  */
-@Controller
+@RestController
 @RequestMapping("/good")
 public class GoodController {
 
@@ -36,7 +36,6 @@ public class GoodController {
         Page<Good> aPage = goodService.page(new Page<>(current, pageSize));
         return new ResponseEntity<>(aPage, HttpStatus.OK);
     }
-
     @GetMapping(value = "/{id}")
     public ResponseEntity<Good> getById(@PathVariable("id") String id) {
         return new ResponseEntity<>(goodService.getById(id), HttpStatus.OK);
