@@ -42,6 +42,13 @@ public class Constans {
     public static final String QUESTION_COUNT_MESSAGE="项目可以编辑";
     public static final String PROJECT_EXIST_QUESTION = "项目中已存在同名且同类型问卷";
 
+    /**
+     * Created by yangfuchao on 2018/8/8
+     * Descriptions:订单状态码
+     */
+    public static final String checkUnsubscribeAction = "该订单以及发出，不能退订";
+    public static final String checkRETURN = "该订单未完成，不可退换货";
+
 
     /**
      * Created by wln on 2018/8/8
@@ -77,7 +84,7 @@ public class Constans {
     public static final String ADD_FAIL="添加客户失败";
     public static final String UPDATE_FAIL="更新客户失败";
     public static final String SELECT_FAIL="搜索客户失败";
-    public static final String DELETE_FAIL="添删除客户失败";
+    public static final String DELETE_FAIL="删除客户失败,该客户订购过商品";
 
 
     public static final String LOGIN_MESSAGE="登录成功";

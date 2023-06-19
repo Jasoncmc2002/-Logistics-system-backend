@@ -1,6 +1,7 @@
 package com.example.customerservicecentre.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.customerservicecentre.entity.Orders;
 import com.example.customerservicecentre.entity.Return;
 
 
@@ -13,5 +14,6 @@ import com.example.customerservicecentre.entity.Return;
  * @since 2023-06-19
  */
 public interface ReturnService extends IService<Return> {
-
+  int insert(Return re);
+  int check(Orders orders);
 }

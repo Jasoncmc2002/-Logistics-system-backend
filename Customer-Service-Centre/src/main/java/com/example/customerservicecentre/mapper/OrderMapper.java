@@ -1,7 +1,8 @@
 package com.example.customerservicecentre.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.customerservicecentre.entity.Order;
+import com.example.customerservicecentre.entity.Orders;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.example.customerservicecentre.entity.Order;
  * @author yangfuchao
  * @since 2023-06-19
  */
-public interface OrderMapper extends BaseMapper<Order> {
+@Mapper
+public interface OrderMapper extends BaseMapper<Orders> {
 
 }

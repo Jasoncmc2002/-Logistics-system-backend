@@ -2,8 +2,15 @@ package com.example.customerservicecentre.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import com.example.customerservicecentre.entity.Order;
+import com.example.customerservicecentre.beans.HttpResponseEntity;
+import com.example.customerservicecentre.common.Constans;
+import com.example.customerservicecentre.entity.Customer;
+import com.example.customerservicecentre.entity.Orders;
 import com.example.customerservicecentre.service.OrderService;
+import com.github.pagehelper.PageInfo;
+import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,45 +33,71 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-06-19
  */
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/customer")
 public class OrderAction {
 
+    private final Logger logger = LoggerFactory.getLogger(CustomerAction.class);
 
     @Autowired
-    private OrderService orderService;
+    private OrderService OrdersService;
 
-    @GetMapping(value = "/")
-    public ResponseEntity<Page<Order>> list(@RequestParam(required = false) Integer current, @RequestParam(required = false) Integer pageSize) {
-        if (current == null) {
-            current = 1;
+    @RequestMapping(value = "/addOrder",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity addOrder(@RequestBody Orders params) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=OrdersService.insert(params);
+            if(res==1)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("addOrder 添加订单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
-        if (pageSize == null) {
-            pageSize = 10;
+        return httpResponseEntity;
+    }
+
+    @RequestMapping(value = "/getOrdersByCriteria",method = RequestMethod.GET, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity getOrdersByCriteria(@RequestBody Map<String,Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            PageInfo res=OrdersService.getOrdersByCriteria(map);
+            httpResponseEntity.setData(res);
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("addOrder 添加订单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
-        Page<Order> aPage = orderService.page(new Page<>(current, pageSize));
-        return new ResponseEntity<>(aPage, HttpStatus.OK);
+        return httpResponseEntity;
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Order> getById(@PathVariable("id") String id) {
-        return new ResponseEntity<>(orderService.getById(id), HttpStatus.OK);
-    }
+    @RequestMapping(value = "/getCreaterwork",method = RequestMethod.GET, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity getCreaterwork(@RequestBody Map<String,Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            Map<String,Object> res=OrdersService.getCreaterwork(map);
+            httpResponseEntity.setData(res);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 
-    @PostMapping(value = "/create")
-    public ResponseEntity<Object> create(@RequestBody Order params) {
-        orderService.save(params);
-        return new ResponseEntity<>("created successfully", HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/delete/{id}")
-    public ResponseEntity<Object> delete(@PathVariable("id") String id) {
-        orderService.removeById(id);
-        return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/update")
-    public ResponseEntity<Object> update(@RequestBody Order params) {
-        orderService.updateById(params);
-        return new ResponseEntity<>("updated successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            logger.info("addOrder 添加订单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
     }
 }
