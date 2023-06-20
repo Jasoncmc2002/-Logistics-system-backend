@@ -13,10 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,13 +44,13 @@ public class SubstationController {
 
     //@PathVariable("date") String date
 
-    @RequestMapping(value = "/getTaskListByDeadline",method = RequestMethod.GET, headers = "Accept"
+    @RequestMapping(value = "/getTaskListByCriteria",method = RequestMethod.GET, headers = "Accept"
             + "=application/json")
     public HttpResponseEntity getTaskListByDeadline(@RequestBody Map<String,Object> map){
 
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            PageInfo pageInfo= taskService.getTaskListByDeadline(map);
+            PageInfo pageInfo= taskService.getTaskListByCriteria(map);
             httpResponseEntity.setData(pageInfo);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);

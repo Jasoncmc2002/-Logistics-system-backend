@@ -34,7 +34,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
 
 
     @Override
-    public PageInfo getTaskListByDeadline(Map<String,Object> map) throws ParseException {
+    public PageInfo getTaskListByCriteria(Map<String,Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf((String)map.get("pageNum")),
                 Integer.valueOf((String)map.get("pageSize")));
         QueryWrapper<Task> queryWrapper = new QueryWrapper<>();
@@ -50,12 +50,12 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         Date endTime = calendar.getTime();
 
 
-        queryWrapper.between("deadline",deadline,endTime);
+        queryWrapper.between("deadline",deadline,endTime).eq("task_type",map.get("task_type")).eq("task_status",map.get("task_status"));
 //        queryWrapper.eq("deadline",deadline);
 
         List<Task> res= taskMapper.selectList(queryWrapper);
         PageInfo pageInfo = new PageInfo(res);
-        System.out.println(res);
         return pageInfo;
     }
+
 }

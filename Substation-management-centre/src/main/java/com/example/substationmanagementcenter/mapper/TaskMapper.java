@@ -18,6 +18,5 @@ import java.util.List;
  */
 @Mapper
 public interface TaskMapper extends BaseMapper<Task> {
-//    List<Task> getTaskListByDeadline(Date date);
 
 }
