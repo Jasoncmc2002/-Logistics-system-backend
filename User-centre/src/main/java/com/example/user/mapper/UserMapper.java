@@ -1,6 +1,7 @@
 package com.example.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.example.user.entity.RouteVO;
 import com.example.user.entity.User;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
@@ -17,4 +18,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserMapper extends BaseMapper<User> {
 
   List<User> getAllUser();
+  List<RouteVO> listRoutes();
+
 }

@@ -1,10 +1,8 @@
-package com.example.user.beans;
+package com.example.financialmanagement.beans;
 
 import java.io.Serializable;
 
-/**
- * Created by yfc on 2017/7/8.
- */
+
 //@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 //@Data
 public class HttpResponseEntity implements Serializable {

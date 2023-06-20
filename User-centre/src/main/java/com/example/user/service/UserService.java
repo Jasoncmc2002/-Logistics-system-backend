@@ -1,6 +1,7 @@
 package com.example.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.user.entity.RouteVO;
 import com.example.user.entity.User;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface UserService extends IService<User> {
-  List<User> getAllUser();
+//  List<User> getAllUser();
   List<User> selectbyName(User user);
+  List<RouteVO> listRoutes();
 
 
 }
