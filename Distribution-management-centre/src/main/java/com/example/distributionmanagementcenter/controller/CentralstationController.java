@@ -2,12 +2,19 @@ package com.example.distributionmanagementcenter.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.distributionmanagementcenter.entity.CentralStation;
+import com.example.distributionmanagementcenter.entity.Constans;
+import com.example.distributionmanagementcenter.entity.HttpResponseEntity;
 import com.example.distributionmanagementcenter.service.CentralstationService;
+import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -21,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/central-station")
 public class CentralstationController {
 
-
+    private final Logger logger = LoggerFactory.getLogger(CentralstationController.class);
     @Autowired
     private CentralstationService centralstationService;
 
@@ -59,4 +66,6 @@ public class CentralstationController {
         centralstationService.updateById(params);
         return new ResponseEntity<>("updated successfully", HttpStatus.OK);
     }
+
+
 }

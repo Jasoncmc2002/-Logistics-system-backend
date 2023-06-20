@@ -1,9 +1,12 @@
 package com.example.distributionmanagementcenter.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -13,6 +16,7 @@ import java.io.Serializable;
  * @author Jason_cai
  * @since 2023-06-19
  */
+@Data
 public class Station implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,63 +52,8 @@ public class Station implements Serializable {
      */
     private Integer stationClass;
 
-    public Long getId() {
-        return id;
-    }
+    @TableField(exist = false)
+    private List<CentralStation> centralStationList;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(String admin) {
-        this.admin = admin;
-    }
-
-    public String getGrade() {
-        return grade;
-    }
-
-    public void setGrade(String grade) {
-        this.grade = grade;
-    }
-
-    public Integer getStationClass() {
-        return stationClass;
-    }
-
-    public void setStationClass(Integer stationClass) {
-        this.stationClass = stationClass;
-    }
-
-    @Override
-    public String toString() {
-        return "Station{" +
-        ", id = " + id +
-        ", name = " + name +
-        ", address = " + address +
-        ", admin = " + admin +
-        ", grade = " + grade +
-        ", stationClass = " + stationClass +
-        "}";
-    }
 }
