@@ -2,6 +2,7 @@ package com.example.distributionmanagementcenter.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
  * @author jason_cai
  * @since 2023-06-19
  */
+@Data
 public class Good implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,6 +28,9 @@ public class Good implements Serializable {
     /**
      * 用户名
      */
+    private Integer classId;
+    private Integer keyId;
+
     private String goodClass;
 
     /**
@@ -96,169 +101,10 @@ public class Good implements Serializable {
     /**
      * 用户名
      */
-    private Integer stockNum;
-
-    /**
-     * 用户名
-     */
-    private Integer stockSafe;
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getGoodClass() {
-        return goodClass;
-    }
-
-    public void setGoodClass(String goodClass) {
-        this.goodClass = goodClass;
-    }
-
-    public String getGoodSubclass() {
-        return goodSubclass;
-    }
-
-    public void setGoodSubclass(String goodSubclass) {
-        this.goodSubclass = goodSubclass;
-    }
-
-    public String getGoodName() {
-        return goodName;
-    }
-
-    public void setGoodName(String goodName) {
-        this.goodName = goodName;
-    }
-
-    public String getGoodUnit() {
-        return goodUnit;
-    }
-
-    public void setGoodUnit(String goodUnit) {
-        this.goodUnit = goodUnit;
-    }
-
-    public Double getGoodPrice() {
-        return goodPrice;
-    }
-
-    public void setGoodPrice(Double goodPrice) {
-        this.goodPrice = goodPrice;
-    }
-
-    public Double getGoodSale() {
-        return goodSale;
-    }
-
-    public void setGoodSale(Double goodSale) {
-        this.goodSale = goodSale;
-    }
-
-    public Double getGoodCost() {
-        return goodCost;
-    }
-
-    public void setGoodCost(Double goodCost) {
-        this.goodCost = goodCost;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getSupply() {
-        return supply;
-    }
-
-    public void setSupply(String supply) {
-        this.supply = supply;
-    }
-
-    public String getGoodFactory() {
-        return goodFactory;
-    }
-
-    public void setGoodFactory(String goodFactory) {
-        this.goodFactory = goodFactory;
-    }
-
-    public String getSellDate() {
-        return sellDate;
-    }
-
-    public void setSellDate(String sellDate) {
-        this.sellDate = sellDate;
-    }
-
-    public Byte getIsReturn() {
-        return isReturn;
-    }
-
-    public void setIsReturn(Byte isReturn) {
-        this.isReturn = isReturn;
-    }
-
-    public Byte getIsChange() {
-        return isChange;
-    }
-
-    public void setIsChange(Byte isChange) {
-        this.isChange = isChange;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public Integer getStockNum() {
-        return stockNum;
-    }
-
-    public void setStockNum(Integer stockNum) {
-        this.stockNum = stockNum;
-    }
-
-    public Integer getStockSafe() {
-        return stockSafe;
-    }
-
-    public void setStockSafe(Integer stockSafe) {
-        this.stockSafe = stockSafe;
-    }
-
-    @Override
-    public String toString() {
-        return "Good{" +
-        ", id = " + id +
-        ", goodClass = " + goodClass +
-        ", goodSubclass = " + goodSubclass +
-        ", goodName = " + goodName +
-        ", goodUnit = " + goodUnit +
-        ", goodPrice = " + goodPrice +
-        ", goodSale = " + goodSale +
-        ", goodCost = " + goodCost +
-        ", type = " + type +
-        ", supply = " + supply +
-        ", goodFactory = " + goodFactory +
-        ", sellDate = " + sellDate +
-        ", isReturn = " + isReturn +
-        ", isChange = " + isChange +
-        ", remark = " + remark +
-        ", stockNum = " + stockNum +
-        ", stockSafe = " + stockSafe +
-        "}";
-    }
 }

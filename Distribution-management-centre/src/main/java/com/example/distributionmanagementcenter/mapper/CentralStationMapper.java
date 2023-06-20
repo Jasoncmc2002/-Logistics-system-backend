@@ -2,6 +2,7 @@ package com.example.distributionmanagementcenter.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.distributionmanagementcenter.entity.CentralStation;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
@@ -11,6 +12,7 @@ import com.example.distributionmanagementcenter.entity.CentralStation;
  * @author Jason_cai
  * @since 2023-06-19
  */
+@Mapper
 public interface CentralStationMapper extends BaseMapper<CentralStation> {
 
 }
