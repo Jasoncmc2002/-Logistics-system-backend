@@ -3,11 +3,4 @@
 <mapper namespace="com.example.substationmanagementcenter.mapper.TaskMapper">
 
 
-
-    <select id="getTaskListByDeadline" parameterType="Date" resultType="Task">
-        select *
-        from task
-        where date(deadline) = #{date}
-    </select>
-
 </mapper>
