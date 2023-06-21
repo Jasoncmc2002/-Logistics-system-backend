@@ -2,6 +2,8 @@ server:
   port : 8084
 
 spring:
+  jackson:
+      date-format: yyyy-MM-dd HH:mm:ss
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://62.234.23.101:3306/logistics?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
@@ -9,7 +11,6 @@ spring:
     password: Neu123
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
-
       initial-size: 5
       min-idle: 5
       max-active: 20

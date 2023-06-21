@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -57,41 +58,84 @@ public class SubstationController {
 
 
         } catch (Exception e) {
-            logger.info("通过deadline查询>>>>>"+e.getLocalizedMessage());
+            logger.info("通过各种东西查询task>>>>>"+e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
         return httpResponseEntity;
 
+    }
 
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        Date parse = null;
-//        try {
-//            parse = simpleDateFormat.parse(date);
-//        } catch (ParseException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return taskService.getTaskListByDeadline(parse);
+    @RequestMapping(value = "/updateTask",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity updateTask(@RequestBody Task task){
+
+        System.out.println(task);
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=taskService.updatebyId(task);
+            if(res==1)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.UPDATE_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("updateTask 更新任务单信息>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+    @RequestMapping(value = "/getTaskToDistribute",method = RequestMethod.GET, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity getTaskToDistribute(@RequestBody Map<String,Object> map){
+
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            PageInfo pageInfo= taskService.getTaskToDistribute(map);
+            httpResponseEntity.setData(pageInfo);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+
+        } catch (Exception e) {
+            logger.info("查可分配task>>>>>"+e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+
+    }
+
+
+    @RequestMapping(value = "/getTaskToReceipt",method = RequestMethod.GET, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity getTaskToReceipt(@RequestBody Map<String,Object> map){
+
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            PageInfo pageInfo= taskService.getTaskToReceipt(map);
+            httpResponseEntity.setData(pageInfo);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+
+        } catch (Exception e) {
+            logger.info("查已分配任务task进行回执录入，使任务变为“已完成”>>>>>"+e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+
     }
 
 
 
-
-
-
-
-
-//    @RequestMapping("/{date}")
-//    public List<Task> getTaskListByDeadline(@PathVariable("date") String date){
-//
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        Date parse = null;
-//        try {
-//            parse = simpleDateFormat.parse(date);
-//        } catch (ParseException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return taskService.getTaskListByDeadline(parse);
-//    }
 
 }
