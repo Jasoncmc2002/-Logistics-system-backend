@@ -138,7 +138,6 @@ public class CentralstationController {
             }else{
                 httpResponseEntity.setData("Invalid input number");
             }
-
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         }catch(Exception e){

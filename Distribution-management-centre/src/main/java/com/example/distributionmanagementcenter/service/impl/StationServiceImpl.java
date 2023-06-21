@@ -29,6 +29,7 @@ import java.util.Map;
 public class StationServiceImpl extends ServiceImpl<StationMapper, Station> implements StationService {
 @Autowired
 private StationInOutMapper stationInOutMapper;
+
     @Override
     public Map<String, Object> stationInOutQueryService(Map<String, Object> map) throws ParseException {
         HashMap<String, Object> res=new HashMap<String, Object>();
@@ -39,6 +40,22 @@ private StationInOutMapper stationInOutMapper;
         queryWrapper.between("date", startTime, endTime);
         List<StationInOut> records= stationInOutMapper.selectList(queryWrapper);
         res.put("records",records);
+        return res;
+    }
+
+    @Override
+    public Map<String, Object> withdrawalService(Map<String, Object> map) throws ParseException {
+        HashMap<String, Object> res=new HashMap<String, Object>();
+        String supplyName=(String)map.get("supplyName");
+        int goodId=(int)map.get("goodId");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date startTime =sdf.parse((String) map.get("startTime"));
+        Date endTime = sdf.parse((String) map.get("endTime"));
+        QueryWrapper<StationInOut> queryWrapper = new QueryWrapper<>();
+        queryWrapper.between("date", startTime, endTime)
+                .eq("good_id",goodId)
+                .eq("supply",supplyName);
+        //List<StationInOut> records= stationInOutMapper.selectList(queryWrapper);
         return res;
     }
 }
