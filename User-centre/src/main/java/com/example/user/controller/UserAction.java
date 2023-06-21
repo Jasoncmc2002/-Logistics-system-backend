@@ -2,12 +2,20 @@ package com.example.user.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.user.beans.HttpResponseEntity;
+import com.example.user.beans.result.Result;
 import com.example.user.common.Constans;
+import com.example.user.entity.RouteVO;
 import com.example.user.entity.User;
 import com.example.user.entity.me;
+import com.example.user.service.SysMenuService;
 import com.example.user.service.UserService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,6 +44,8 @@ public class UserAction {
 
     private final Logger logger = LoggerFactory.getLogger(UserAction.class);
 
+    @Autowired
+    private  SysMenuService menuService;
     @Autowired
     private UserService userService;
 
@@ -69,58 +79,10 @@ public class UserAction {
         return httpResponseEntity;
     }
 
-//    @GetMapping(value = "/")
-//    public ResponseEntity<Page<User>> list(@RequestParam(required = false) Integer current, @RequestParam(required = false) Integer pageSize) {
-//        if (current == null) {
-//            current = 1;
-//        }
-//        if (pageSize == null) {
-//            pageSize = 10;
-//        }
-//        Page<User> aPage = userService.page(new Page<>(current, pageSize));
-//        return new ResponseEntity<>(aPage, HttpStatus.OK);
-//    }
-//
-//    @GetMapping(value = "/getById/{id}")
-//    public ResponseEntity<User> getById(@PathVariable("id") String id) {
-//        return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
-//    }
-//
-//    @PostMapping(value = "/create")
-//    public ResponseEntity<Object> create(@RequestBody User params) {
-//        userService.save(params);
-//        return new ResponseEntity<>("created successfully", HttpStatus.OK);
-//    }
-//
-//    @PostMapping(value = "/delete/{id}")
-//    public ResponseEntity<Object> delete(@PathVariable("id") String id) {
-//        userService.removeById(id);
-//        return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
-//    }
-//
-//    @PostMapping(value = "/update")
-//    public ResponseEntity<Object> update(@RequestBody User params) {
-//        userService.updateById(params);
-//        return new ResponseEntity<>("updated successfully", HttpStatus.OK);
-//    }
-//
-//    @RequestMapping(value = "/get")
-//    public List<User> get() {
-//        List<User> a= userService.getAllUser();
-//        System.out.println(a);
-//        return a;
-//    }
-//
-//    @RequestMapping(value = "/aa")
-//    public ResponseEntity<Object> aa() {
-//        List<User> a= userService.getAllUser();
-//        return new ResponseEntity<>("updated successfully", HttpStatus.OK);
-//    }
-//    @RequestMapping(value = "/a123")
-//    public me a() {
-//        me a=new me();
-//        a.setName("sss");
-//        System.out.println(a);
-//        return a;
-//    }
+    @GetMapping("/getroutes")
+    public Result<List<RouteVO>> listRoutes() {
+        List<RouteVO> routeList = menuService.listRoutes();
+        return Result.success(routeList);
+    }
+
 }

@@ -3,7 +3,7 @@ package com.example.user.beans;
 import java.io.Serializable;
 
 /**
- * Created by myz on 2017/7/8.
+ * Created by yfc on 2017/7/8.
  */
 //@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 //@Data

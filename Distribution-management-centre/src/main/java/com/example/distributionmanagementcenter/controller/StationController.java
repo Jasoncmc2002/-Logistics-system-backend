@@ -78,6 +78,7 @@ public class StationController {
 //
 //        return new ResponseEntity<>("updated successfully", HttpStatus.OK);
 //    }
+    //库存量查询
 @RequestMapping(value = "/stock/{sid}/{cid}",method = RequestMethod.GET, headers = "Accept"
         + "=application/json")
 public HttpResponseEntity stockQuery(@PathVariable("sid") String sid,@PathVariable("cid") String cid) {
@@ -128,4 +129,6 @@ public HttpResponseEntity stockQuery(@PathVariable("sid") String sid,@PathVariab
         }
         return httpResponseEntity;
     }
+
+
 }

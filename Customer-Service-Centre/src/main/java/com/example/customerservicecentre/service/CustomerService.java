@@ -24,4 +24,6 @@ public interface CustomerService extends IService<Customer> {
     int  deletebyId(Long id);
     PageInfo searchbykey(Map<String,Object> map);
     PageInfo selectOrder(Map<String, Object> map);
+
+
 }
