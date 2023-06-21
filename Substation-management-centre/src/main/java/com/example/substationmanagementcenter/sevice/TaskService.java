@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * <p>
- * 退订 服务类
+ * 任务单 服务类
  * </p>
  *
  * @author hzn
@@ -18,5 +18,10 @@ import java.util.Map;
 public interface TaskService extends IService<Task> {
     PageInfo getTaskListByCriteria(Map<String,Object> map) throws ParseException;
 
+    int updatebyId(Task task);
+
+    PageInfo getTaskToDistribute(Map<String,Object> map) throws ParseException;
+
+    PageInfo getTaskToReceipt(Map<String,Object> map) throws ParseException;
 
 }

@@ -2,6 +2,7 @@ package com.example.substationmanagementcenter.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,7 +15,8 @@ import java.util.Date;
  * @author hzn
  * @since 2023-06-19
  */
-public class Task implements Serializable {
+public class Task
+{
 
     private static final long serialVersionUID = 1L;
 
@@ -42,6 +44,7 @@ public class Task implements Serializable {
     /**
      * 用户名
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date taskDate;
 
     /**
@@ -62,6 +65,7 @@ public class Task implements Serializable {
     /**
      * 用户名
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date deadline;
 
     /**
