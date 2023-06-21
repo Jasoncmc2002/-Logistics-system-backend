@@ -15,7 +15,8 @@ import java.util.Date;
  * @author hzn
  * @since 2023-06-19
  */
-public class Task implements Serializable {
+public class Task
+{
 
     private static final long serialVersionUID = 1L;
 

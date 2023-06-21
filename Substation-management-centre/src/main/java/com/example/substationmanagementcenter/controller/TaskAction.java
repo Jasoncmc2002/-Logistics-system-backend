@@ -9,7 +9,6 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,18 +16,19 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 /**
+ * 任务单 前端控制器
  * @author hzn
  * @create 2023-06-19 15:35
  */
 
 @RestController
-@RequestMapping("/substation")
-public class SubstationController {
+@RequestMapping("/task")
+public class TaskAction {
 
     @Autowired
     private TaskService taskService;
 
-    private final Logger logger = LoggerFactory.getLogger(SubstationController.class);
+    private final Logger logger = LoggerFactory.getLogger(TaskAction.class);
 
 
     @GetMapping("/")
@@ -41,6 +41,24 @@ public class SubstationController {
         }
         Page<Task> aPage = taskService.page(new Page<>(current, pageSize));
         return new ResponseEntity<>(aPage, HttpStatus.OK);
+    }
+
+
+        @GetMapping(value = "/{id}")
+    public ResponseEntity<Task> getById(@PathVariable("id") String id) {
+        return new ResponseEntity<>(taskService.getById(id), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/create")
+    public ResponseEntity<Object> create(@RequestBody Task params) {
+        taskService.save(params);
+        return new ResponseEntity<>("created successfully", HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/delete/{id}")
+    public ResponseEntity<Object> delete(@PathVariable("id") String id) {
+        taskService.removeById(id);
+        return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
     }
 
     //@PathVariable("date") String date
@@ -69,8 +87,6 @@ public class SubstationController {
     @RequestMapping(value = "/updateTask",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
     public HttpResponseEntity updateTask(@RequestBody Task task){
-
-        System.out.println(task);
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
             int res=taskService.updatebyId(task);
