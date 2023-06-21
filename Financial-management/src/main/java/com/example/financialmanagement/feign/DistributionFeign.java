@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @version 1.0
  * @date 2023-06-20 13:10
  */
-@FeignClient(name = "customer-application")
-public interface WareFeign {
+@FeignClient(name = "distribution-application")
+public interface DistributionFeign {
 
   @RequestMapping(value = "/user/a123")
   List<Buy> getbuys(Map<String,Object> map);

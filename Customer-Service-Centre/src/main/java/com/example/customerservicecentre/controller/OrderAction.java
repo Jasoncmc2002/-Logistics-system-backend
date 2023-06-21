@@ -1,5 +1,6 @@
 package com.example.customerservicecentre.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import com.example.customerservicecentre.beans.HttpResponseEntity;
@@ -43,10 +44,10 @@ public class OrderAction {
 
     @RequestMapping(value = "/addOrder",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
-    public HttpResponseEntity addOrder(@RequestBody Orders params) {
+    public HttpResponseEntity addOrder(@RequestBody Map<String,Object > map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            int res=OrdersService.insert(params);
+            int res=OrdersService.insert(map);
             if(res==1)
             {
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
@@ -71,7 +72,7 @@ public class OrderAction {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
             PageInfo res=OrdersService.getOrdersByCriteria(map);
-            httpResponseEntity.setData(res);
+                httpResponseEntity.setData(res);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 

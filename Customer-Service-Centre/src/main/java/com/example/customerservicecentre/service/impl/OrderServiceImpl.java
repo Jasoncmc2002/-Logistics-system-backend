@@ -2,10 +2,13 @@ package com.example.customerservicecentre.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.customerservicecentre.beans.HttpResponseEntity;
 import com.example.customerservicecentre.common.utils.DateUtil;
+import com.example.customerservicecentre.entity.Good;
 import com.example.customerservicecentre.entity.Orders;
 import com.example.customerservicecentre.entity.Return;
 import com.example.customerservicecentre.entity.Unsubscribe;
+import com.example.customerservicecentre.feign.DistributionFeign;
 import com.example.customerservicecentre.mapper.OrderMapper;
 import com.example.customerservicecentre.mapper.ReturnMapper;
 import com.example.customerservicecentre.mapper.UnsubscribeMapper;
@@ -38,13 +41,20 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
   private UnsubscribeMapper unsubscribeMapper;
   @Autowired
   private ReturnMapper returnMapper;
+  @Autowired
+  private DistributionFeign distributionFeign;
 
   @Override
-  public int insert(Orders orders) {
+  public int insert(Map<String,Object > map) {
+    Orders order=(Orders) map.get("Orders");
+    List<Good> goods=(List<Good>)map.get("Goods");
     Date date = DateUtil.getCreateTime();
-    orders.setOrderDate(date);
-    System.out.println(orders);
-    int res = orderMapper.insert(orders);
+    order.setOrderDate(date);
+    System.out.println(order);
+    int res = orderMapper.insert(order);//添加order;
+    for(Good good:goods){
+      HttpResponseEntity ss= distributionFeign.addGoods(good);
+    }
     return res;
   }
 
@@ -57,7 +67,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     Date endTime = sdf.parse((String) map.get("endTime"));
     queryWrapper.between("order_date", startTime, endTime)
         .eq("customer_name",  map.get("customer_name"))
-        .eq("order_stype",  map.get("order_stype"));
+        .eq("order_type",  map.get("order_type"));
     List<Orders> res= orderMapper.selectList(queryWrapper);
 //    System.out.println(res);
     PageInfo pageInfo = new PageInfo(res);
@@ -84,7 +94,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     Long newNum=0L;/*  新订数量*/
     for (Orders resorder : resorders) {
       newMoney+=resorder.getGoodSum();
-      newNum+=resorder.getGoodNumber();
+
     }
 
     QueryWrapper<Unsubscribe> queryWrapper1 = new QueryWrapper<>();
@@ -110,6 +120,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
       reMoney+=re.getSum()*re.getGoodPrice();
       reNum+=re.getSum();
     }
+
     res.put("creater",map.get("creater"));
     res.put("newMoney",newMoney);
     res.put("newNum",newNum);

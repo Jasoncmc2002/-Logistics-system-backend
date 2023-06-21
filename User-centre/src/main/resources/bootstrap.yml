@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+#    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://62.234.23.101:3306/logistics?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
     username: root
     password: Neu123

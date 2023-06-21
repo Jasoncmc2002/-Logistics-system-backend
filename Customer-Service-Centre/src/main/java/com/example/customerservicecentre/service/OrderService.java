@@ -15,7 +15,7 @@ import java.util.Map;
  * @since 2023-06-19
  */
 public interface OrderService extends IService<Orders> {
-  int insert(Orders orders);
+  int insert(Map<String,Object > map);
   PageInfo getOrdersByCriteria(Map<String, Object> map) throws ParseException;
   Map<String,Object> getCreaterwork(Map<String, Object> map) throws ParseException;
 }
