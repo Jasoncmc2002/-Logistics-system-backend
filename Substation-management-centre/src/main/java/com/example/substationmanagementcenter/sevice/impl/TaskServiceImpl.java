@@ -34,6 +34,15 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
 
 
     @Override
+    public PageInfo selectAll(Map<String,Object> map) {
+        PageHelper.startPage(Integer.valueOf((String)map.get("pageNum")),
+                Integer.valueOf((String)map.get("pageSize")));
+        List<Task> res= taskMapper.selectList(null);
+        PageInfo pageInfo = new PageInfo(res);
+        return pageInfo;
+    }
+
+    @Override
     public PageInfo getTaskListByCriteria(Map<String,Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf((String)map.get("pageNum")),
                 Integer.valueOf((String)map.get("pageSize")));

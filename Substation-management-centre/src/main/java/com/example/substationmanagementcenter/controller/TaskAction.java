@@ -1,6 +1,5 @@
 package com.example.substationmanagementcenter.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.substationmanagementcenter.beans.HttpResponseEntity;
 import com.example.substationmanagementcenter.common.Constans;
 import com.example.substationmanagementcenter.entity.Task;
@@ -9,8 +8,6 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -25,43 +22,32 @@ import java.util.Map;
 @RequestMapping("/task")
 public class TaskAction {
 
+    private final Logger logger = LoggerFactory.getLogger(TaskAction.class);
+
     @Autowired
     private TaskService taskService;
 
-    private final Logger logger = LoggerFactory.getLogger(TaskAction.class);
+
+    @RequestMapping(value = "/selectAllTask",method = RequestMethod.GET, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity selectAllTask(@RequestBody Map<String,Object> map){
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            PageInfo pageInfo= taskService.selectAll(map);
+            httpResponseEntity.setData(pageInfo);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 
 
-    @GetMapping("/")
-    public ResponseEntity<Page<Task>> list(@RequestParam(required = false) Integer current, @RequestParam(required = false) Integer pageSize){
-        if (current == null) {
-            current = 1;
+        } catch (Exception e) {
+            logger.info("updateUser 更新客户信息>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
-        if (pageSize == null) {
-            pageSize = 10;
-        }
-        Page<Task> aPage = taskService.page(new Page<>(current, pageSize));
-        return new ResponseEntity<>(aPage, HttpStatus.OK);
+        return httpResponseEntity;
     }
 
 
-        @GetMapping(value = "/{id}")
-    public ResponseEntity<Task> getById(@PathVariable("id") String id) {
-        return new ResponseEntity<>(taskService.getById(id), HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/create")
-    public ResponseEntity<Object> create(@RequestBody Task params) {
-        taskService.save(params);
-        return new ResponseEntity<>("created successfully", HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/delete/{id}")
-    public ResponseEntity<Object> delete(@PathVariable("id") String id) {
-        taskService.removeById(id);
-        return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
-    }
-
-    //@PathVariable("date") String date
 
     @RequestMapping(value = "/getTaskListByCriteria",method = RequestMethod.GET, headers = "Accept"
             + "=application/json")
@@ -86,10 +72,10 @@ public class TaskAction {
 
     @RequestMapping(value = "/updateTask",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
-    public HttpResponseEntity updateTask(@RequestBody Task task){
+    public HttpResponseEntity updateTask(@RequestBody Task params){
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            int res=taskService.updatebyId(task);
+            int res=taskService.updatebyId(params);
             if(res==1)
             {
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
@@ -143,7 +129,7 @@ public class TaskAction {
 
 
         } catch (Exception e) {
-            logger.info("查已分配任务task进行回执录入，使任务变为“已完成”>>>>>"+e.getLocalizedMessage());
+            logger.info("查已分配任务task进行回执录入，之后要使任务变为“已完成”>>>>>"+e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
