@@ -1,4 +1,4 @@
-package com.example.substationmanagementcenter.beans;
+package com.example.warehousemanagementcentre.beans;
 
 import java.io.Serializable;
 
