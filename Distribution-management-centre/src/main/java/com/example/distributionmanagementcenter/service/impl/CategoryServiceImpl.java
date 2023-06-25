@@ -5,6 +5,7 @@ import com.example.distributionmanagementcenter.entity.Category;
 import com.example.distributionmanagementcenter.mapper.CategoryMapper;
 import com.example.distributionmanagementcenter.service.CategoryService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
  * @since 2023-06-19
  */
 @Service
+@Transactional
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements CategoryService {
 
 }

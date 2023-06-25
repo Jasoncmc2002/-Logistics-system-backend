@@ -13,6 +13,7 @@ import com.example.distributionmanagementcenter.mapper.StationMapper;
 import com.example.distributionmanagementcenter.service.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,6 +31,7 @@ import java.util.Map;
  * @since 2023-06-19
  */
 @Service
+@Transactional
 public class StationServiceImpl extends ServiceImpl<StationMapper, Station> implements StationService {
 @Autowired
 private StationInOutMapper stationInOutMapper;

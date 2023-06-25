@@ -4,6 +4,7 @@ import com.example.distributionmanagementcenter.entity.Buy;
 import com.example.distributionmanagementcenter.mapper.BuyMapper;
 import com.example.distributionmanagementcenter.service.BuyService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
  * @since 2023-06-20
  */
 @Service
+@Transactional
 public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuyService {
 
 }

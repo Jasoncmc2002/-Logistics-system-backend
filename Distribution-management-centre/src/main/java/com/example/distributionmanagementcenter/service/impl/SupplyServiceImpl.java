@@ -6,6 +6,7 @@ import com.example.distributionmanagementcenter.entity.Supply;
 import com.example.distributionmanagementcenter.mapper.SupplyMapper;
 import com.example.distributionmanagementcenter.service.SupplyService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
  * @since 2023-06-19
  */
 @Service
+@Transactional
 public class SupplyServiceImpl extends ServiceImpl<SupplyMapper, Supply> implements SupplyService {
 
 }

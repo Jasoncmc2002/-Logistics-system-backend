@@ -6,6 +6,7 @@ import com.example.distributionmanagementcenter.mapper.GoodMapper;
 import com.example.distributionmanagementcenter.service.GoodService;
 ;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -18,6 +19,7 @@ import java.util.Date;
  * @since 2023-06-19
  */
 @Service
+@Transactional
 public class GoodServiceImpl extends ServiceImpl<GoodMapper, Good> implements GoodService {
 
 }
