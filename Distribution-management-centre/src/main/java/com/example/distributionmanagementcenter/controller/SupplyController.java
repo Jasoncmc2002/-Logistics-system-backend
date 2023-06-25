@@ -1,8 +1,13 @@
 package com.example.distributionmanagementcenter.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.distributionmanagementcenter.entity.Constans;
+import com.example.distributionmanagementcenter.entity.Good;
+import com.example.distributionmanagementcenter.entity.HttpResponseEntity;
 import com.example.distributionmanagementcenter.entity.Supply;
 import com.example.distributionmanagementcenter.service.SupplyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/supply")
 public class SupplyController {
 
-
+    private final Logger logger = LoggerFactory.getLogger(SupplyController.class);
     @Autowired
     private SupplyService supplyService;
 
@@ -38,25 +43,98 @@ public class SupplyController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Supply> getById(@PathVariable("id") String id) {
-        return new ResponseEntity<>(supplyService.getById(id), HttpStatus.OK);
+    public HttpResponseEntity<Supply> getById(@PathVariable("id") String id) {
+        HttpResponseEntity<Supply> httpResponseEntity = new HttpResponseEntity<Supply>();
+        try {
+            Supply supply=supplyService.getById(id);
+            if(supply!=null)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("getById ID查找供货商>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Object> create(@RequestBody Supply params) {
-        supplyService.save(params);
-        return new ResponseEntity<>("created successfully", HttpStatus.OK);
+    public HttpResponseEntity<Supply> create(@RequestBody Supply params) {
+        HttpResponseEntity<Supply> httpResponseEntity = new HttpResponseEntity<Supply>();
+        try {
+            boolean flag=supplyService.save(params);
+            if(flag)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("create 新建供货商>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
     }
+
 
     @PostMapping(value = "/delete/{id}")
-    public ResponseEntity<Object> delete(@PathVariable("id") String id) {
-        supplyService.removeById(id);
-        return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
+    public HttpResponseEntity<Supply> delete(@PathVariable("id") String id) {
+
+        HttpResponseEntity<Supply> httpResponseEntity = new HttpResponseEntity<Supply>();
+        try {
+            boolean flag=supplyService.removeById(id);
+            if(flag)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("delete 删除供货商>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
     }
 
+
     @PostMapping(value = "/update")
-    public ResponseEntity<Object> update(@RequestBody Supply params) {
-        supplyService.updateById(params);
-        return new ResponseEntity<>("updated successfully", HttpStatus.OK);
+    public HttpResponseEntity<Supply> update(@RequestBody Supply params) {
+
+        HttpResponseEntity<Supply> httpResponseEntity = new HttpResponseEntity<Supply>();
+        try {
+            boolean flag=supplyService.updateById(params);
+            if(flag)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("update 更新供货商>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
     }
 }

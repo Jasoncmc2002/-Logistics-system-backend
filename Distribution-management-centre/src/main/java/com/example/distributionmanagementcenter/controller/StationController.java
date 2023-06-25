@@ -1,10 +1,7 @@
 package com.example.distributionmanagementcenter.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.distributionmanagementcenter.entity.CentralStation;
-import com.example.distributionmanagementcenter.entity.Constans;
-import com.example.distributionmanagementcenter.entity.HttpResponseEntity;
-import com.example.distributionmanagementcenter.entity.Station;
+import com.example.distributionmanagementcenter.entity.*;
 import com.example.distributionmanagementcenter.service.CentralstationService;
 import com.example.distributionmanagementcenter.service.StationService;
 import org.slf4j.Logger;
@@ -38,40 +35,104 @@ public class StationController {
     @Autowired
     private CentralstationService centralstationService;
 
-    @GetMapping(value = "/")
-    public ResponseEntity<Page<Station>> list(@RequestParam(required = false) Integer current, @RequestParam(required = false) Integer pageSize) {
-        if (current == null) {
-            current = 1;
-        }
-        if (pageSize == null) {
-            pageSize = 10;
-        }
-        Page<Station> aPage = stationService.page(new Page<>(current, pageSize));
-        return new ResponseEntity<>(aPage, HttpStatus.OK);
-    }
+
+
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Station> getById(@PathVariable("id") String id) {
-        return new ResponseEntity<>(stationService.getById(id), HttpStatus.OK);
+    public HttpResponseEntity<Station> getById(@PathVariable("id") String id) {
+        HttpResponseEntity<Station> httpResponseEntity = new HttpResponseEntity<Station>();
+        try {
+            Station station=stationService.getById(id);
+            if(station!=null)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("getById ID查找站>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
     }
+
 
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Object> create(@RequestBody Station params) {
-        stationService.save(params);
-        return new ResponseEntity<>("created successfully", HttpStatus.OK);
+    public HttpResponseEntity<Station> create(@RequestBody Station params) {
+        HttpResponseEntity<Station> httpResponseEntity = new HttpResponseEntity<Station>();
+        try {
+            boolean flag=stationService.save(params);
+            if(flag)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("create 新建站>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
     }
 
+
     @PostMapping(value = "/delete/{id}")
-    public ResponseEntity<Object> delete(@PathVariable("id") String id) {
-        stationService.removeById(id);
-        return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
+    public HttpResponseEntity<Station> delete(@PathVariable("id") String id) {
+
+        HttpResponseEntity<Station> httpResponseEntity = new HttpResponseEntity<Station>();
+        try {
+            boolean flag=stationService.removeById(id);
+            if(flag)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("delete 删除站>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
     }
 
     @PostMapping(value = "/update")
-    public ResponseEntity<Object> update(@RequestBody Station params) {
-        stationService.updateById(params);
-        return new ResponseEntity<>("updated successfully", HttpStatus.OK);
+    public HttpResponseEntity<Station> update(@RequestBody Station params) {
+
+        HttpResponseEntity<Station> httpResponseEntity = new HttpResponseEntity<Station>();
+        try {
+            boolean flag=stationService.updateById(params);
+            if(flag)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("update 更新货物>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
     }
 //    @PostMapping(value = "/check")
 //    public ResponseEntity<Object> checkGoods(@RequestBody List<String> goodNames) {
@@ -81,8 +142,8 @@ public class StationController {
     //库存量查询
 @RequestMapping(value = "/stock/{sid}/{cid}",method = RequestMethod.GET, headers = "Accept"
         + "=application/json")
-public HttpResponseEntity stockQuery(@PathVariable("sid") String sid,@PathVariable("cid") String cid) {
-    HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+public HttpResponseEntity  stockQuery(@PathVariable("sid") String sid,@PathVariable("cid") String cid) {
+    HttpResponseEntity  httpResponseEntity = new HttpResponseEntity();
     try {
         Station station = stationService.getById(sid);
         CentralStation centralStation= centralstationService.getById(cid);

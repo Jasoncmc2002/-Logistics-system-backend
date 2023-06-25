@@ -1,10 +1,7 @@
 package com.example.distributionmanagementcenter.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.distributionmanagementcenter.entity.Buy;
-import com.example.distributionmanagementcenter.entity.CentralStation;
-import com.example.distributionmanagementcenter.entity.Constans;
-import com.example.distributionmanagementcenter.entity.HttpResponseEntity;
+import com.example.distributionmanagementcenter.entity.*;
 import com.example.distributionmanagementcenter.service.BuyService;
 import com.example.distributionmanagementcenter.service.CentralstationService;
 import com.github.pagehelper.PageInfo;
@@ -38,39 +35,101 @@ public class CentralstationController {
     @Autowired
     private BuyService buyService;
 
-    @GetMapping(value = "/")
-    public ResponseEntity<Page<CentralStation>> list(@RequestParam(required = false) Integer current, @RequestParam(required = false) Integer pageSize) {
-        if (current == null) {
-            current = 1;
-        }
-        if (pageSize == null) {
-            pageSize = 10;
-        }
-        Page<CentralStation> aPage = centralstationService.page(new Page<>(current, pageSize));
-        return new ResponseEntity<>(aPage, HttpStatus.OK);
-    }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CentralStation> getById(@PathVariable("id") String id) {
-        return new ResponseEntity<>(centralstationService.getById(id), HttpStatus.OK);
+    public HttpResponseEntity<CentralStation> getById(@PathVariable("id") String id) {
+        HttpResponseEntity<CentralStation> httpResponseEntity = new HttpResponseEntity<CentralStation>();
+        try {
+            CentralStation centralStation=centralstationService.getById(id);
+            if(centralStation!=null)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("getById ID查找中心库房库存量>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
     }
+
 
     @PostMapping(value = "/create")
-    public ResponseEntity<Object> create(@RequestBody CentralStation params) {
-        centralstationService.save(params);
-        return new ResponseEntity<>("created successfully", HttpStatus.OK);
+    public HttpResponseEntity<CentralStation> create(@RequestBody CentralStation params) {
+        HttpResponseEntity<CentralStation> httpResponseEntity = new HttpResponseEntity<CentralStation>();
+        try {
+            boolean flag=centralstationService.save(params);
+            if(flag)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("create 新建中心库房库存量>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
     }
+
 
     @PostMapping(value = "/delete/{id}")
-    public ResponseEntity<Object> delete(@PathVariable("id") String id) {
-        centralstationService.removeById(id);
-        return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
+    public HttpResponseEntity<CentralStation> delete(@PathVariable("id") String id) {
+
+        HttpResponseEntity<CentralStation> httpResponseEntity = new HttpResponseEntity<CentralStation>();
+        try {
+            boolean flag=centralstationService.removeById(id);
+            if(flag)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("delete 删除中心库房库存量>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
     }
 
-    @PostMapping(value = "/update")
-    public ResponseEntity<Object> update(@RequestBody CentralStation params) {
-        centralstationService.updateById(params);
-        return new ResponseEntity<>("updated successfully", HttpStatus.OK);
+
+    public HttpResponseEntity<CentralStation> update(@RequestBody CentralStation params) {
+
+        HttpResponseEntity<CentralStation> httpResponseEntity = new HttpResponseEntity<CentralStation>();
+        try {
+            boolean flag=centralstationService.updateById(params);
+            if(flag)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("update 更新中心库房库存量>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
     }
     //缺货检查
     @RequestMapping(value = "/check/{id}",method = RequestMethod.GET, headers = "Accept"
