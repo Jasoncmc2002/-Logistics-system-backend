@@ -69,8 +69,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
   }
 
   public PageInfo getOrdersByCriteria(Map<String, Object> map) throws ParseException {
-    PageHelper.startPage(Integer.valueOf((String)map.get("pageNum")),
-        Integer.valueOf((String)map.get("pageSize")));
+    PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+        Integer.valueOf(String.valueOf(map.get("pageSize"))));
 
     QueryWrapper<Orders> queryWrapper = new QueryWrapper<>();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -141,5 +141,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     res.put("reMoney",reMoney);
     res.put("reNum",reNum);
     return res;
+  }
+
+  @Override
+  public PageInfo getAllOrder(Map<String, Object> map) {
+    PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+        Integer.valueOf(String.valueOf(map.get("pageSize"))));
+    List<Orders> res=orderMapper.selectList(null);
+    PageInfo pageInfo = new PageInfo(res);
+    return pageInfo;
   }
 }

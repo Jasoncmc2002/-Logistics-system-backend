@@ -18,4 +18,5 @@ public interface OrderService extends IService<Orders> {
   int insert(Map<String,Object > map);
   PageInfo getOrdersByCriteria(Map<String, Object> map) throws ParseException;
   Map<String,Object> getCreaterwork(Map<String, Object> map) throws ParseException;
+  PageInfo getAllOrder(Map<String, Object> map);
 }
