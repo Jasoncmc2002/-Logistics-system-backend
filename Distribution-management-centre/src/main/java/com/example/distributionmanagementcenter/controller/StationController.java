@@ -130,5 +130,20 @@ public HttpResponseEntity stockQuery(@PathVariable("sid") String sid,@PathVariab
         return httpResponseEntity;
     }
 
+    @RequestMapping(value = "/withdrawal",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity withdrawal(@RequestBody Map<String, Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            httpResponseEntity.setData(stationService.withdrawalQueryService(map));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 
+        } catch (Exception e) {
+            logger.info("Withdrawal 退货管理查询>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }

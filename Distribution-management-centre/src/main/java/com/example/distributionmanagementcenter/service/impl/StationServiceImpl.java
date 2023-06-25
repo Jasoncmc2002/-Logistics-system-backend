@@ -2,8 +2,12 @@ package com.example.distributionmanagementcenter.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.distributionmanagementcenter.entity.Buy;
+import com.example.distributionmanagementcenter.entity.CentralStation;
 import com.example.distributionmanagementcenter.entity.Station;
 import com.example.distributionmanagementcenter.entity.StationInOut;
+import com.example.distributionmanagementcenter.mapper.BuyMapper;
+import com.example.distributionmanagementcenter.mapper.CentralStationMapper;
 import com.example.distributionmanagementcenter.mapper.StationInOutMapper;
 import com.example.distributionmanagementcenter.mapper.StationMapper;
 import com.example.distributionmanagementcenter.service.StationService;
@@ -29,7 +33,10 @@ import java.util.Map;
 public class StationServiceImpl extends ServiceImpl<StationMapper, Station> implements StationService {
 @Autowired
 private StationInOutMapper stationInOutMapper;
-
+@Autowired
+private BuyMapper buyMapper;
+@Autowired
+private CentralStationMapper centralStationMapper;
     @Override
     public Map<String, Object> stationInOutQueryService(Map<String, Object> map) throws ParseException {
         HashMap<String, Object> res=new HashMap<String, Object>();
@@ -44,18 +51,26 @@ private StationInOutMapper stationInOutMapper;
     }
 
     @Override
-    public Map<String, Object> withdrawalService(Map<String, Object> map) throws ParseException {
+    public Map<String, Object> withdrawalQueryService(Map<String, Object> map) throws ParseException {
         HashMap<String, Object> res=new HashMap<String, Object>();
         String supplyName=(String)map.get("supplyName");
         int goodId=(int)map.get("goodId");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startTime =sdf.parse((String) map.get("startTime"));
         Date endTime = sdf.parse((String) map.get("endTime"));
-        QueryWrapper<StationInOut> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<Buy> queryWrapper = new QueryWrapper<>();
         queryWrapper.between("date", startTime, endTime)
                 .eq("good_id",goodId)
                 .eq("supply",supplyName);
-        //List<StationInOut> records= stationInOutMapper.selectList(queryWrapper);
+        //得到buy列表
+        List<Buy> records= buyMapper.selectList(queryWrapper);
+        res.put("buyList",records);
+        //得到对应的订单库存
+        for(Buy buy:records){
+           CentralStation centralStation= centralStationMapper.selectById(buy.getGoodId());
+           res.put("withdrawal"+centralStation.getGoodName(),centralStation.getWithdrawal());
+           res.put("WaitAllocation"+centralStation.getGoodName(),centralStation.getWaitAllo());
+        }
         return res;
     }
 }

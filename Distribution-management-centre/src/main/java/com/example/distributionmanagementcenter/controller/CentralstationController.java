@@ -133,6 +133,7 @@ public class CentralstationController {
         try{
             CentralStation centralStation=centralstationService.getById(id);
             if(param.getNumber()<=(centralStation.getMax()-centralStation.getWaitAllo())){
+                param.setType(1);
                 buyService.save(param);
                 httpResponseEntity.setData("Success");
             }else{
@@ -147,5 +148,28 @@ public class CentralstationController {
         }
         return httpResponseEntity;
 
+    }
+    //进货登记
+    @RequestMapping(value = "/registerBuy/{id}",method = RequestMethod.GET, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity registerBuy(@PathVariable("id") int id,@RequestBody Buy param) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try{
+            CentralStation centralStation=centralstationService.getById(id);
+            if(param.getNumber()<=(centralStation.getMax()-centralStation.getWaitAllo())){
+                param.setType(2);
+                buyService.save(param);
+                httpResponseEntity.setData("Success");
+            }else{
+                httpResponseEntity.setData("Invalid input number");
+            }
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+        }catch(Exception e){
+            logger.info("registerBuy 进货登记>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
     }
 }

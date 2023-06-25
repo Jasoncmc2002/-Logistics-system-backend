@@ -2,6 +2,7 @@ package com.example.distributionmanagementcenter.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.util.Date;
  * @author Jason_Cai
  * @since 2023-06-20
  */
+@Data
 public class Buy implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -61,81 +63,7 @@ public class Buy implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date;
 
-    public Long getId() {
-        return id;
-    }
+    private int type;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public String getGoodClass() {
-        return goodClass;
-    }
-
-    public void setGoodClass(String goodClass) {
-        this.goodClass = goodClass;
-    }
-
-    public Long getGoodId() {
-        return goodId;
-    }
-
-    public void setGoodId(Long goodId) {
-        this.goodId = goodId;
-    }
-
-    public String getGoodName() {
-        return goodName;
-    }
-
-    public void setGoodName(String goodName) {
-        this.goodName = goodName;
-    }
-
-    public String getGoodUnit() {
-        return goodUnit;
-    }
-
-    public void setGoodUnit(String goodUnit) {
-        this.goodUnit = goodUnit;
-    }
-
-    public String getSupply() {
-        return supply;
-    }
-
-    public void setSupply(String supply) {
-        this.supply = supply;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    @Override
-    public String toString() {
-        return "Buy{" +
-        ", id = " + id +
-        ", goodClass = " + goodClass +
-        ", goodId = " + goodId +
-        ", goodName = " + goodName +
-        ", goodUnit = " + goodUnit +
-        ", supply = " + supply +
-        ", number = " + number +
-        ", date = " + date +
-        "}";
-    }
 }

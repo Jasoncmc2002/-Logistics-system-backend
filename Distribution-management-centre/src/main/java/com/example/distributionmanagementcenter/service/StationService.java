@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public interface StationService extends IService<Station> {
     Map<String,Object> stationInOutQueryService(Map<String, Object> map) throws ParseException;
-    Map<String,Object> withdrawalService(Map<String, Object> map)throws ParseException;
+    Map<String,Object> withdrawalQueryService(Map<String, Object> map)throws ParseException;
 
 
 }
