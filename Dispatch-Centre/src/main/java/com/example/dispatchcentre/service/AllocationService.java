@@ -5,7 +5,9 @@ import com.example.dispatchcentre.entity.Allocation;
 import com.example.dispatchcentre.entity.Task;
 import com.github.pagehelper.PageInfo;
 import java.util.Map;
+import org.springframework.stereotype.Service;
 
+@Service
 /**
  * <p>
  * 商品调拨 服务类

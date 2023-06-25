@@ -30,7 +30,10 @@ public class Unsubscribe implements Serializable {
      * 用户名
      */
     private Long customerId;
-
+    /**
+     * 用户名
+     */
+    private Long orderId;
     /**
      * 用户名
      */

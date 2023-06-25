@@ -5,6 +5,7 @@ import com.example.customerservicecentre.beans.HttpResponseEntity;
 import com.example.customerservicecentre.common.Constans;
 import com.example.customerservicecentre.entity.Customer;
 import com.example.customerservicecentre.service.CustomerService;
+import com.example.customerservicecentre.service.OrderService;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,8 @@ public class CustomerAction {
 
     @Autowired
     private CustomerService customerService;
+    @Autowired
+    private OrderService orderService;
 
 
     @RequestMapping(value = "/addUser",method = RequestMethod.POST, headers = "Accept"
@@ -147,17 +150,17 @@ public class CustomerAction {
         return httpResponseEntity;
     }
 
-    @RequestMapping(value = "/selectOrder",method = RequestMethod.GET, headers = "Accept"
+    @RequestMapping(value = "/selectOrderbyCustomer",method = RequestMethod.GET, headers = "Accept"
         + "=application/json")
-    public HttpResponseEntity selectOrder(@RequestBody Map<String,Object> map) {
+    public HttpResponseEntity selectOrderbyCustomer(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            PageInfo pageInfo = customerService.selectOrder(map);
+            PageInfo pageInfo = orderService.selectOrderbyCustomer(map);
             httpResponseEntity.setData(pageInfo);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
-            logger.info("selectOrder 客户订单信息>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("selectOrderbyCustomer 客户订单信息>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }

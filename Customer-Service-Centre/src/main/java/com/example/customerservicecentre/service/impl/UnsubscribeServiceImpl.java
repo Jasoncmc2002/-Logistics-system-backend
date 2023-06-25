@@ -28,12 +28,18 @@ public class UnsubscribeServiceImpl extends ServiceImpl<UnsubscribeMapper, Unsub
   private UnsubscribeMapper unsubscribeMapper;
   @Autowired
   private OrderMapper orderMapper;
+  @Autowired
+  private OrderServiceImpl orderService;
   @Override
   public int insert(Unsubscribe unsubscribe) {
     Date date = DateUtil.getCreateTime();
     unsubscribe.setOrderDate(date);
     System.out.println(unsubscribe);
-    int res= unsubscribeMapper.insert(unsubscribe);
+    int res1= unsubscribeMapper.insert(unsubscribe);
+    Orders orders=new Orders();
+    orders.setId(unsubscribe.getOrderId());
+    orders.setOrderType("撤销");
+    int res =orderService.updatebyId(orders);
     return res;
   }
 

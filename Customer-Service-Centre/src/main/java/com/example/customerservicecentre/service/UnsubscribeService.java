@@ -4,8 +4,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.customerservicecentre.entity.Orders;
 import com.example.customerservicecentre.entity.Return;
 import com.example.customerservicecentre.entity.Unsubscribe;
+import org.springframework.stereotype.Service;
 
-
+@Service
 /**
  * <p>
  * 退订 服务类
