@@ -114,6 +114,18 @@
       <artifactId>hutool-all</artifactId>
       <version>5.8.15</version>
     </dependency>
+    <!--引入数据库表结构文档生成器Screw依赖-->
+    <dependency>
+      <groupId>cn.smallbun.screw</groupId>
+      <artifactId>screw-core</artifactId>
+      <version>1.0.5</version>
+    </dependency>
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.30</version>
+    </dependency>
+
   </dependencies>
 
   <build>

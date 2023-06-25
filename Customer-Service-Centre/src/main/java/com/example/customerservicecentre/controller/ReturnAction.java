@@ -71,9 +71,9 @@ public class ReturnAction {
             {
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
+            }else if (res==0)
             {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.checkRETURN);
             }
 

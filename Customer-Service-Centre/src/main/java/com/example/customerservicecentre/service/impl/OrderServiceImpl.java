@@ -46,20 +46,17 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
   @Autowired
   private DistributionFeign distributionFeign;
 
+
   @Override
   public int insert(Map<String,Object > map) {
-    System.out.println("sssssss\n");
-    System.out.println(map);
     String jsonString1 = JSON.toJSONString(map);  // 将对象转换成json格式数据
     JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
     Orders order = JSON.parseObject(jsonObject.getString("Orders"), Orders.class); // 这样就可以了
 
     List<Good> goods=JSON.parseArray(jsonObject.getString("Goods"), Good.class);
-    System.out.println(goods);
-
     Date date = DateUtil.getCreateTime();
     order.setOrderDate(date);
-    System.out.println(order);
+
     int res = orderMapper.insert(order);//添加order;
     Long orderId= order.getId();
 
@@ -74,6 +71,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
   public PageInfo getOrdersByCriteria(Map<String, Object> map) throws ParseException {
     PageHelper.startPage(Integer.valueOf((String)map.get("pageNum")),
         Integer.valueOf((String)map.get("pageSize")));
+
     QueryWrapper<Orders> queryWrapper = new QueryWrapper<>();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     Date startTime =sdf.parse((String) map.get("startTime"));
@@ -82,10 +80,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
         .eq("customer_name",  map.get("customer_name"))
         .eq("order_type",  map.get("order_type"));
     List<Orders> res= orderMapper.selectList(queryWrapper);
+
 //    System.out.println(res);
     PageInfo pageInfo = new PageInfo(res);
     return pageInfo;
-  }
+}
 
   @Override
   public Map<String, Object> getCreaterwork(Map<String, Object> map) throws ParseException{
@@ -116,11 +115,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     List<Unsubscribe> resUnsubscribe= unsubscribeMapper.selectList(queryWrapper1);
     res.put("unsOrder",resUnsubscribe.size());  /*  新订笔数*/
     Double unsMoney=0.0; /*  退订金额*/
-    Long unsNum=0L;/*  退订数量*/
-    for (Unsubscribe resuns : resUnsubscribe) {
-      unsMoney+=resuns.getSum()*resuns.getGoodPrice();
-      unsNum+=resuns.getSum();
-    }
+//    Long unsNum=0L;/*  退订数量*/
+//    for (Unsubscribe resuns : resUnsubscribe) {
+//      unsMoney+=resuns.getSum()*resuns.getGoodPrice();
+//      unsNum+=resuns.getSum();
+//    }
 
     QueryWrapper<Return> queryWrapper2 = new QueryWrapper<>();
     queryWrapper2.between("order_date", startTime, endTime)
@@ -138,7 +137,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     res.put("newMoney",newMoney);
     res.put("newNum",newNum);
     res.put("unsMoney",unsMoney);
-    res.put("unsNum",unsNum);
+//    res.put("unsNum",unsNum);
     res.put("reMoney",reMoney);
     res.put("reNum",reNum);
     return res;

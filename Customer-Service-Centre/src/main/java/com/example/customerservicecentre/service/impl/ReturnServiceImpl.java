@@ -39,9 +39,10 @@ public class ReturnServiceImpl extends ServiceImpl<ReturnMapper, Return> impleme
   @Override
   public int check(Orders orders) {
     Orders res= orderMapper.selectById(orders.getId());
-//    if(res.getOrdersTatus().equals("完成")){
-//      return 1;
-//    }
+    if(res.getOrderStatus().equals("完成")){
+      return 1;
+    }
     return 0;
   }
+
 }

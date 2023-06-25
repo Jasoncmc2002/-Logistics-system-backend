@@ -40,9 +40,9 @@ public class UnsubscribeServiceImpl extends ServiceImpl<UnsubscribeMapper, Unsub
   @Override
   public int check(Orders orders) {
     Orders res= orderMapper.selectById(orders.getId());
-//    if(res.getOrdersTatus().equals("缺货")||res.getOrdersTatus().equals("可分配")){
-//      return 1;
-//    }
-    return 0;
+    if(res.getOrderStatus().equals("缺货")||res.getOrderStatus().equals("可分配")){
+      return 0;
+    }
+    return 1;
   }
 }

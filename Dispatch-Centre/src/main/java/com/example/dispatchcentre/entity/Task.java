@@ -1,22 +1,21 @@
-package com.example.customerservicecentre.entity;
+package com.example.dispatchcentre.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 
 /**
  * <p>
- * 退订
+ * 任务单
  * </p>
  *
  * @author yangfuchao
- * @since 2023-06-19
+ * @since 2023-06-25
  */
 @Data
-public class Unsubscribe implements Serializable {
+public class Task implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,12 +28,12 @@ public class Unsubscribe implements Serializable {
     /**
      * 用户名
      */
-    private Long customerId;
+    private Long orderId;
 
     /**
      * 用户名
      */
-    private String creater;
+    private Long customerId;
 
     /**
      * 用户名
@@ -44,28 +43,49 @@ public class Unsubscribe implements Serializable {
     /**
      * 用户名
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private Date orderDate;
+    private Date taskDate;
 
     /**
      * 用户名
      */
-    private Long sum;
+    private Date deadline;
 
     /**
      * 用户名
      */
-    private String ordersTatus;
+    private String taskType;
 
     /**
      * 用户名
      */
-    private String reason;
+    private String taskStatus;
 
     /**
      * 用户名
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private Date date;
+    private String address;
 
+    /**
+     * 用户名
+     */
+    private String postman;
+
+    /**
+     * 用户名
+     */
+    private String substation;
+
+    /**
+     * 用户名
+     */
+    private Integer printNumber;
+
+    /**
+     * 用户名
+     */
+    private String creater;
+    /**
+     * 用户名
+     */
+    private Date end_date;
 }
