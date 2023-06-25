@@ -112,4 +112,6 @@ public class Orders implements Serializable {
      */
     private String goodStatus;
 
+    private String receive_name;
+
 }

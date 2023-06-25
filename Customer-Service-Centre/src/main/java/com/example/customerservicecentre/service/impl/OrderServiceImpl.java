@@ -1,5 +1,7 @@
 package com.example.customerservicecentre.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.customerservicecentre.beans.HttpResponseEntity;
@@ -46,14 +48,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
   @Override
   public int insert(Map<String,Object > map) {
-    Orders order=(Orders) map.get("Orders");
-    List<Good> goods=(List<Good>)map.get("Goods");
+    System.out.println("sssssss\n");
+    System.out.println(map);
+    String jsonString1 = JSON.toJSONString(map);  // 将对象转换成json格式数据
+    JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
+    Orders order = JSON.parseObject(jsonObject.getString("Orders"), Orders.class); // 这样就可以了
+
+    List<Good> goods=JSON.parseArray(jsonObject.getString("Goods"), Good.class);
+    System.out.println(goods);
+
     Date date = DateUtil.getCreateTime();
     order.setOrderDate(date);
     System.out.println(order);
     int res = orderMapper.insert(order);//添加order;
+    Long orderId= order.getId();
+
     for(Good good:goods){
+      good.setKeyId(Math.toIntExact(orderId));
       HttpResponseEntity ss= distributionFeign.addGoods(good);
+      System.out.println(ss);
     }
     return res;
   }

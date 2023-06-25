@@ -16,6 +16,8 @@ import java.util.Map;
  * @since 2023-06-19
  */
 public interface TaskService extends IService<Task> {
+
+    PageInfo selectAll(Map<String,Object> map);
     PageInfo getTaskListByCriteria(Map<String,Object> map) throws ParseException;
 
     int updatebyId(Task task);
