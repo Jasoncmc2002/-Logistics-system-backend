@@ -2,6 +2,10 @@ package com.example.distributionmanagementcenter.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.distributionmanagementcenter.entity.Good;
+import com.github.pagehelper.PageInfo;
+
+import java.text.ParseException;
+import java.util.Map;
 
 /**
  * <p>
@@ -12,5 +16,5 @@ import com.example.distributionmanagementcenter.entity.Good;
  * @since 2023-06-19
  */
 public interface GoodService extends IService<Good> {
-
+    PageInfo getListByOrderId(Map<String, Object> map) throws ParseException;
 }
