@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.distributionmanagementcenter.entity.*;
 import com.example.distributionmanagementcenter.service.CentralstationService;
 import com.example.distributionmanagementcenter.service.StationService;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,6 @@ public class StationController {
     private StationService stationService;
     @Autowired
     private CentralstationService centralstationService;
-
-
 
 
     @GetMapping(value = "/{id}")
@@ -134,13 +133,9 @@ public class StationController {
         }
         return httpResponseEntity;
     }
-//    @PostMapping(value = "/check")
-//    public ResponseEntity<Object> checkGoods(@RequestBody List<String> goodNames) {
-//
-//        return new ResponseEntity<>("updated successfully", HttpStatus.OK);
-//    }
+
     //库存量查询
-@RequestMapping(value = "/stock/{sid}/{cid}",method = RequestMethod.GET, headers = "Accept"
+@RequestMapping(value = "/stock/{sid}/{cid}",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
 public HttpResponseEntity  stockQuery(@PathVariable("sid") String sid,@PathVariable("cid") String cid) {
     HttpResponseEntity  httpResponseEntity = new HttpResponseEntity();
@@ -191,12 +186,20 @@ public HttpResponseEntity  stockQuery(@PathVariable("sid") String sid,@PathVaria
         return httpResponseEntity;
     }
 
-    @RequestMapping(value = "/withdrawal",method = RequestMethod.POST, headers = "Accept"
+    @RequestMapping(value = "/withdrawalQuery",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
-    public HttpResponseEntity withdrawal(@RequestBody Map<String, Object> map) {
+    public HttpResponseEntity withdrawalQuery(@RequestBody Map<String, Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            httpResponseEntity.setData(stationService.withdrawalQueryService(map));
+            PageInfo pageInfo =stationService.withdrawalQueryBuyService(map);
+            HashMap<String,Object> responseContent=new HashMap<String,Object>();
+            responseContent.put("buy",pageInfo);
+            for(Buy buy:(List<Buy>)pageInfo.getList()){
+           CentralStation centralStation= centralstationService.getById(buy.getGoodId());
+                responseContent.put("withdrawal"+centralStation.getGoodName(),centralStation.getWithdrawal());
+                responseContent.put("WaitAllocation"+centralStation.getGoodName(),centralStation.getWaitAllo());
+             }
+            httpResponseEntity.setData(responseContent);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 
@@ -207,4 +210,29 @@ public HttpResponseEntity  stockQuery(@PathVariable("sid") String sid,@PathVaria
         }
         return httpResponseEntity;
     }
+    //退货确认
+//    @RequestMapping(value = "/withdrawalConfirm",method = RequestMethod.POST, headers = "Accept"
+//            + "=application/json")
+//    public HttpResponseEntity withdrawalConfirm(@RequestBody Map<String, Object> map) {
+//        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+//        try {
+//            PageInfo pageInfo =stationService.withdrawalQueryBuyService(map);
+//            HashMap<String,Object> responseContent=new HashMap<String,Object>();
+//            responseContent.put("buy",pageInfo);
+//            for(Buy buy:(List<Buy>)pageInfo.getList()){
+//                CentralStation centralStation= centralstationService.getById(buy.getGoodId());
+//                responseContent.put("withdrawal"+centralStation.getGoodName(),centralStation.getWithdrawal());
+//                responseContent.put("WaitAllocation"+centralStation.getGoodName(),centralStation.getWaitAllo());
+//            }
+//            httpResponseEntity.setData(responseContent);
+//            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+//            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+//
+//        } catch (Exception e) {
+//            logger.info("Withdrawal 退货管理查询>>>>>>>>>>>" + e.getLocalizedMessage());
+//            httpResponseEntity.setCode(Constans.EXIST_CODE);
+//            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+//        }
+//        return httpResponseEntity;
+//    }
 }

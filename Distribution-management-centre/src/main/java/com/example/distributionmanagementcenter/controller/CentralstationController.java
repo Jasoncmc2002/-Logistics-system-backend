@@ -25,7 +25,7 @@ import java.util.Map;
  * @author Jason_cai
  * @since 2023-06-19
  */
-@Controller
+@RestController
 @RequestMapping("/central-station")
 public class CentralstationController {
 
@@ -108,7 +108,7 @@ public class CentralstationController {
         return httpResponseEntity;
     }
 
-
+    @PostMapping("/update")
     public HttpResponseEntity<CentralStation> update(@RequestBody CentralStation params) {
 
         HttpResponseEntity<CentralStation> httpResponseEntity = new HttpResponseEntity<CentralStation>();
@@ -159,18 +159,20 @@ public class CentralstationController {
     //缺货检查（全部）
     @RequestMapping(value = "/checkAll",method = RequestMethod.GET, headers = "Accept"
             + "=application/json")
-    public HttpResponseEntity checkAllVacancy() {
+    public HttpResponseEntity checkAllVacancy(@RequestBody Map<String, Object> map) {
+
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try{
-            List<CentralStation> centralStationList=centralstationService.list();
+            PageInfo pageInfo=centralstationService.getList(map);
             HashMap<String,Object> responseContent=new HashMap<String,Object>();
-            for(CentralStation centralStation:centralStationList){
-                responseContent.put("Good",centralStation);
+            for(CentralStation centralStation:(List<CentralStation>)pageInfo.getList()){
+//                System.out.println(centralStation.getGoodName());
+//                responseContent.put("Good",centralStation.getGoodName());
                 if(centralStation.getWaitAllo()<=centralStation.getWarn()){
-                    responseContent.put("LackNum",centralStation.getWarn()-centralStation.getWaitAllo());
+                    responseContent.put(centralStation.getGoodName(),centralStation.getWarn()-centralStation.getWaitAllo());
                 }
                 else{
-                    responseContent.put("LackNum",0);
+                    responseContent.put(centralStation.getGoodName(),0);
                 }
             }
             httpResponseEntity.setData(responseContent);
@@ -182,10 +184,9 @@ public class CentralstationController {
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
         return httpResponseEntity;
-
     }
     //新增进货单
-    @RequestMapping(value = "/addBuy/{id}",method = RequestMethod.GET, headers = "Accept"
+    @RequestMapping(value = "/addBuy/{id}",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
     public HttpResponseEntity addBuy(@PathVariable("id") int id,@RequestBody Buy param) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
@@ -209,7 +210,7 @@ public class CentralstationController {
 
     }
     //进货登记
-    @RequestMapping(value = "/registerBuy/{id}",method = RequestMethod.GET, headers = "Accept"
+    @RequestMapping(value = "/registerBuy/{id}",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
     public HttpResponseEntity registerBuy(@PathVariable("id") int id,@RequestBody Buy param) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();

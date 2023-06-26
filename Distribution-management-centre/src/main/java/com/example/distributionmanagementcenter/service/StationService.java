@@ -2,6 +2,7 @@ package com.example.distributionmanagementcenter.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.distributionmanagementcenter.entity.Station;
+import com.github.pagehelper.PageInfo;
 
 import java.text.ParseException;
 import java.util.Map;
@@ -15,8 +16,8 @@ import java.util.Map;
  * @since 2023-06-19
  */
 public interface StationService extends IService<Station> {
-    Map<String,Object> stationInOutQueryService(Map<String, Object> map) throws ParseException;
-    Map<String,Object> withdrawalQueryService(Map<String, Object> map)throws ParseException;
+    PageInfo stationInOutQueryService(Map<String, Object> map) throws ParseException;
+    PageInfo withdrawalQueryBuyService(Map<String, Object> map)throws ParseException;
 
 
 }

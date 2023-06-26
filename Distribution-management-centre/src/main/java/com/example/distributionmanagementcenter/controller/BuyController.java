@@ -1,9 +1,6 @@
 package com.example.distributionmanagementcenter.controller;
 
-import com.example.distributionmanagementcenter.entity.Buy;
-import com.example.distributionmanagementcenter.entity.Category;
-import com.example.distributionmanagementcenter.entity.Constans;
-import com.example.distributionmanagementcenter.entity.HttpResponseEntity;
+import com.example.distributionmanagementcenter.entity.*;
 import com.example.distributionmanagementcenter.service.BuyService;
 import com.example.distributionmanagementcenter.service.CategoryService;
 import org.slf4j.Logger;
@@ -53,38 +50,28 @@ public class BuyController {
         }
         return httpResponseEntity;
     }
-////确定插入值唯一
-//    @PostMapping(value = "/create")
-//    public HttpResponseEntity<Category> create(@RequestBody Category params) {
-//        HttpResponseEntity<Category> httpResponseEntity = new HttpResponseEntity<Category>();
-//        try {
-//            int flag=0;
-//            List<Category> categoryList = categoryService.list();
-//            for(Category category:categoryList){
-//                if(category.getfName().equals(params.getfName())&&category.getsName().equals(params.getsName())){
-//                    flag=1;
-//                    break;
-//                }
-//            }
-//            if(flag==0){
-//                categoryService.save(params);
-//                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-//                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-//            }
-//            else
-//            {
-//                httpResponseEntity.setCode(Constans.EXIST_CODE);
-//                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-//            }
-//
-//        } catch (Exception e) {
-//            logger.info("create 新建种类>>>>>>>>>>>" + e.getLocalizedMessage());
-//            httpResponseEntity.setCode(Constans.EXIST_CODE);
-//            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
-//        }
-//        return httpResponseEntity;
-//    }
-//
+    @PostMapping(value = "/create")
+    public HttpResponseEntity<Buy> create(@RequestBody Buy params) {
+        HttpResponseEntity<Buy> httpResponseEntity = new HttpResponseEntity<Buy>();
+        try {
+            boolean flag=buyService.save(params);
+            if(flag)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("create 新建中心库房库存量>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 //
 //    @PostMapping(value = "/delete/{id}")
 //    public HttpResponseEntity<Buy> delete(@PathVariable("id") String id) {
