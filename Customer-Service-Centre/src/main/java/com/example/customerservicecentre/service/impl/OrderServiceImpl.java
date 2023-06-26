@@ -1,11 +1,12 @@
 package com.example.customerservicecentre.service.impl;
-
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.customerservicecentre.beans.HttpResponseEntity;
 import com.example.customerservicecentre.common.utils.DateUtil;
+import com.example.customerservicecentre.entity.Customer;
 import com.example.customerservicecentre.entity.Good;
 import com.example.customerservicecentre.entity.Orders;
 import com.example.customerservicecentre.entity.Return;
@@ -74,11 +75,32 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
     QueryWrapper<Orders> queryWrapper = new QueryWrapper<>();
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    Date startTime =sdf.parse((String) map.get("startTime"));
-    Date endTime = sdf.parse((String) map.get("endTime"));
-    queryWrapper.between("order_date", startTime, endTime)
-        .eq("customer_name",  map.get("customer_name"))
-        .eq("order_type",  map.get("order_type"));
+    Date startTime =null;
+    Date endTime = null;
+    Date now=DateUtil.getCreateTime();
+    Date old=sdf.parse("1993-07-01 17:54:18");
+    if(!map.get("startTime").equals("")){
+      startTime =sdf.parse((String) map.get("startTime"));
+    }
+    if(!map.get("endTime").equals("")){
+      endTime =sdf.parse((String) map.get("endTime"));
+    }
+    // 判断name属性是否为空，如果不为空则作为查询条件
+    if (!map.get("customer_name").equals("")) {
+      queryWrapper.like("customer_name", map.get("customer_name"));
+    }
+    if (startTime!=null&& endTime!=null) {
+      queryWrapper.between("order_date", startTime, endTime);
+    }
+    else if (startTime==null&& endTime!=null) {
+      queryWrapper.between("order_date", old, endTime);
+    }
+    else if (startTime!=null&& endTime==null) {
+      queryWrapper.between("order_date", startTime, now);
+    }
+    if (!map.get("order_type").equals("")) {
+      queryWrapper.eq("order_type", map.get("order_type"));
+    }
     List<Orders> res= orderMapper.selectList(queryWrapper);
 
 //    System.out.println(res);
@@ -145,10 +167,32 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
   @Override
   public PageInfo getAllOrder(Map<String, Object> map) {
+    System.out.println(map);
     PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
     List<Orders> res=orderMapper.selectList(null);
-    PageInfo pageInfo = new PageInfo(res);
+    PageInfo<Orders> pageInfo = new PageInfo<Orders>(res);
     return pageInfo;
+  }
+
+  @Override
+  public PageInfo selectOrderbyCustomer(Map<String, Object> map) {
+    PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+        Integer.valueOf(String.valueOf(map.get("pageSize"))));
+    QueryWrapper<Orders> queryWrapper = new QueryWrapper<>();
+
+    // 判断name属性是否为空，如果不为空则作为查询条件
+    if (!map.get("customerId").equals("")) {
+      queryWrapper.eq("customer_id", map.get("customerId"));
+    }
+    List<Orders> res=orderMapper.selectList(queryWrapper);
+    PageInfo<Orders> pageInfo = new PageInfo<>(res);
+    return pageInfo;
+  }
+
+  @Override
+  public int updatebyId(Orders orders) {
+    orderMapper.updateById(orders);
+    return 0;
   }
 }

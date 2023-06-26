@@ -18,6 +18,5 @@ import org.apache.ibatis.annotations.Param;
  */
 @Mapper
 public interface CustomerMapper extends BaseMapper<Customer> {
-   List<Customer> search(@Param("keyword")  String keyword);
    List<Customer> getAllCustomer();
 }

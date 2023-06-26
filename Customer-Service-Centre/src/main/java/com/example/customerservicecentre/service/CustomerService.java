@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
 
-
+@Service
 /**
  * <p>
  * 用户表信息 服务类
