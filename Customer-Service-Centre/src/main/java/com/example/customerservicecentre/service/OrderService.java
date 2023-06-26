@@ -23,4 +23,6 @@ public interface OrderService extends IService<Orders> {
   PageInfo getAllOrder(Map<String, Object> map);
   PageInfo selectOrderbyCustomer(Map<String, Object> map);
   int updatebyId(Orders orders);
+  PageInfo getWorkByid(Map<String, Object> map) throws ParseException;
+  Orders getOrderByid(Map<String, Object> map);
 }

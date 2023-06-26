@@ -89,7 +89,7 @@ public class OrderAction {
     public HttpResponseEntity getCreaterwork(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            Map<String,Object> res=OrdersService.getCreaterwork(map);
+            PageInfo res=OrdersService.getWorkByid(map);
             httpResponseEntity.setData(res);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
@@ -114,6 +114,24 @@ public class OrderAction {
 
         } catch (Exception e) {
             logger.info("getAllOrder 返回所有>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+    @RequestMapping(value = "/getOrderByid",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity getOrderByid(@RequestBody Map<String, Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            Orders res=OrdersService.getOrderByid(map);
+            httpResponseEntity.setData(res);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("getOrderByid 通过id得到单个order信息>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
