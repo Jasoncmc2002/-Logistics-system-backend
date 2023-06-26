@@ -64,7 +64,7 @@ public class CategoryController {
             int flag=0;
             List<Category> categoryList = categoryService.list();
             for(Category category:categoryList){
-                if(category.getfName().equals(params.getfName())&&category.getsName().equals(params.getsName())){
+                if(category.getFName().equals(params.getFName())&&category.getSName().equals(params.getSName())){
                     flag=1;
                     break;
                 }
@@ -87,7 +87,6 @@ public class CategoryController {
         }
         return httpResponseEntity;
     }
-
 
     @PostMapping(value = "/delete/{id}")
     public HttpResponseEntity<Category> delete(@PathVariable("id") String id) {

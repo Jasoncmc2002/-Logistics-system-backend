@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -16,6 +17,7 @@ import java.io.Serializable;
  * @since 2023-06-19
  */
 @TableName("class_category")
+@Data
 public class Category implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,36 +28,5 @@ public class Category implements Serializable {
     @TableField(value="s_name")
     private String sName;
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getfName() {
-        return fName;
-    }
-
-    public void setfName(String fName) {
-        this.fName = fName;
-    }
-
-    public String getsName() {
-        return sName;
-    }
-
-    public void setsName(String sName) {
-        this.sName = sName;
-    }
-
-    @Override
-    public String toString() {
-        return "Category{" +
-        ", id = " + id +
-        ", fName = " + fName +
-        ", sName = " + sName +
-        "}";
-    }
 }

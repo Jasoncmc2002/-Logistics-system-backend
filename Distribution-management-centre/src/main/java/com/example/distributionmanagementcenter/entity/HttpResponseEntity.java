@@ -13,5 +13,4 @@ public class HttpResponseEntity<T> implements Serializable {
     private T data; //内容
     private String message; //状态消息
 
-
 }

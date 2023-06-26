@@ -26,8 +26,6 @@ public class BuyController {
     @Autowired
     private BuyService buyService;
 
-
-
     @GetMapping(value = "/{id}")
     public HttpResponseEntity<Buy> getById(@PathVariable("id") String id) {
         HttpResponseEntity<Buy> httpResponseEntity = new HttpResponseEntity<Buy>();
@@ -35,6 +33,7 @@ public class BuyController {
            Buy buy=buyService.getById(id);
             if(buy!=null)
             {
+                httpResponseEntity.setData(buy);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else
