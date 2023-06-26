@@ -66,7 +66,7 @@ public class BuyController {
             }
 
         } catch (Exception e) {
-            logger.info("create 新建中心库房库存量>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("create 新建购货单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
