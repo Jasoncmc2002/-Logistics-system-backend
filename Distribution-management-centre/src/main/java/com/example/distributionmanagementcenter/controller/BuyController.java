@@ -72,32 +72,32 @@ public class BuyController {
         }
         return httpResponseEntity;
     }
-//
-//    @PostMapping(value = "/delete/{id}")
-//    public HttpResponseEntity<Buy> delete(@PathVariable("id") String id) {
-//
-//        HttpResponseEntity<Category> httpResponseEntity = new HttpResponseEntity<Category>();
-//        try {
-//            boolean flag=categoryService.removeById(id);
-//            if(flag)
-//            {
-//                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-//                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-//            }else
-//            {
-//                httpResponseEntity.setCode(Constans.EXIST_CODE);
-//                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-//            }
-//
-//        } catch (Exception e) {
-//            logger.info("delete 删除种类>>>>>>>>>>>" + e.getLocalizedMessage());
-//            httpResponseEntity.setCode(Constans.EXIST_CODE);
-//            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
-//        }
-//        return httpResponseEntity;
-//    }
-//
-//
+
+    @PostMapping(value = "/delete/{id}")
+    public HttpResponseEntity<Buy> delete(@PathVariable("id") String id) {
+
+        HttpResponseEntity<Buy> httpResponseEntity = new HttpResponseEntity<Buy>();
+        try {
+            boolean flag=buyService.removeById(id);
+            if(flag)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("delete 删除购货单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+
     @PostMapping(value = "/update")
     public HttpResponseEntity<Buy> update(@RequestBody Buy params) {
 
