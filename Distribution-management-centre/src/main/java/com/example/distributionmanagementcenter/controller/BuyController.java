@@ -98,27 +98,27 @@ public class BuyController {
 //    }
 //
 //
-//    @PostMapping(value = "/update")
-//    public HttpResponseEntity<Category> update(@RequestBody Category params) {
-//
-//        HttpResponseEntity<Category> httpResponseEntity = new HttpResponseEntity<Category>();
-//        try{
-//            boolean flag=categoryService.updateById(params);
-//            if(flag)
-//            {
-//                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-//                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-//            }else
-//            {
-//                httpResponseEntity.setCode(Constans.EXIST_CODE);
-//                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-//            }
-//
-//        } catch (Exception e) {
-//            logger.info("update 更新种类>>>>>>>>>>>" + e.getLocalizedMessage());
-//            httpResponseEntity.setCode(Constans.EXIST_CODE);
-//            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
-//        }
-//        return httpResponseEntity;
-//    }
+    @PostMapping(value = "/update")
+    public HttpResponseEntity<Buy> update(@RequestBody Buy params) {
+
+        HttpResponseEntity<Buy> httpResponseEntity = new HttpResponseEntity<Buy>();
+        try{
+            boolean flag=buyService.updateById(params);
+            if(flag)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("update 更新购货单单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }

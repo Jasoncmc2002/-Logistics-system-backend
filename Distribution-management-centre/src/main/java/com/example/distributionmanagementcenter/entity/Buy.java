@@ -64,6 +64,10 @@ public class Buy implements Serializable {
     private Date date;
 
     private int type;
+    @TableId(value = "buy_type")
+    private Long buyType;
+    @TableId(value = "order_id")
+    private int orderId;
 
 
 }

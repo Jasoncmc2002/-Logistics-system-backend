@@ -210,7 +210,7 @@ public HttpResponseEntity  stockQuery(@PathVariable("sid") String sid,@PathVaria
         }
         return httpResponseEntity;
     }
-    //退货确认
+    //退货确认，直接修改GOOD属性即可
 //    @RequestMapping(value = "/withdrawalConfirm",method = RequestMethod.POST, headers = "Accept"
 //            + "=application/json")
 //    public HttpResponseEntity withdrawalConfirm(@RequestBody Map<String, Object> map) {
