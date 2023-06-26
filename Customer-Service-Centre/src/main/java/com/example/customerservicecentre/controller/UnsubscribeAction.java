@@ -5,6 +5,8 @@ import com.example.customerservicecentre.beans.HttpResponseEntity;
 import com.example.customerservicecentre.common.Constans;
 import com.example.customerservicecentre.entity.Orders;
 import com.example.customerservicecentre.entity.Unsubscribe;
+import com.example.customerservicecentre.service.CustomerService;
+import com.example.customerservicecentre.service.OrderService;
 import com.example.customerservicecentre.service.UnsubscribeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +38,9 @@ public class UnsubscribeAction {
 
     @Autowired
     private UnsubscribeService unsubscribeService;
+
+    @Autowired
+    private OrderService orderService;
 /*    增加退订单*/
     @RequestMapping(value = "/addUnsubscribe",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
@@ -69,10 +74,12 @@ public class UnsubscribeAction {
             int res=unsubscribeService.check(params);
             if(res==1)
             {
+                httpResponseEntity.setData(res);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else
             {
+                httpResponseEntity.setData(res);
                 httpResponseEntity.setCode(Constans.EXIST_CODE);
                 httpResponseEntity.setMessage(Constans.checkUnsubscribeAction);
             }

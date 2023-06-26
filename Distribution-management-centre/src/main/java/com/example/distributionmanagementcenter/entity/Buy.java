@@ -1,6 +1,7 @@
 package com.example.distributionmanagementcenter.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -64,6 +65,10 @@ public class Buy implements Serializable {
     private Date date;
 
     private int type;
+    @TableField("buy_type")
+    private Long buyType;
+    @TableField("order_id")
+    private int orderId;
 
 
 }

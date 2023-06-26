@@ -25,7 +25,7 @@ import java.util.List;
  * @since 2023-06-19
  */
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/distribute/category")
 public class CategoryController {
 
     private final Logger logger = LoggerFactory.getLogger(CategoryController.class);

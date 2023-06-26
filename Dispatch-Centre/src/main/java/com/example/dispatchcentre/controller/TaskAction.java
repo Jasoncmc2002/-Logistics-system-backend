@@ -7,6 +7,8 @@ import com.example.dispatchcentre.entity.Task;
 import com.example.dispatchcentre.service.TaskService;
 import com.github.pagehelper.PageInfo;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +29,9 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-06-25
  */
 @RestController
-@RequestMapping("/task")
+@RequestMapping("/dispatch")
 public class TaskAction {
-
+    private final Logger logger = LoggerFactory.getLogger(TaskAction.class);
 
     @Autowired
     private TaskService taskService;
@@ -39,7 +41,7 @@ public class TaskAction {
     public HttpResponseEntity addUser(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            int res=taskService.insert(params);
+            int res=taskService.insert(map);
             if(res==1)
             {
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
@@ -69,7 +71,7 @@ public class TaskAction {
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 
         } catch (Exception e) {
-            logger.info("addOrder 添加订单>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("getTasksByCriteria 搜索订单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }

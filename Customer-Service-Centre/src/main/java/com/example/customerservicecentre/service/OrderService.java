@@ -5,7 +5,9 @@ import com.example.customerservicecentre.entity.Orders;
 import com.github.pagehelper.PageInfo;
 import java.text.ParseException;
 import java.util.Map;
+import org.springframework.stereotype.Service;
 
+@Service
 /**
  * <p>
  * 订单 服务类
@@ -19,4 +21,8 @@ public interface OrderService extends IService<Orders> {
   PageInfo getOrdersByCriteria(Map<String, Object> map) throws ParseException;
   Map<String,Object> getCreaterwork(Map<String, Object> map) throws ParseException;
   PageInfo getAllOrder(Map<String, Object> map);
+  PageInfo selectOrderbyCustomer(Map<String, Object> map);
+  int updatebyId(Orders orders);
+  PageInfo getWorkByid(Map<String, Object> map) throws ParseException;
+  Orders getOrderByid(Map<String, Object> map);
 }

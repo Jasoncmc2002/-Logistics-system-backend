@@ -5,6 +5,7 @@ import com.example.distributionmanagementcenter.entity.Constans;
 import com.example.distributionmanagementcenter.entity.Good;
 import com.example.distributionmanagementcenter.entity.HttpResponseEntity;
 import com.example.distributionmanagementcenter.service.GoodService;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -22,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2023-06-19
  */
 @RestController
-@RequestMapping("/good")
+@RequestMapping("/distribute/good")
 public class GoodController {
     private final Logger logger = LoggerFactory.getLogger(GoodController.class);
 
@@ -58,6 +61,19 @@ public class GoodController {
 
         } catch (Exception e) {
             logger.info("getById ID查找货物>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+    @GetMapping(value = "/getByOrderId")
+    public HttpResponseEntity getByOrderId(Map<String, Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            PageInfo pageInfo=goodService.getListByOrderId(map);
+            httpResponseEntity.setData(pageInfo);
+        } catch (Exception e) {
+            logger.info("getById 订单ID查找货物>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }

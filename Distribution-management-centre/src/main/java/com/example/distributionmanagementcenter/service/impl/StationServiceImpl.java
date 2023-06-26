@@ -11,6 +11,8 @@ import com.example.distributionmanagementcenter.mapper.CentralStationMapper;
 import com.example.distributionmanagementcenter.mapper.StationInOutMapper;
 import com.example.distributionmanagementcenter.mapper.StationMapper;
 import com.example.distributionmanagementcenter.service.StationService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +23,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 /**
  * <p>
  * 库房 服务实现类
@@ -40,23 +41,28 @@ private BuyMapper buyMapper;
 @Autowired
 private CentralStationMapper centralStationMapper;
     @Override
-    public Map<String, Object> stationInOutQueryService(Map<String, Object> map) throws ParseException {
-        HashMap<String, Object> res=new HashMap<String, Object>();
+    public PageInfo stationInOutQueryService(Map<String, Object> map) throws ParseException {
+        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+                Integer.valueOf(String.valueOf(map.get("pageSize"))));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startTime =sdf.parse((String) map.get("startTime"));
         Date endTime = sdf.parse((String) map.get("endTime"));
         QueryWrapper<StationInOut> queryWrapper = new QueryWrapper<>();
         queryWrapper.between("date", startTime, endTime);
         List<StationInOut> records= stationInOutMapper.selectList(queryWrapper);
-        res.put("records",records);
-        return res;
+
+        PageInfo pageInfo = new PageInfo(records);
+        return pageInfo;
     }
 
     @Override
-    public Map<String, Object> withdrawalQueryService(Map<String, Object> map) throws ParseException {
+    public PageInfo withdrawalQueryBuyService(Map<String, Object> map) throws ParseException {
+        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+                Integer.valueOf(String.valueOf(map.get("pageSize"))));
         HashMap<String, Object> res=new HashMap<String, Object>();
         String supplyName=(String)map.get("supplyName");
-        int goodId=(int)map.get("goodId");
+
+        Integer goodId=Integer.valueOf(String.valueOf(map.get("goodId")));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startTime =sdf.parse((String) map.get("startTime"));
         Date endTime = sdf.parse((String) map.get("endTime"));
@@ -66,13 +72,14 @@ private CentralStationMapper centralStationMapper;
                 .eq("supply",supplyName);
         //得到buy列表
         List<Buy> records= buyMapper.selectList(queryWrapper);
-        res.put("buyList",records);
+        //res.put("buyList",records);
         //得到对应的订单库存
-        for(Buy buy:records){
-           CentralStation centralStation= centralStationMapper.selectById(buy.getGoodId());
-           res.put("withdrawal"+centralStation.getGoodName(),centralStation.getWithdrawal());
-           res.put("WaitAllocation"+centralStation.getGoodName(),centralStation.getWaitAllo());
-        }
-        return res;
+//        for(Buy buy:records){
+//           CentralStation centralStation= centralStationMapper.selectById(buy.getGoodId());
+//           res.put("withdrawal"+centralStation.getGoodName(),centralStation.getWithdrawal());
+//           res.put("WaitAllocation"+centralStation.getGoodName(),centralStation.getWaitAllo());
+//        }
+        PageInfo pageInfo = new PageInfo(records);
+        return pageInfo;
     }
 }

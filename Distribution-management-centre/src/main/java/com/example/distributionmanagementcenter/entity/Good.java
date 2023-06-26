@@ -46,6 +46,10 @@ public class Good implements Serializable {
     /**
      * 用户名
      */
+    private Long goodNumber;
+    /**
+     * 用户名
+     */
     private String goodUnit;
 
     /**

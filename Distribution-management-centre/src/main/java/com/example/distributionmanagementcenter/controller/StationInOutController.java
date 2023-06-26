@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.*;
  * @author Jason_Cai
  * @since 2023-06-20
  */
-@Controller
-@RequestMapping("/stationInOut")
+@RestController
+@RequestMapping("/distribute/stationInOut")
 public class StationInOutController {
     private final Logger logger = LoggerFactory.getLogger(StationInOutController.class);
 

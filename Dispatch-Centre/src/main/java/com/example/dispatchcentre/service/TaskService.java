@@ -5,7 +5,9 @@ import com.example.dispatchcentre.entity.Task;
 import com.github.pagehelper.PageInfo;
 import java.text.ParseException;
 import java.util.Map;
+import org.springframework.stereotype.Service;
 
+@Service
 /**
  * <p>
  * 任务单 服务类

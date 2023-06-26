@@ -3,6 +3,7 @@ package com.example.customerservicecentre.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import com.example.customerservicecentre.common.utils.DateUtil;
 import com.example.customerservicecentre.entity.Customer;
 import com.example.customerservicecentre.entity.Orders;
 import com.example.customerservicecentre.mapper.CustomerMapper;
@@ -10,6 +11,8 @@ import com.example.customerservicecentre.mapper.OrderMapper;
 import com.example.customerservicecentre.service.CustomerService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,13 +72,26 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 
   }
 
+/*  按照客户名、电话或身份证号查找*/
   @Override
   public PageInfo searchbykey(Map<String, Object> map) {
-    System.out.println(map);
-    PageHelper.startPage(Integer.valueOf((String)map.get("pageNum")),
-        Integer.valueOf((String)map.get("pageSize")));
-//    List<Customer> res= customerMapper.getAllCustomer();
-    List<Customer> res= customerMapper.search((String)map.get("keyword"));
+
+    PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+        Integer.valueOf(String.valueOf(map.get("pageSize"))));
+
+    QueryWrapper<Customer> queryWrapper = new QueryWrapper<>();
+
+    // 判断name属性是否为空，如果不为空则作为查询条件
+    if (!map.get("name").equals("")) {
+      queryWrapper.like("name", map.get("name"));
+    }
+    if (!map.get("mobilephone").equals("")) {
+      queryWrapper.like("mobilephone", map.get("mobilephone"));
+    }
+    if (!map.get("idcard").equals("")) {
+      queryWrapper.like("idcard", map.get("idcard"));
+    }
+    List<Customer> res= customerMapper.selectList(queryWrapper);
     System.out.println(res);
     PageInfo pageInfo = new PageInfo(res);
     return pageInfo;
