@@ -43,6 +43,7 @@ public class CentralstationController {
             CentralStation centralStation=centralstationService.getById(id);
             if(centralStation!=null)
             {
+                httpResponseEntity.setData(centralStation);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else

@@ -2,6 +2,7 @@ package com.example.distributionmanagementcenter.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
  * @author jason_cai
  * @since 2023-06-19
  */
+@Data
 public class Supply implements Serializable {
 
     private static final long serialVersionUID = 1L;

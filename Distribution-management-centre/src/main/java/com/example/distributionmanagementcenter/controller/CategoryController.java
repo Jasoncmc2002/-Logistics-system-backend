@@ -41,6 +41,7 @@ public class CategoryController {
             Category category=categoryService.getById(id);
             if(category!=null)
             {
+                httpResponseEntity.setData(category);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else
@@ -64,7 +65,7 @@ public class CategoryController {
             int flag=0;
             List<Category> categoryList = categoryService.list();
             for(Category category:categoryList){
-                if(category.getfName().equals(params.getfName())&&category.getsName().equals(params.getsName())){
+                if(category.getFName().equals(params.getFName())&&category.getSName().equals(params.getSName())){
                     flag=1;
                     break;
                 }
@@ -87,7 +88,6 @@ public class CategoryController {
         }
         return httpResponseEntity;
     }
-
 
     @PostMapping(value = "/delete/{id}")
     public HttpResponseEntity<Category> delete(@PathVariable("id") String id) {
@@ -122,6 +122,7 @@ public class CategoryController {
             boolean flag=categoryService.updateById(params);
             if(flag)
             {
+
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else

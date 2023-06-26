@@ -26,8 +26,6 @@ public class BuyController {
     @Autowired
     private BuyService buyService;
 
-
-
     @GetMapping(value = "/{id}")
     public HttpResponseEntity<Buy> getById(@PathVariable("id") String id) {
         HttpResponseEntity<Buy> httpResponseEntity = new HttpResponseEntity<Buy>();

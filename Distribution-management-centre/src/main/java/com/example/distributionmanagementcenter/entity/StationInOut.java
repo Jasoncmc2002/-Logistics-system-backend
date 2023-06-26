@@ -3,6 +3,7 @@ package com.example.distributionmanagementcenter.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -17,6 +18,7 @@ import java.util.Date;
  * @since 2023-06-20
  */
 @TableName("in_station")
+@Data
 public class StationInOut implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -94,144 +96,5 @@ public class StationInOut implements Serializable {
     private String remark;
     private Integer type;
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getStationClass() {
-        return stationClass;
-    }
-
-    public void setStationClass(Integer stationClass) {
-        this.stationClass = stationClass;
-    }
-
-    public Long getAlloId() {
-        return alloId;
-    }
-
-    public void setAlloId(Long alloId) {
-        this.alloId = alloId;
-    }
-
-    public Long getStationId() {
-        return stationId;
-    }
-
-    public void setStationId(Long stationId) {
-        this.stationId = stationId;
-    }
-
-    public Long getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(Long taskId) {
-        this.taskId = taskId;
-    }
-
-    public Long getGoodId() {
-        return goodId;
-    }
-
-    public void setGoodId(Long goodId) {
-        this.goodId = goodId;
-    }
-
-    public String getGoodClass() {
-        return goodClass;
-    }
-
-    public void setGoodClass(String goodClass) {
-        this.goodClass = goodClass;
-    }
-
-    public Double getGoodPrice() {
-        return goodPrice;
-    }
-
-    public void setGoodPrice(Double goodPrice) {
-        this.goodPrice = goodPrice;
-    }
-
-    public String getGoodName() {
-        return goodName;
-    }
-
-    public void setGoodName(String goodName) {
-        this.goodName = goodName;
-    }
-
-    public String getGoodUnit() {
-        return goodUnit;
-    }
-
-    public void setGoodUnit(String goodUnit) {
-        this.goodUnit = goodUnit;
-    }
-
-    public String getGoodFactory() {
-        return goodFactory;
-    }
-
-    public void setGoodFactory(String goodFactory) {
-        this.goodFactory = goodFactory;
-    }
-
-    public Integer getNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return "Station{" +
-        ", id = " + id +
-        ", stationClass = " + stationClass +
-        ", alloId = " + alloId +
-        ", stationId = " + stationId +
-        ", taskId = " + taskId +
-        ", goodId = " + goodId +
-        ", goodClass = " + goodClass +
-        ", goodPrice = " + goodPrice +
-        ", goodName = " + goodName +
-        ", goodUnit = " + goodUnit +
-        ", goodFactory = " + goodFactory +
-        ", number = " + number +
-        ", date = " + date +
-        ", remark = " + remark +
-        ", type = " + type +
-        "}";
-    }
 }
