@@ -38,6 +38,7 @@ public class BuyController {
            Buy buy=buyService.getById(id);
             if(buy!=null)
             {
+                httpResponseEntity.setData(buy);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else

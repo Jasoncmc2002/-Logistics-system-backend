@@ -47,6 +47,7 @@ public class GoodController {
             Good good=goodService.getById(id);
             if(good!=null)
             {
+                httpResponseEntity.setData(good);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else
