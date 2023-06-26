@@ -2,6 +2,8 @@ package com.example.distributionmanagementcenter.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.Date;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -30,7 +32,8 @@ public class Good implements Serializable {
      */
     private Integer classId;
     private Integer keyId;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date goodDate;
     private String goodClass;
 
     /**

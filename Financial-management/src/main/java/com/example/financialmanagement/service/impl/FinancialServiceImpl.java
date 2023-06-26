@@ -1,11 +1,8 @@
 package com.example.financialmanagement.service.impl;
 
-import com.example.financialmanagement.entity.Buy;
 import com.example.financialmanagement.entity.Orders;
 import com.example.financialmanagement.entity.Return;
 import com.example.financialmanagement.entity.result;
-import com.example.financialmanagement.feign.CustomerFeign;
-import com.example.financialmanagement.feign.DistributionFeign;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;

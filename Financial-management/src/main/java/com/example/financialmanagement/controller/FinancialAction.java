@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/financial")
 public class FinancialAction {
+
     private final Logger logger = LoggerFactory.getLogger(FinancialAction.class);
 
     private FinancialServiceImpl financialService =new FinancialServiceImpl();

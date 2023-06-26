@@ -2,7 +2,10 @@ package com.example.dispatchcentre.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
+import java.util.Date;
+import lombok.Data;
 
 /**
  * <p>
@@ -12,6 +15,7 @@ import java.io.Serializable;
  * @author yangfuchao
  * @since 2023-06-20
  */
+@Data
 public class Good implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -93,7 +97,8 @@ public class Good implements Serializable {
     private String remark;
     private Integer classId;
     private Integer keyId;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date goodDate;
     public Long getId() {
         return id;
     }
