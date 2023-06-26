@@ -82,7 +82,7 @@ public class AllocationAction {
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
-            logger.info("updateAllocationbyId 更新调度单>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("getAllocation 得到所有的调度单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
