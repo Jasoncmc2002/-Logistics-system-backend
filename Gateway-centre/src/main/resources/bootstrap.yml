@@ -18,4 +18,9 @@ spring:
         refresh-enabled: true
         namespace: da2783df-bd99-4c9c-abab-1c6c8fd5c257 # ????
     #        group: DEFAULT # xx???
-
+    openfeign:
+      client:
+        config:
+          default:
+            connectTimeout: 40000
+            readTimeout: 600000

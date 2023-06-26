@@ -12,7 +12,7 @@ import com.example.customerservicecentre.entity.Orders;
 import com.example.customerservicecentre.entity.Return;
 import com.example.customerservicecentre.entity.Unsubscribe;
 import com.example.customerservicecentre.entity.vo.CreaterWork;
-import com.example.customerservicecentre.feign.DistributionFeign;
+import com.example.customerservicecentre.feign.FeignApi;
 import com.example.customerservicecentre.mapper.GoodMapper;
 import com.example.customerservicecentre.mapper.OrderMapper;
 import com.example.customerservicecentre.mapper.ReturnMapper;
@@ -48,7 +48,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
   @Autowired
   private ReturnMapper returnMapper;
   @Autowired
-  private DistributionFeign distributionFeign;
+  private FeignApi feignApi;
   @Autowired
   private GoodMapper goodMapper;
 
@@ -65,10 +65,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
     int res = orderMapper.insert(order);//添加order;
     Long orderId= order.getId();
-
+    System.out.println(goods);
     for(Good good:goods){
       good.setKeyId(Math.toIntExact(orderId));
-      HttpResponseEntity ss= distributionFeign.addGoods(good);
+      HttpResponseEntity ss= feignApi.addGoods(good);
       System.out.println(ss);
     }
     return res;
