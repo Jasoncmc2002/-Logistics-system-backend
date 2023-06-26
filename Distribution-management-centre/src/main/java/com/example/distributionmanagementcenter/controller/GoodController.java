@@ -25,7 +25,7 @@ import java.util.Map;
  * @since 2023-06-19
  */
 @RestController
-@RequestMapping("/good")
+@RequestMapping("/distribute/good")
 public class GoodController {
     private final Logger logger = LoggerFactory.getLogger(GoodController.class);
 

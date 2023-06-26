@@ -26,7 +26,7 @@ import java.util.Map;
  * @since 2023-06-19
  */
 @RestController
-@RequestMapping("/central-station")
+@RequestMapping("/distribute/central-station")
 public class CentralstationController {
 
     private final Logger logger = LoggerFactory.getLogger(CentralstationController.class);

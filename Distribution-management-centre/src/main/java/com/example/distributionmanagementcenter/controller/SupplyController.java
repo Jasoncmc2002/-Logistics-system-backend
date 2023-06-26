@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2023-06-19
  */
 @RestController
-@RequestMapping("/supply")
+@RequestMapping("/distribute/supply")
 public class SupplyController {
 
     private final Logger logger = LoggerFactory.getLogger(SupplyController.class);

@@ -19,7 +19,7 @@ import java.util.List;
  * @since 2023-06-19
  */
 @RestController
-@RequestMapping("/buy")
+@RequestMapping("/distribute/buy")
 public class BuyController {
 
     private final Logger logger = LoggerFactory.getLogger(BuyController.class);
