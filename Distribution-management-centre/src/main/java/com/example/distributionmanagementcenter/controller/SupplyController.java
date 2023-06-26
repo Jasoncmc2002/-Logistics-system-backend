@@ -49,6 +49,7 @@ public class SupplyController {
             Supply supply=supplyService.getById(id);
             if(supply!=null)
             {
+                httpResponseEntity.setData(supply);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else

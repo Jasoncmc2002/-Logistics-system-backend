@@ -41,6 +41,7 @@ public class CategoryController {
             Category category=categoryService.getById(id);
             if(category!=null)
             {
+                httpResponseEntity.setData(category);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else
@@ -121,6 +122,7 @@ public class CategoryController {
             boolean flag=categoryService.updateById(params);
             if(flag)
             {
+
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else

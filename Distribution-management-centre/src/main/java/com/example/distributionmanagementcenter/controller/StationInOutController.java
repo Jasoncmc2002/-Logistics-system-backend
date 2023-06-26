@@ -50,6 +50,7 @@ public class StationInOutController {
             StationInOut stationInOut=stationInOutService.getById(id);
             if(stationInOut!=null)
             {
+                httpResponseEntity.setData(stationInOut);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else

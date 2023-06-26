@@ -44,6 +44,7 @@ public class StationController {
             Station station=stationService.getById(id);
             if(station!=null)
             {
+                httpResponseEntity.setData(station);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else
