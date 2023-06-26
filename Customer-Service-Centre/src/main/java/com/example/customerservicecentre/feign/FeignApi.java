@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @date 2023-06-20 13:10
  */
 @Service
-@FeignClient(name = "distribution-application")
-public interface DistributionFeign {
+@FeignClient(name = "api-gateway")
+public interface FeignApi {
 
-  @RequestMapping(value = "/good/create")
+  @RequestMapping(value = "/distribute/good/create")
   HttpResponseEntity addGoods(Good good);
 
 }
