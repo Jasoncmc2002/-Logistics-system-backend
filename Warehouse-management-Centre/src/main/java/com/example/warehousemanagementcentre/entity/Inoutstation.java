@@ -1,8 +1,8 @@
 package com.example.warehousemanagementcentre.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -11,14 +11,14 @@ import java.util.Date;
 
 /**
  * <p>
- * 进货单
+ * 库房出入库
  * </p>
  *
- * @author Jason_Cai
- * @since 2023-06-20
+ * @author hzn
+ * @since 2023-06-26
  */
 @Data
-public class Buy implements Serializable {
+public class Inoutstation implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,12 +31,32 @@ public class Buy implements Serializable {
     /**
      * 用户名
      */
-    private String goodClass;
+    private Integer stationClass;
+
+    /**
+     * 用户名
+     */
+    private Long alloId;
+
+    /**
+     * 用户名
+     */
+    private Long stationId;
+
+    /**
+     * 用户名
+     */
+    private Long taskId;
 
     /**
      * 用户名
      */
     private Long goodId;
+
+    /**
+     * 用户名
+     */
+    private Double goodPrice;
 
     /**
      * 用户名
@@ -51,12 +71,12 @@ public class Buy implements Serializable {
     /**
      * 用户名
      */
-    private String supply;
+    private String goodFactory;
 
     /**
      * 用户名
      */
-    private Integer number;
+    private Long number;
 
     /**
      * 用户名
@@ -64,11 +84,14 @@ public class Buy implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date;
 
-    private int type;
-    @TableField("buy_type")
-    private Long buyType;
-    @TableField("order_id")
-    private int orderId;
+    /**
+     * 用户名
+     */
+    private String remark;
 
+    /**
+     * 用户名
+     */
+    private Long type;
 
 }

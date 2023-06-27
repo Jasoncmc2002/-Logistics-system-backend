@@ -17,4 +17,6 @@ import java.util.Map;
 public interface InStationService extends IService<InStation> {
 
     PageInfo getInStation(Map<String, Object> map);
+
+    int updatebyId(InStation inStation);
 }

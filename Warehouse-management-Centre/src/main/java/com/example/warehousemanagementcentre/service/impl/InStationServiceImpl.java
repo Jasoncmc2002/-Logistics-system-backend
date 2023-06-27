@@ -2,13 +2,16 @@ package com.example.warehousemanagementcentre.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.warehousemanagementcentre.beans.HttpResponseEntity;
+import com.example.warehousemanagementcentre.common.Constans;
 import com.example.warehousemanagementcentre.entity.InStation;
+import com.example.warehousemanagementcentre.entity.Station;
 import com.example.warehousemanagementcentre.mapper.InStationMapper;
+import com.example.warehousemanagementcentre.mapper.StationMapper;
 import com.example.warehousemanagementcentre.service.InStationService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +32,9 @@ public class InStationServiceImpl extends ServiceImpl<InStationMapper, InStation
     @Autowired
     private InStationMapper inStationMapper;
 
+    @Autowired
+    private StationMapper stationMapper;
+
     @Override
     public PageInfo getInStation(Map<String, Object> map) {
         PageHelper.startPage(Integer.valueOf((String)map.get("pageNum")),
@@ -39,4 +45,12 @@ public class InStationServiceImpl extends ServiceImpl<InStationMapper, InStation
         PageInfo pageInfo = new PageInfo(res);
         return pageInfo;
     }
+
+    @Override
+    public int updatebyId(InStation inStation) {
+        int res = inStationMapper.updateById(inStation);
+        return res;
+    }
+
+
 }
