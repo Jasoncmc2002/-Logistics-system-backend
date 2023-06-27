@@ -3,6 +3,7 @@ package com.example.warehousemanagementcentre.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,7 +16,6 @@ import java.util.Date;
  * @author hzn
  * @since 2023-06-21
  */
-@TableName("in_station")
 public class InStation implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -84,6 +84,7 @@ public class InStation implements Serializable {
     /**
      * 用户名
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date date;
 
     /**
