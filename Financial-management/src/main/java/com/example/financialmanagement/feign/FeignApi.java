@@ -1,7 +1,5 @@
 package com.example.financialmanagement.feign;
 
-import com.example.customerservicecentre.beans.HttpResponseEntity;
-import com.example.customerservicecentre.entity.Good;
 import com.example.financialmanagement.beans.HttpResponseEntity;
 import com.example.financialmanagement.entity.Good;
 import java.util.Map;
@@ -26,6 +24,6 @@ public interface FeignApi {
   HttpResponseEntity getPriceById(Long id);
 
   @RequestMapping(value = "/distribute/good/create")
-  HttpResponseEntity getbuysById(Long id);
+  HttpResponseEntity getbuysById(Map<String,Object> map);
 
 }

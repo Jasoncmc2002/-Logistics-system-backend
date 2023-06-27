@@ -22,7 +22,7 @@ import java.util.Map;
  * @create 2023-06-19 15:35
  */
 @RestController
-@RequestMapping("/instation")
+@RequestMapping("/warehouse/instation")
 public class InStationAction {
 
 

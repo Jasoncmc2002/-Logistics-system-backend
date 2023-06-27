@@ -197,8 +197,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
   @Override
   public int updatebyId(Orders orders) {
-    orderMapper.updateById(orders);
-    return 0;
+    int res =orderMapper.updateById(orders);
+    return res;
   }
 
   @Override
