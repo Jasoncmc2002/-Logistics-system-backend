@@ -5,9 +5,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import com.example.dispatchcentre.beans.HttpResponseEntity;
 import com.example.dispatchcentre.common.utils.DateUtil;
 import com.example.dispatchcentre.entity.Allocation;
 import com.example.dispatchcentre.entity.Task;
+import com.example.dispatchcentre.feign.FeignApi;
 import com.example.dispatchcentre.mapper.TaskMapper;
 import com.example.dispatchcentre.service.TaskService;
 import com.github.pagehelper.PageHelper;
@@ -15,8 +17,10 @@ import com.github.pagehelper.PageInfo;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -29,7 +33,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements TaskService {
+  @Autowired
   private TaskMapper taskMapper;
+  @Autowired
+  private FeignApi feignApi;
   private AllocationServiceImpl allocationService=new AllocationServiceImpl();
   @Override
   public int insert(Map<String,Object > map)throws ParseException {
@@ -97,13 +104,28 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     List<Task> res= taskMapper.selectList(queryWrapper);
 //    System.out.println(res);
     PageInfo pageInfo = new PageInfo(res);
-    PageInfo pageInfo = new PageInfo(res);
     return pageInfo;
   }
 
   @Override
   public PageInfo selectOrder(Map<String, Object> map) {
     return null;
+  }
+
+  @Override
+  public int changeTaskOrderType(Map<String, Object> map) {
+    Task task=new Task();
+    task.setId( Long.valueOf(String.valueOf(map.get("id"))));
+    task.setTaskStatus(String.valueOf(map.get("task_status")));
+    taskMapper.updateById(task);
+    Task task1=new Task();
+    task1 =taskMapper.selectById(Long.valueOf(String.valueOf(map.get("id"))));
+    Long orderId=task1.getOrderId();
+    Map<String, Object> orderMap=new HashMap<>();
+    orderMap.put("id",orderId);
+    orderMap.put("orderStatus",map.get("order_status"));
+    HttpResponseEntity res =feignApi.changeOrderStatusById(orderMap);
+    return (int) res.getData();
   }
 
 }

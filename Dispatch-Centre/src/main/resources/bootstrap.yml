@@ -47,5 +47,11 @@ mybatis-plus:
     map-underscore-to-camel-case: true # ????????:Table{create_time} -> Entity{createTime}
     use-generated-keys: true #??jdbc?getGeneratedKeys??????????
 
-
+#????
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  pageSizeZero: false #pageSize=0 ????
+  params: count=countSql
 

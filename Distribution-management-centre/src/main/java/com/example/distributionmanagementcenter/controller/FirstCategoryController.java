@@ -1,14 +1,15 @@
 package com.example.distributionmanagementcenter.controller;
 
-import com.example.distributionmanagementcenter.entity.*;
-import com.example.distributionmanagementcenter.service.BuyService;
-import com.github.pagehelper.PageInfo;
+import com.example.distributionmanagementcenter.entity.FirstCategory;
+import com.example.distributionmanagementcenter.entity.Constans;
+import com.example.distributionmanagementcenter.entity.HttpResponseEntity;
+import com.example.distributionmanagementcenter.service.FirstCategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * <p>
@@ -19,21 +20,23 @@ import java.util.Map;
  * @since 2023-06-19
  */
 @RestController
-@RequestMapping("/distribute/buy")
-public class BuyController {
+@RequestMapping("/distribute/firstcategory")
+public class FirstCategoryController {
 
-    private final Logger logger = LoggerFactory.getLogger(BuyController.class);
+    private final Logger logger = LoggerFactory.getLogger(FirstCategoryController.class);
     @Autowired
-    private BuyService buyService;
+    private FirstCategoryService firstCategoryService;
+
+
 
     @GetMapping(value = "/{id}")
-    public HttpResponseEntity<Buy> getById(@PathVariable("id") String id) {
-        HttpResponseEntity<Buy> httpResponseEntity = new HttpResponseEntity<Buy>();
+    public HttpResponseEntity<FirstCategory> getById(@PathVariable("id") String id) {
+        HttpResponseEntity<FirstCategory> httpResponseEntity = new HttpResponseEntity<FirstCategory>();
         try {
-           Buy buy=buyService.getById(id);
-            if(buy!=null)
+            FirstCategory firstCategory = firstCategoryService.getById(id);
+            if(firstCategory !=null)
             {
-                httpResponseEntity.setData(buy);
+                httpResponseEntity.setData(firstCategory);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else
@@ -43,29 +46,39 @@ public class BuyController {
             }
 
         } catch (Exception e) {
-            logger.info("getById ID查找订单>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("getById ID查找种类>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
         return httpResponseEntity;
     }
+//确定插入值唯一
     @PostMapping(value = "/create")
-    public HttpResponseEntity<Buy> create(@RequestBody Buy params) {
-        HttpResponseEntity<Buy> httpResponseEntity = new HttpResponseEntity<Buy>();
+    public HttpResponseEntity create(@RequestBody FirstCategory params) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            boolean flag=buyService.save(params);
-            if(flag)
-            {
+            int flag=0;
+            List<FirstCategory> firstCategoryList = firstCategoryService.list();
+            for(FirstCategory firstCategory : firstCategoryList){
+                if(firstCategory.getFName().equals(params.getFName())){
+                    flag=1;
+                    break;
+                }
+            }
+            if(flag==0){
+                firstCategoryService.save(params);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
+            }
+            else
             {
+                httpResponseEntity.setData("插入值重复！");
                 httpResponseEntity.setCode(Constans.EXIST_CODE);
                 httpResponseEntity.setMessage(Constans.ADD_FAIL);
             }
 
         } catch (Exception e) {
-            logger.info("create 新建购货单>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("create 新建种类>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
@@ -73,11 +86,11 @@ public class BuyController {
     }
 
     @PostMapping(value = "/delete/{id}")
-    public HttpResponseEntity<Buy> delete(@PathVariable("id") String id) {
+    public HttpResponseEntity<FirstCategory> delete(@PathVariable("id") String id) {
 
-        HttpResponseEntity<Buy> httpResponseEntity = new HttpResponseEntity<Buy>();
+        HttpResponseEntity<FirstCategory> httpResponseEntity = new HttpResponseEntity<FirstCategory>();
         try {
-            boolean flag=buyService.removeById(id);
+            boolean flag= firstCategoryService.removeById(id);
             if(flag)
             {
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
@@ -89,7 +102,7 @@ public class BuyController {
             }
 
         } catch (Exception e) {
-            logger.info("delete 删除购货单>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("delete 删除种类>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
@@ -98,13 +111,14 @@ public class BuyController {
 
 
     @PostMapping(value = "/update")
-    public HttpResponseEntity<Buy> update(@RequestBody Buy params) {
+    public HttpResponseEntity<FirstCategory> update(@RequestBody FirstCategory params) {
 
-        HttpResponseEntity<Buy> httpResponseEntity = new HttpResponseEntity<Buy>();
+        HttpResponseEntity<FirstCategory> httpResponseEntity = new HttpResponseEntity<FirstCategory>();
         try{
-            boolean flag=buyService.updateById(params);
+            boolean flag= firstCategoryService.updateById(params);
             if(flag)
             {
+
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else
@@ -114,25 +128,7 @@ public class BuyController {
             }
 
         } catch (Exception e) {
-            logger.info("update 更新购货单单>>>>>>>>>>>" + e.getLocalizedMessage());
-            httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
-        }
-        return httpResponseEntity;
-    }
-    @PostMapping(value="/queryByDateSupply")
-    public HttpResponseEntity getListByDateSupply(@RequestBody Map<String, Object> map) {
-
-        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
-        try{
-            PageInfo pageInfo =buyService.getListByDateSupply(map);
-                httpResponseEntity.setData(pageInfo);
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-
-
-        } catch (Exception e) {
-            logger.info("根据供货商和日期查询订单>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("update 更新种类>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }

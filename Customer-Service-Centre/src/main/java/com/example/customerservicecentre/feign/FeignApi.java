@@ -20,4 +20,7 @@ public interface FeignApi {
   @RequestMapping(value = "/distribute/good/create")
   HttpResponseEntity addGoods(Good good);
 
+
+  @RequestMapping(value = "/distribute/good/create")
+  HttpResponseEntity ss(Good good);
 }
