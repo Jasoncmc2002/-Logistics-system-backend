@@ -2,6 +2,10 @@ package com.example.distributionmanagementcenter.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.distributionmanagementcenter.entity.StationInOut;
+import com.github.pagehelper.PageInfo;
+
+import java.text.ParseException;
+import java.util.Map;
 
 /**
  * <p>
@@ -12,5 +16,5 @@ import com.example.distributionmanagementcenter.entity.StationInOut;
  * @since 2023-06-20
  */
 public interface StationInOutService extends IService<StationInOut> {
-
+    PageInfo getListByConditions(Map<String, Object> map) throws ParseException;
 }
