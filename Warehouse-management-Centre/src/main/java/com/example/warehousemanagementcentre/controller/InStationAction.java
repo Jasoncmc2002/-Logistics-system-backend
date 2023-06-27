@@ -22,7 +22,7 @@ import java.util.Map;
  * @create 2023-06-19 15:35
  */
 @RestController
-@RequestMapping("/instation")
+@RequestMapping("/warehouse/instation")
 public class InStationAction {
 
 
@@ -78,12 +78,36 @@ public class InStationAction {
 
 
         } catch (Exception e) {
-            logger.info("查已分配任务task进行回执录入，之后要使任务变为“已完成”>>>>>"+e.getLocalizedMessage());
+            logger.info("查入库类型为9的入库单”>>>>>"+e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
         return httpResponseEntity;
 
+    }
+
+    @RequestMapping(value = "/updateInstation",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity updateInstation(@RequestBody InStation params) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=inStationService.updatebyId(params);
+            if(res==1)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.UPDATE_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("updateUser 更新入库信息>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
     }
 
 

@@ -24,5 +24,5 @@ public interface TaskService extends IService<Task> {
   int  deletebyId(Long id);
   PageInfo searchbykey(Map<String,Object> map) throws ParseException ;
   PageInfo selectOrder(Map<String, Object> map);
-
+  int changeTaskOrderType(Map<String,Object > map);
 }

@@ -77,4 +77,22 @@ public class TaskAction {
         }
         return httpResponseEntity;
     }
+
+    @RequestMapping(value = "/changeTaskOrderType",method = RequestMethod.GET, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity changeTaskOrderType(@RequestBody Map<String,Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=taskService.changeTaskOrderType(map);
+            httpResponseEntity.setData(res);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("changeTaskOrderType 根据id，改变task和order的>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }

@@ -137,4 +137,23 @@ public class OrderAction {
         }
         return httpResponseEntity;
     }
+
+    @RequestMapping(value = "/changeOrderStatusById",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity changeOrderStatusById(@RequestBody Orders orders) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=OrdersService.updatebyId(orders);
+            httpResponseEntity.setData(res);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("changeOrderStatusById 通过id得到改变order的状态>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
 }

@@ -52,4 +52,10 @@ mybatis-plus:
     use-generated-keys: true #??jdbc?getGeneratedKeys??????????
 
 
-
+#????
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  pageSizeZero: false #pageSize=0 ????
+  params: count=countSql
