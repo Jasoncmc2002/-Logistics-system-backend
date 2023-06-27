@@ -47,12 +47,12 @@ public class UnsubscribeAction {
     public HttpResponseEntity addUnsubscribe(@RequestBody Unsubscribe params) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            int res=unsubscribeService.insert(params);
-            if(res==1)
-            {
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
+//            int res=unsubscribeService.insert(params);
+//            if(res==1)
+//            {
+//                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+//                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+//            }else
             {
                 httpResponseEntity.setCode(Constans.EXIST_CODE);
                 httpResponseEntity.setMessage(Constans.ADD_FAIL);
