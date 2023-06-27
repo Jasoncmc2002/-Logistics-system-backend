@@ -8,12 +8,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +24,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/distribute/station")
 public class StationController {
-
     private final Logger logger = LoggerFactory.getLogger(StationController.class);
     @Autowired
     private StationService stationService;
@@ -37,7 +31,7 @@ public class StationController {
     private CentralstationService centralstationService;
 
 
-    @GetMapping(value = "/{id}")
+    @PostMapping(value = "/{id}")
     public HttpResponseEntity<Station> getById(@PathVariable("id") String id) {
         HttpResponseEntity<Station> httpResponseEntity = new HttpResponseEntity<Station>();
         try {
@@ -60,8 +54,6 @@ public class StationController {
         }
         return httpResponseEntity;
     }
-
-
 
     @PostMapping(value = "/create")
     public HttpResponseEntity<Station> create(@RequestBody Station params) {
@@ -147,7 +139,7 @@ public HttpResponseEntity  stockQuery(@PathVariable("sid") String sid,@PathVaria
 
         responseContent.put("StationName",station.getName());
         responseContent.put("GoodName",centralStation.getGoodName());
-        int allStock=centralStation.getWaitAllo()+centralStation.getWithdrawal()+centralStation.getDoneAllo();
+        Long allStock=centralStation.getWaitAllo()+centralStation.getWithdrawal()+centralStation.getDoneAllo();
         responseContent.put("AllStock",allStock);
         responseContent.put("Withdrawal",centralStation.getWithdrawal());
         responseContent.put("DoneAllo",centralStation.getDoneAllo());

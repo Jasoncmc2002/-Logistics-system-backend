@@ -56,12 +56,14 @@ public class GoodController {
         }
         return httpResponseEntity;
     }
-    @GetMapping(value = "/getByOrderId")
+    @PostMapping(value = "/getByOrderId")
     public HttpResponseEntity getByOrderId(@RequestBody Map<String, Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
             PageInfo pageInfo=goodService.getListByOrderId(map);
             httpResponseEntity.setData(pageInfo);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
             logger.info("getById 订单ID查找货物>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);

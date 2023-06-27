@@ -35,8 +35,6 @@ public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, Sta
     @Autowired
     private  StationInOutMapper stationInOutMapper;
     @Autowired
-    private StationMapper stationMapper;
-    @Autowired
     private GoodMapper goodMapper;
     @Override
     public PageInfo getListByConditions(Map<String, Object> map) throws ParseException {
@@ -48,14 +46,18 @@ public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, Sta
         QueryWrapper<Good> queryWrapper1 = new QueryWrapper<>();
          queryWrapper1.eq("good_name",goodName);
         List<Good> records1= goodMapper.selectList(queryWrapper1);
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startTime =sdf.parse((String) map.get("startTime"));
         Date endTime = sdf.parse((String) map.get("endTime"));
 
         QueryWrapper<StationInOut> queryWrapper = new QueryWrapper<>();
         queryWrapper.between("date", startTime, endTime)
-                .eq("good_id",outType)
+                .eq("type",outType)
                 .eq("station_class",stationType);
+        for(Good good :records1){
+            queryWrapper.eq("good_id",good.getId());
+        }
         List<StationInOut> records= stationInOutMapper.selectList(queryWrapper);
         PageInfo pageInfo = new PageInfo(records);
         return pageInfo;

@@ -121,6 +121,7 @@ public class CentralstationController {
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else
             {
+
                 httpResponseEntity.setCode(Constans.EXIST_CODE);
                 httpResponseEntity.setMessage(Constans.ADD_FAIL);
             }
@@ -141,6 +142,7 @@ public class CentralstationController {
             CentralStation centralStation=centralstationService.getById(id);
             HashMap<String,Object> responseContent=new HashMap<String,Object>();
             if(centralStation.getWaitAllo()<=centralStation.getWarn()){
+
                 responseContent.put("LackNum",centralStation.getWarn()-centralStation.getWaitAllo());
             }
             else{
@@ -197,11 +199,14 @@ public class CentralstationController {
                 param.setType(1);
                 buyService.save(param);
                 httpResponseEntity.setData("Success");
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else{
                 httpResponseEntity.setData("Invalid input number");
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
             }
-            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
         }catch(Exception e){
             logger.info("addBuy 新增进货单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
@@ -221,11 +226,14 @@ public class CentralstationController {
                 param.setType(2);
                 buyService.save(param);
                 httpResponseEntity.setData("Success");
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else{
                 httpResponseEntity.setData("Invalid input number");
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
             }
-            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
         }catch(Exception e){
             logger.info("registerBuy 进货登记>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);

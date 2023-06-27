@@ -5,81 +5,73 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * <p>
- * 中心库房存量 
+ * 中心库房货物
  * </p>
  *
- * @author Jason_cai
- * @since 2023-06-19
+ * @author Jason
+ * @since 2023-06-27
  */
 @TableName("stock_central_station")
 @Data
 public class CentralStation implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 用户名
-     */
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
-    /**
-     * 用户名
-     */
-    private String goodClass;
+    @TableField("good_class_id")
+    private Integer goodClassId;
 
-    /**
-     * 用户名
-     */
+    @TableField("good_subclass_id")
+    private Integer goodSubclassId;
+
+    @TableField("good_name")
     private String goodName;
 
-    /**
-     * 用户名
-     */
-    private Integer stock;
+    private Long stock;
 
-    /**
-     * 用户名
-     */
-    private Integer withdrawal;
+    private Long withdrawal;
 
-    /**
-     * 用户名
-     */
-    private Integer waitAllo;
+    private Long waitAllo;
 
-    /**
-     * 用户名
-     */
-    private Integer doneAllo;
+    private Long doneAllo;
 
-    /**
-     * 用户名
-     */
-    private Integer warn;
+    private Long warn;
 
-    /**
-     * 用户名
-     */
-    private Integer max;
+    private Long max;
 
-    //2023.6.26添加字段
     @TableField("good_price")
-    private double goodPrice;
-    @TableField("good_sale")
-    private double goodSale;
-    @TableField("good_cost")
-    private double goodCost;
-    @TableField("good_unit")
-    private String goodUnit;
-    @TableField("supply_name")
-    private String supplyName;
+    private Double goodPrice;
 
+    @TableField("good_sale")
+    private Double goodSale;
+
+    @TableField("good_cost")
+    private Double goodCost;
+
+
+    private String goodUnit;
+
+
+    private Integer supplyId;
+
+
+    @TableField("sell_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date sellDate;
+
+    private Byte isReturn;
+
+    private Byte isChange;
+
+    private String remark;
 
 
 }
