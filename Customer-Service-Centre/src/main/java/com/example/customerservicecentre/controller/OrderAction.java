@@ -7,8 +7,11 @@ import com.example.customerservicecentre.beans.HttpResponseEntity;
 import com.example.customerservicecentre.common.Constans;
 import com.example.customerservicecentre.entity.Customer;
 import com.example.customerservicecentre.entity.Orders;
+import com.example.customerservicecentre.entity.Return;
+import com.example.customerservicecentre.entity.Unsubscribe;
 import com.example.customerservicecentre.service.OrderService;
 import com.github.pagehelper.PageInfo;
+import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -156,4 +159,125 @@ public class OrderAction {
         return httpResponseEntity;
     }
 
+    @RequestMapping(value = "/addReturn",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity addReturn(@RequestBody  Map<String, Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=OrdersService.addReturn(map);
+            if(res==1)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("addReturn 添加退换货单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+    @RequestMapping(value = "/checkReturn",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity checkReturn(@RequestBody Orders params) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=OrdersService.checkReturn(params);
+            if(res==1)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else if (res==0)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.checkRETURN);
+            }
+
+        } catch (Exception e) {
+            logger.info("checkReturn 检查是否可以退换货>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+    @RequestMapping(value = "/addUnsubscribe",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity addUnsubscribe(@RequestBody Map<String, Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=OrdersService.addUnsub(map);
+            if(res==1)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("addUnsubscribe 添加退订单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+    /* 检查是否可以退订*/
+    @RequestMapping(value = "/checkUnsubscribe",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity checkUnsubscribe(@RequestBody Orders params) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=OrdersService.checkUnsub(params);
+            if(res==1)
+            {
+                httpResponseEntity.setData(res);
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setData(res);
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.checkUnsubscribeAction);
+            }
+
+        } catch (Exception e) {
+            logger.info("checkUnsubscribe 检查是否可以退订>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+    @RequestMapping(value = "/getOrderByStationFin",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity getOrderByStationFin(@RequestBody Map<String, Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            List<Orders> res=OrdersService.getOrderByStationFin(map);
+            if(res!=null)
+            {
+                httpResponseEntity.setData(res);
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("getOrderByStationFin 多种条件找oderlist>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }

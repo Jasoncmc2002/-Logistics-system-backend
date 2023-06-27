@@ -2,11 +2,11 @@ package com.example.financialmanagement.controller;
 
 import com.example.financialmanagement.beans.HttpResponseEntity;
 import com.example.financialmanagement.common.Constans;
+import com.example.financialmanagement.entity.vo.Result;
 import com.example.financialmanagement.service.impl.FinancialServiceImpl;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,9 +33,10 @@ public class FinancialAction {
     public HttpResponseEntity SettlementSupply(@RequestBody Map<String,Object> mpa) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            int res=financialService.settlementSupply(mpa);
-            if(res==1)
+            Result res=financialService.settlementSupply(mpa);
+            if(res!=null)
             {
+                httpResponseEntity.setData(res);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else

@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.customerservicecentre.entity.Orders;
 import com.github.pagehelper.PageInfo;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 /**
@@ -31,4 +33,5 @@ public interface OrderService extends IService<Orders> {
   /*  退换货*/
   int checkReturn(Orders orders);
   int addReturn(Map<String,Object > map);
+  List<Orders> getOrderByStationFin(Map<String, Object> map) throws ParseException;
 }

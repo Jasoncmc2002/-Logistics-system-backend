@@ -336,6 +336,41 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     return res;
   }
 
+  @Override
+  public List<Orders> getOrderByStationFin(Map<String, Object> map) throws ParseException {
+    QueryWrapper<Orders> orderWrapper = new QueryWrapper<>();
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    Date startTime = null;
+    Date endTime = null;
+    Date now = DateUtil.getCreateTime();
+    Date old = sdf.parse("1993-07-01 17:54:18");
+    if (!map.get("startTime").equals("")) {
+      startTime = sdf.parse((String) map.get("startTime"));
+    }
+    if (!map.get("endTime").equals("")) {
+      endTime = sdf.parse((String) map.get("endTime"));
+    }
+    // （分站），日期，状态是完成，退货和新订
+    if (!map.get("substation").equals("")) {
+      orderWrapper.eq("substation", map.get("substation"));
+    }
+    orderWrapper.or().eq("order_type", map.get("新订"))
+        .or().eq("order_type", map.get("退货"));
+
+    if (!map.get("order_status").equals("")) {
+      orderWrapper.eq("order_status","完成");
+    }
+
+    /* 根据订单表查询结果获取对应的order_id列表*/
+    Date finalStartTime = startTime;
+    Date finalEndTime = endTime;
+    orderWrapper.and(i -> i.between("order_date", finalStartTime, finalEndTime).or().between(
+        "re_date", finalStartTime, finalEndTime));
+    List<Orders> orderList = orderMapper.selectList(orderWrapper);
+
+    return orderList;
+  }
+
 
   public List<CreaterWork> getCreaterWorkMap(Map<String, Map<String, Object>> map,String creater){
     List<CreaterWork> createrWorkList=new ArrayList<>();

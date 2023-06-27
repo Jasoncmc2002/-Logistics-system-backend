@@ -16,14 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient(name = "api-gateway")
 public interface FeignApi {
 
-  @RequestMapping(value = "/distribute/good/create")
-  HttpResponseEntity getGoodsByIdDate(Map<String,Object> map);
+
+  @RequestMapping(value = "/customer/getOrderByStationFin")
+  HttpResponseEntity getOrderByStationFin(Map<String,Object> map);
 
 
+  //To do
   @RequestMapping(value = "/distribute/good/create")
-  HttpResponseEntity getPriceById(Long id);
-
-  @RequestMapping(value = "/distribute/good/create")
-  HttpResponseEntity getbuysById(Map<String,Object> map);
+  HttpResponseEntity getGoodByOrderId(Integer id);
 
 }
