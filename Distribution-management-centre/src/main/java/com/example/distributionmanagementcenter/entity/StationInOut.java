@@ -54,10 +54,6 @@ public class StationInOut implements Serializable {
      */
     private Long goodId;
 
-    /**
-     * 用户名
-     */
-    private String goodClass;
 
     /**
      * 用户名

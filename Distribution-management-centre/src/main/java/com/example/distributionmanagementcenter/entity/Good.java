@@ -109,9 +109,6 @@ public class Good implements Serializable {
      * 用户名
      */
 
-    public Long getId() {
-        return id;
-    }
 
 
 }
