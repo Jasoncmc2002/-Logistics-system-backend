@@ -1,12 +1,10 @@
 package com.example.customerservicecentre.service.impl;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.customerservicecentre.beans.HttpResponseEntity;
 import com.example.customerservicecentre.common.utils.DateUtil;
-import com.example.customerservicecentre.entity.Customer;
 import com.example.customerservicecentre.entity.Good;
 import com.example.customerservicecentre.entity.Orders;
 import com.example.customerservicecentre.entity.Return;
@@ -15,8 +13,6 @@ import com.example.customerservicecentre.entity.vo.CreaterWork;
 import com.example.customerservicecentre.feign.FeignApi;
 import com.example.customerservicecentre.mapper.GoodMapper;
 import com.example.customerservicecentre.mapper.OrderMapper;
-import com.example.customerservicecentre.mapper.ReturnMapper;
-import com.example.customerservicecentre.mapper.UnsubscribeMapper;
 import com.example.customerservicecentre.service.OrderService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -43,10 +39,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
   @Autowired
   private OrderMapper orderMapper;
-  @Autowired
-  private UnsubscribeMapper unsubscribeMapper;
-  @Autowired
-  private ReturnMapper returnMapper;
   @Autowired
   private FeignApi feignApi;
   @Autowired
@@ -112,63 +104,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     PageInfo pageInfo = new PageInfo(res);
     return pageInfo;
 }
-
-  @Override
-  public Map<String, Object> getCreaterwork(Map<String, Object> map) throws ParseException{
-    HashMap<String, Object> res=new HashMap<String, Object>();
-
-//    PageHelper.startPage(Integer.valueOf((String)map.get("pageNum")),
-//        Integer.valueOf((String)map.get("pageSize")));
-
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    Date startTime =sdf.parse((String) map.get("startTime"));
-    Date endTime = sdf.parse((String) map.get("endTime"));
-
-    QueryWrapper<Orders> queryWrapper = new QueryWrapper<>();
-    queryWrapper.between("order_date", startTime, endTime)
-        .eq("creater",  map.get("creater"));
-    List<Orders> resorders= orderMapper.selectList(queryWrapper);
-    res.put("newOrder",resorders.size());  /*  新订笔数*/
-    Double newMoney=0.0; /*  新订金额*/
-    Long newNum=0L;/*  新订数量*/
-    for (Orders resorder : resorders) {
-      newMoney+=resorder.getGoodSum();
-
-    }
-
-    QueryWrapper<Unsubscribe> queryWrapper1 = new QueryWrapper<>();
-    queryWrapper1.between("order_date", startTime, endTime)
-        .eq("creater",  map.get("creater"));
-    List<Unsubscribe> resUnsubscribe= unsubscribeMapper.selectList(queryWrapper1);
-    res.put("unsOrder",resUnsubscribe.size());  /*  新订笔数*/
-    Double unsMoney=0.0; /*  退订金额*/
-//    Long unsNum=0L;/*  退订数量*/
-//    for (Unsubscribe resuns : resUnsubscribe) {
-//      unsMoney+=resuns.getSum()*resuns.getGoodPrice();
-//      unsNum+=resuns.getSum();
-//    }
-
-    QueryWrapper<Return> queryWrapper2 = new QueryWrapper<>();
-    queryWrapper2.between("order_date", startTime, endTime)
-        .eq("creater",  map.get("creater"));
-    List<Return> resReturn= returnMapper.selectList(queryWrapper2);
-    res.put("reOrder",resReturn.size());  /*  新订笔数*/
-    Double reMoney=0.0; /*  退订金额*/
-    Long reNum=0L;/*  退订数量*/
-    for (Return re : resReturn) {
-      reMoney+=re.getSum()*re.getGoodPrice();
-      reNum+=re.getSum();
-    }
-
-    res.put("creater",map.get("creater"));
-    res.put("newMoney",newMoney);
-    res.put("newNum",newNum);
-    res.put("unsMoney",unsMoney);
-//    res.put("unsNum",unsNum);
-    res.put("reMoney",reMoney);
-    res.put("reNum",reNum);
-    return res;
-  }
 
   @Override
   public PageInfo getAllOrder(Map<String, Object> map) {
@@ -314,6 +249,91 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
   @Override
   public Orders getOrderByid(Map<String, Object> map) {
     return orderMapper.selectById(Long.valueOf(String.valueOf(map.get("id"))));
+  }
+
+  @Override
+  public int checkUnsub(Orders orders) {
+    Orders res= orderMapper.selectById(orders.getId());
+    if(res.getOrderStatus().equals("缺货")||res.getOrderStatus().equals("可分配")){
+      return 1;
+    }
+    return 0;
+  }
+
+  @Override
+  public int addUnsub(Map<String,Object > map) {
+    String jsonString1 = JSON.toJSONString(map);  // 将对象转换成json格式数据
+    JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
+    Orders order = JSON.parseObject(jsonObject.getString("Orders"), Orders.class); // 这样就可以了
+
+    List<Good> goods=JSON.parseArray(jsonObject.getString("Goods"), Good.class);  //现在的
+    Date date = DateUtil.getCreateTime();
+    order.setReDate(date);//退订日期
+
+    int res = orderMapper.insert(order);//添加order;
+    Long orderId= order.getId();
+    Long or_orderId= order.getOrNumber();
+    System.out.println(goods);//先通过id更新
+
+    //先通过id更新原始订单表的东西
+    for(Good good:goods){
+      if(good.getGoodNumber()==0)
+      {
+        HttpResponseEntity delete= feignApi.deleteGoodByid(good);
+        good.setKeyId(Math.toIntExact(orderId));
+        HttpResponseEntity addGoodhttp= feignApi.addGoods(good);//新good，更新了数量
+        Map<String,Object > goodmap=new HashMap<>();
+        goodmap.put("good_id",good.getId());
+        goodmap.put("order_id",or_orderId);
+        goodmap.put("buy_type",0);
+        HttpResponseEntity deletebuy= feignApi.deleteBuyByGoodid(goodmap);//删除对应的buy
+      }
+      else
+      {
+        HttpResponseEntity gethttp= feignApi.getGoodByid(good.getId());
+        Good orderGood= (Good) gethttp.getData();//原始的good
+        HttpResponseEntity updatehttp= feignApi.updateGoodByid(good);//新good，更新了数量
+        orderGood.setKeyId(Math.toIntExact(orderId));
+        orderGood.setGoodNumber(orderGood.getGoodNumber()-good.getGoodNumber());
+        HttpResponseEntity addGoodhttp= feignApi.addGoods(good);//新good，更新了数量
+        Map<String,Object > goodmap=new HashMap<>();
+        goodmap.put("good_id",good.getId());
+        goodmap.put("order_id",or_orderId);
+        goodmap.put("number",good.getId());
+        HttpResponseEntity updateBuy= feignApi.updateBuyByid(goodmap);//新good，更新了数量
+      }
+    }
+    return res;
+  }
+
+  @Override
+  public int checkReturn(Orders orders) {
+    Orders res= orderMapper.selectById(orders.getId());
+    if(res.getOrderStatus().equals("完成")){
+      return 1;
+    }
+    return 0;
+  }
+
+  @Override
+  public int addReturn(Map<String,Object > map) {
+    String jsonString1 = JSON.toJSONString(map);  // 将对象转换成json格式数据
+    JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
+    Orders order = JSON.parseObject(jsonObject.getString("Orders"), Orders.class); // 这样就可以了
+
+    List<Good> goods=JSON.parseArray(jsonObject.getString("Goods"), Good.class);
+    Date date = DateUtil.getCreateTime();
+    order.setOrderDate(date);
+
+    int res = orderMapper.insert(order);//添加order;
+    Long orderId= order.getId();
+    System.out.println(goods);
+    for(Good good:goods){
+      good.setKeyId(Math.toIntExact(orderId));
+      HttpResponseEntity ss= feignApi.addGoods(good);
+      System.out.println(ss);
+    }
+    return res;
   }
 
 

@@ -1,6 +1,7 @@
 package com.example.customerservicecentre.feign;
 
 import com.example.customerservicecentre.beans.HttpResponseEntity;
+import com.example.customerservicecentre.entity.Buy;
 import com.example.customerservicecentre.entity.Good;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,18 @@ public interface FeignApi {
   @RequestMapping(value = "/distribute/good/create")
   HttpResponseEntity addGoods(Good good);
 
+  @RequestMapping(value = "/distribute/good/create")
+  HttpResponseEntity updateGoodByid(Good good);
 
   @RequestMapping(value = "/distribute/good/create")
-  HttpResponseEntity ss(Good good);
+  HttpResponseEntity deleteGoodByid(Good good);
+
+  @RequestMapping(value = "/distribute/good/create")
+  HttpResponseEntity getGoodByid(Long id);
+
+  @RequestMapping(value = "/distribute/good/create")
+  HttpResponseEntity deleteBuyByGoodid(Map<String,Object > map);
+
+  @RequestMapping(value = "/distribute/good/create")
+  HttpResponseEntity updateBuyByid(Map<String,Object > map);
 }

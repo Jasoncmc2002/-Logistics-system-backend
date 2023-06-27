@@ -78,7 +78,7 @@ public class TaskAction {
         return httpResponseEntity;
     }
 
-    @RequestMapping(value = "/changeTaskOrderType",method = RequestMethod.GET, headers = "Accept"
+    @RequestMapping(value = "/changeTaskOrderType",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity changeTaskOrderType(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();

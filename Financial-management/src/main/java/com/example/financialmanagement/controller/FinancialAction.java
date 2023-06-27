@@ -52,8 +52,4 @@ public class FinancialAction {
         return httpResponseEntity;
     }
 
-
-
-
-
 }
