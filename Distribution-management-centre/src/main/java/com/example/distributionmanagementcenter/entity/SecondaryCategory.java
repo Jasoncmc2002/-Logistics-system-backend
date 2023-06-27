@@ -8,25 +8,26 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author Jason_cai
  * @since 2023-06-19
  */
-@TableName("class_category")
+//二级商品分类
+@TableName("secondary_category")
 @Data
-public class Category implements Serializable {
+public class SecondaryCategory implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    @TableField(value="f_name")
-    private String fName;
-    @TableField(value="s_name")
+    @TableField(value="sname")
     private String sName;
-
-
+    @TableField(value="f_id")
+    private String fId;
+    private String description;
 }

@@ -1,9 +1,9 @@
 package com.example.distributionmanagementcenter.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.distributionmanagementcenter.entity.Category;
-import com.example.distributionmanagementcenter.mapper.CategoryMapper;
-import com.example.distributionmanagementcenter.service.CategoryService;
+import com.example.distributionmanagementcenter.entity.FirstCategory;
+import com.example.distributionmanagementcenter.mapper.FirstCategoryMapper;
+import com.example.distributionmanagementcenter.service.FirstCategoryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements CategoryService {
+public class FirstCategoryServiceImpl extends ServiceImpl<FirstCategoryMapper, FirstCategory> implements FirstCategoryService {
 
 }

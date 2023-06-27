@@ -16,5 +16,5 @@ import java.util.Map;
  * @since 2023-06-20
  */
 public interface BuyService extends IService<Buy> {
-
+   PageInfo  getListByDateSupply(Map<String, Object> map) throws ParseException;
 }
