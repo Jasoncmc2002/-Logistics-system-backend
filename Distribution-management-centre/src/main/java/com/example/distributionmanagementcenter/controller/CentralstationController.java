@@ -36,7 +36,7 @@ public class CentralstationController {
     private BuyService buyService;
 
 
-    @GetMapping(value = "/{id}")
+    @PostMapping(value = "/{id}")
     public HttpResponseEntity<CentralStation> getById(@PathVariable("id") String id) {
         HttpResponseEntity<CentralStation> httpResponseEntity = new HttpResponseEntity<CentralStation>();
         try {
@@ -134,7 +134,7 @@ public class CentralstationController {
         return httpResponseEntity;
     }
     //缺货检查
-    @RequestMapping(value = "/check/{id}",method = RequestMethod.GET, headers = "Accept"
+    @RequestMapping(value = "/check/{id}",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
     public HttpResponseEntity checkVacancyById(@PathVariable("id")int id) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
@@ -160,7 +160,7 @@ public class CentralstationController {
 
     }
     //缺货检查（全部）
-    @RequestMapping(value = "/checkAll",method = RequestMethod.GET, headers = "Accept"
+    @RequestMapping(value = "/checkAll",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
     public HttpResponseEntity checkAllVacancy(@RequestBody Map<String, Object> map) {
 

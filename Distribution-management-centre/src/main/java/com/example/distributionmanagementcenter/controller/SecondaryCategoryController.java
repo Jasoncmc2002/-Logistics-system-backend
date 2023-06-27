@@ -31,7 +31,7 @@ public class SecondaryCategoryController {
     @Autowired
     private SecondaryCategoryService secondaryCategoryService;
 
-    @GetMapping(value = "/{id}")
+    @PostMapping(value = "/{id}")
     public HttpResponseEntity<SecondaryCategory> getById(@PathVariable("id") String id) {
         HttpResponseEntity<SecondaryCategory> httpResponseEntity = new HttpResponseEntity<SecondaryCategory>();
         try {

@@ -35,7 +35,7 @@ public class StationInOutController {
 
 
 
-    @GetMapping(value = "/{id}")
+    @PostMapping(value = "/{id}")
     public HttpResponseEntity<StationInOut> getById(@PathVariable("id") String id) {
         HttpResponseEntity<StationInOut> httpResponseEntity = new HttpResponseEntity<StationInOut>();
         try {

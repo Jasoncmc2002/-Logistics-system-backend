@@ -33,7 +33,7 @@ public class GoodController {
     private GoodService goodService;
 
 
-    @GetMapping(value = "/{id}")
+    @PostMapping(value = "/{id}")
     public HttpResponseEntity<Good> getById(@PathVariable("id") String id) {
         HttpResponseEntity<Good> httpResponseEntity = new HttpResponseEntity<Good>();
         try {

@@ -29,7 +29,7 @@ public class FirstCategoryController {
 
 
 
-    @GetMapping(value = "/{id}")
+    @PostMapping(value = "/{id}")
     public HttpResponseEntity<FirstCategory> getById(@PathVariable("id") String id) {
         HttpResponseEntity<FirstCategory> httpResponseEntity = new HttpResponseEntity<FirstCategory>();
         try {
