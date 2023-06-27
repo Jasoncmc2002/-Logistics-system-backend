@@ -1,22 +1,23 @@
-package com.example.distributionmanagementcenter.entity;
+package com.example.warehousemanagementcentre.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
-
-import java.io.Serializable;
 
 /**
  * <p>
  * 商品
  * </p>
  *
- * @author jason_cai
- * @since 2023-06-19
+ * @author hzn
+ * @since 2023-06-20
  */
 @Data
+@TableName("good")
 public class Good implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,10 +31,6 @@ public class Good implements Serializable {
     /**
      * 用户名
      */
-    private Integer classId;
-    private Integer keyId;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private Date goodDate;
     private String goodClass;
 
     /**
@@ -49,12 +46,12 @@ public class Good implements Serializable {
     /**
      * 用户名
      */
-    private Long goodNumber;
+    private String goodUnit;
+
     /**
      * 用户名
      */
-    private String goodUnit;
-
+    private Long goodNumber;
     /**
      * 用户名
      */
@@ -104,11 +101,9 @@ public class Good implements Serializable {
      * 用户名
      */
     private String remark;
+    private Integer classId;
+    private Integer keyId;
 
-    /**
-     * 用户名
-     */
-
-
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date goodDate;
 }

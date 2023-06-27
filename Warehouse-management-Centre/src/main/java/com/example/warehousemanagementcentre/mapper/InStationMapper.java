@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.example.warehousemanagementcentre.entity.InStation;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * <p>
  * 库房出库 Mapper 接口
@@ -15,4 +17,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface InStationMapper extends BaseMapper<InStation> {
 
+    List<InStation> selectInStationByGoodName(String name);
 }

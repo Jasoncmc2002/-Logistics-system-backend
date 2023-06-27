@@ -30,10 +30,8 @@ public class SecondaryCategoryController {
     private final Logger logger = LoggerFactory.getLogger(FirstCategoryController.class);
     @Autowired
     private SecondaryCategoryService secondaryCategoryService;
-    @Autowired
-    private FirstCategoryService firstCategoryService;
 
-    @GetMapping(value = "/{id}")
+    @PostMapping(value = "/{id}")
     public HttpResponseEntity<SecondaryCategory> getById(@PathVariable("id") String id) {
         HttpResponseEntity<SecondaryCategory> httpResponseEntity = new HttpResponseEntity<SecondaryCategory>();
         try {

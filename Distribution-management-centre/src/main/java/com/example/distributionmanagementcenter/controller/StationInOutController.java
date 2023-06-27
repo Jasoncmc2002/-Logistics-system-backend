@@ -6,6 +6,7 @@ import com.example.distributionmanagementcenter.entity.Good;
 import com.example.distributionmanagementcenter.entity.HttpResponseEntity;
 import com.example.distributionmanagementcenter.entity.StationInOut;
 import com.example.distributionmanagementcenter.service.StationInOutService;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -32,7 +35,7 @@ public class StationInOutController {
 
 
 
-    @GetMapping(value = "/{id}")
+    @PostMapping(value = "/{id}")
     public HttpResponseEntity<StationInOut> getById(@PathVariable("id") String id) {
         HttpResponseEntity<StationInOut> httpResponseEntity = new HttpResponseEntity<StationInOut>();
         try {
@@ -124,6 +127,23 @@ public class StationInOutController {
 
         } catch (Exception e) {
             logger.info("update 更新出入站记录>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+    @PostMapping(value = "/getListByConditions")
+    public HttpResponseEntity getListByConditions(@RequestBody Map<String, Object> map) {
+
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            PageInfo pageInfo = stationInOutService.getListByConditions(map);
+             httpResponseEntity.setData(pageInfo);
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("根据库房类型，商品名称，日期，出库类型查询出入库记录>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }

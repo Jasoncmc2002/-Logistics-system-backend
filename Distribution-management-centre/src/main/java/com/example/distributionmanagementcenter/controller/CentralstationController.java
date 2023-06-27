@@ -36,7 +36,7 @@ public class CentralstationController {
     private BuyService buyService;
 
 
-    @GetMapping(value = "/{id}")
+    @PostMapping(value = "/{id}")
     public HttpResponseEntity<CentralStation> getById(@PathVariable("id") String id) {
         HttpResponseEntity<CentralStation> httpResponseEntity = new HttpResponseEntity<CentralStation>();
         try {
@@ -121,6 +121,7 @@ public class CentralstationController {
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else
             {
+
                 httpResponseEntity.setCode(Constans.EXIST_CODE);
                 httpResponseEntity.setMessage(Constans.ADD_FAIL);
             }
@@ -133,7 +134,7 @@ public class CentralstationController {
         return httpResponseEntity;
     }
     //缺货检查
-    @RequestMapping(value = "/check/{id}",method = RequestMethod.GET, headers = "Accept"
+    @RequestMapping(value = "/check/{id}",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
     public HttpResponseEntity checkVacancyById(@PathVariable("id")int id) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
@@ -141,6 +142,7 @@ public class CentralstationController {
             CentralStation centralStation=centralstationService.getById(id);
             HashMap<String,Object> responseContent=new HashMap<String,Object>();
             if(centralStation.getWaitAllo()<=centralStation.getWarn()){
+
                 responseContent.put("LackNum",centralStation.getWarn()-centralStation.getWaitAllo());
             }
             else{
@@ -158,7 +160,7 @@ public class CentralstationController {
 
     }
     //缺货检查（全部）
-    @RequestMapping(value = "/checkAll",method = RequestMethod.GET, headers = "Accept"
+    @RequestMapping(value = "/checkAll",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
     public HttpResponseEntity checkAllVacancy(@RequestBody Map<String, Object> map) {
 
@@ -197,11 +199,14 @@ public class CentralstationController {
                 param.setType(1);
                 buyService.save(param);
                 httpResponseEntity.setData("Success");
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else{
                 httpResponseEntity.setData("Invalid input number");
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
             }
-            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
         }catch(Exception e){
             logger.info("addBuy 新增进货单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
@@ -221,11 +226,14 @@ public class CentralstationController {
                 param.setType(2);
                 buyService.save(param);
                 httpResponseEntity.setData("Success");
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else{
                 httpResponseEntity.setData("Invalid input number");
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
             }
-            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
         }catch(Exception e){
             logger.info("registerBuy 进货登记>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);

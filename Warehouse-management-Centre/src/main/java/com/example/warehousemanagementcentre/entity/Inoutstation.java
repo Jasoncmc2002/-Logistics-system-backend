@@ -1,4 +1,4 @@
-package com.example.distributionmanagementcenter.entity;
+package com.example.warehousemanagementcentre.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -11,15 +11,14 @@ import java.util.Date;
 
 /**
  * <p>
- * 库房出库
+ * 库房出入库
  * </p>
  *
- * @author Jason_Cai
- * @since 2023-06-20
+ * @author hzn
+ * @since 2023-06-26
  */
-@TableName("in_station")
 @Data
-public class StationInOut implements Serializable {
+public class Inoutstation implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -54,7 +53,6 @@ public class StationInOut implements Serializable {
      */
     private Long goodId;
 
-
     /**
      * 用户名
      */
@@ -78,7 +76,7 @@ public class StationInOut implements Serializable {
     /**
      * 用户名
      */
-    private Integer number;
+    private Long number;
 
     /**
      * 用户名
@@ -90,7 +88,10 @@ public class StationInOut implements Serializable {
      * 用户名
      */
     private String remark;
-    private Integer type;
 
+    /**
+     * 用户名
+     */
+    private Long type;
 
 }

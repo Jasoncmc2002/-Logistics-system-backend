@@ -1,25 +1,22 @@
-package com.example.distributionmanagementcenter.entity;
+package com.example.warehousemanagementcentre.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * <p>
- * 库房出库
+ * 任务单
  * </p>
  *
- * @author Jason_Cai
- * @since 2023-06-20
+ * @author yangfuchao
+ * @since 2023-06-25
  */
-@TableName("in_station")
 @Data
-public class StationInOut implements Serializable {
+public class Task implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,65 +29,64 @@ public class StationInOut implements Serializable {
     /**
      * 用户名
      */
-    private Integer stationClass;
+    private Long orderId;
 
     /**
      * 用户名
      */
-    private Long alloId;
+    private Long customerId;
 
     /**
      * 用户名
      */
-    private Long stationId;
+    private String customerName;
 
     /**
      * 用户名
      */
-    private Long taskId;
+    private Date taskDate;
 
     /**
      * 用户名
      */
-    private Long goodId;
-
-
-    /**
-     * 用户名
-     */
-    private Double goodPrice;
+    private Date deadline;
 
     /**
      * 用户名
      */
-    private String goodName;
+    private String taskType;
 
     /**
      * 用户名
      */
-    private String goodUnit;
+    private String taskStatus;
 
     /**
      * 用户名
      */
-    private String goodFactory;
+    private String address;
 
     /**
      * 用户名
      */
-    private Integer number;
+    private String postman;
 
     /**
      * 用户名
      */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date date;
+    private String substation;
 
     /**
      * 用户名
      */
-    private String remark;
-    private Integer type;
+    private Integer printNumber;
 
-
+    /**
+     * 用户名
+     */
+    private String creater;
+    /**
+     * 用户名
+     */
+    private Date end_date;
 }

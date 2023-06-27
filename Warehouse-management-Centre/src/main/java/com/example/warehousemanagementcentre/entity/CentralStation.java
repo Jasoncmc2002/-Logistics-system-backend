@@ -1,25 +1,24 @@
-package com.example.distributionmanagementcenter.entity;
+package com.example.warehousemanagementcentre.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * <p>
- * 库房出库
+ * 中心库房存量
  * </p>
  *
- * @author Jason_Cai
- * @since 2023-06-20
+ * @author hzn
+ * @since 2023-06-27
  */
-@TableName("in_station")
 @Data
-public class StationInOut implements Serializable {
+@TableName("stock_central_station")
+public class CentralStation implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,33 +31,7 @@ public class StationInOut implements Serializable {
     /**
      * 用户名
      */
-    private Integer stationClass;
-
-    /**
-     * 用户名
-     */
-    private Long alloId;
-
-    /**
-     * 用户名
-     */
-    private Long stationId;
-
-    /**
-     * 用户名
-     */
-    private Long taskId;
-
-    /**
-     * 用户名
-     */
-    private Long goodId;
-
-
-    /**
-     * 用户名
-     */
-    private Double goodPrice;
+    private String goodClassId;
 
     /**
      * 用户名
@@ -68,29 +41,40 @@ public class StationInOut implements Serializable {
     /**
      * 用户名
      */
+    private Integer stock;
+
+    /**
+     * 用户名
+     */
+    private Integer withdrawal;
+
+    /**
+     * 用户名
+     */
+    private Integer waitAllo;
+
+    /**
+     * 用户名
+     */
+    private Integer doneAllo;
+
+    /**
+     * 用户名
+     */
+    private Integer warn;
+
+    /**
+     * 用户名
+     */
+    private Integer max;
+    private Object goodPrice;
+    private Object goodSale;
+    private Object goodCost;
     private String goodUnit;
-
-    /**
-     * 用户名
-     */
-    private String goodFactory;
-
-    /**
-     * 用户名
-     */
-    private Integer number;
-
-    /**
-     * 用户名
-     */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date date;
-
-    /**
-     * 用户名
-     */
+    private Byte supplyId;
+    private String goodSubclassId;
+    private Date sellDate;
+    private Byte isReturn;
+    private Byte isChange;
     private String remark;
-    private Integer type;
-
-
 }
