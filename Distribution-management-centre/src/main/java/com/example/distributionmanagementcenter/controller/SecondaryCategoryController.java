@@ -1,20 +1,19 @@
 package com.example.distributionmanagementcenter.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.distributionmanagementcenter.entity.Category;
 import com.example.distributionmanagementcenter.entity.Constans;
-import com.example.distributionmanagementcenter.entity.Good;
+import com.example.distributionmanagementcenter.entity.FirstCategory;
 import com.example.distributionmanagementcenter.entity.HttpResponseEntity;
-import com.example.distributionmanagementcenter.service.CategoryService;
+import com.example.distributionmanagementcenter.entity.SecondaryCategory;
+import com.example.distributionmanagementcenter.service.FirstCategoryService;
+import com.example.distributionmanagementcenter.service.SecondaryCategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+
 
 /**
  * <p>
@@ -25,27 +24,28 @@ import java.util.List;
  * @since 2023-06-19
  */
 @RestController
-@RequestMapping("/distribute/category")
-public class CategoryController {
+@RequestMapping("/distribute/secondarycategory")
+public class SecondaryCategoryController {
 
-    private final Logger logger = LoggerFactory.getLogger(CategoryController.class);
+    private final Logger logger = LoggerFactory.getLogger(FirstCategoryController.class);
     @Autowired
-    private CategoryService categoryService;
-
-
+    private SecondaryCategoryService secondaryCategoryService;
+    @Autowired
+    private FirstCategoryService firstCategoryService;
 
     @GetMapping(value = "/{id}")
-    public HttpResponseEntity<Category> getById(@PathVariable("id") String id) {
-        HttpResponseEntity<Category> httpResponseEntity = new HttpResponseEntity<Category>();
+    public HttpResponseEntity<SecondaryCategory> getById(@PathVariable("id") String id) {
+        HttpResponseEntity<SecondaryCategory> httpResponseEntity = new HttpResponseEntity<SecondaryCategory>();
         try {
-            Category category=categoryService.getById(id);
-            if(category!=null)
+            SecondaryCategory secondaryCategory = secondaryCategoryService.getById(id);
+            if(secondaryCategory !=null)
             {
-                httpResponseEntity.setData(category);
+                httpResponseEntity.setData(secondaryCategory);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else
             {
+
                 httpResponseEntity.setCode(Constans.EXIST_CODE);
                 httpResponseEntity.setMessage(Constans.ADD_FAIL);
             }
@@ -57,26 +57,29 @@ public class CategoryController {
         }
         return httpResponseEntity;
     }
-//确定插入值唯一
+    //确定插入值唯一
     @PostMapping(value = "/create")
-    public HttpResponseEntity<Category> create(@RequestBody Category params) {
-        HttpResponseEntity<Category> httpResponseEntity = new HttpResponseEntity<Category>();
+    public HttpResponseEntity create(@RequestBody SecondaryCategory params) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
             int flag=0;
-            List<Category> categoryList = categoryService.list();
-            for(Category category:categoryList){
-                if(category.getFName().equals(params.getFName())&&category.getSName().equals(params.getSName())){
-                    flag=1;
-                    break;
+            List<SecondaryCategory> secondaryCategoryList = secondaryCategoryService.list();
+            for(SecondaryCategory secondaryCategory : secondaryCategoryList){
+                if(secondaryCategory.getSName().equals(params.getSName())){
+                    if(secondaryCategory.getFId()==params.getFId()){
+                        flag=1;
+                        break;
+                    }
                 }
             }
             if(flag==0){
-                categoryService.save(params);
+                secondaryCategoryService.save(params);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }
             else
             {
+                httpResponseEntity.setData("插入值重复！");
                 httpResponseEntity.setCode(Constans.EXIST_CODE);
                 httpResponseEntity.setMessage(Constans.ADD_FAIL);
             }
@@ -90,17 +93,18 @@ public class CategoryController {
     }
 
     @PostMapping(value = "/delete/{id}")
-    public HttpResponseEntity<Category> delete(@PathVariable("id") String id) {
+    public HttpResponseEntity delete(@PathVariable("id") String id) {
 
-        HttpResponseEntity<Category> httpResponseEntity = new HttpResponseEntity<Category>();
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            boolean flag=categoryService.removeById(id);
+            boolean flag= secondaryCategoryService.removeById(id);
             if(flag)
             {
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else
             {
+                httpResponseEntity.setData("删除失败");
                 httpResponseEntity.setCode(Constans.EXIST_CODE);
                 httpResponseEntity.setMessage(Constans.ADD_FAIL);
             }
@@ -115,11 +119,11 @@ public class CategoryController {
 
 
     @PostMapping(value = "/update")
-    public HttpResponseEntity<Category> update(@RequestBody Category params) {
+    public HttpResponseEntity update(@RequestBody SecondaryCategory params) {
 
-        HttpResponseEntity<Category> httpResponseEntity = new HttpResponseEntity<Category>();
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try{
-            boolean flag=categoryService.updateById(params);
+            boolean flag= secondaryCategoryService.updateById(params);
             if(flag)
             {
 
