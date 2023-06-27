@@ -21,7 +21,6 @@ public interface FeignApi {
   @RequestMapping(value = "/distribute/good/create")
   HttpResponseEntity addGoods(Good good);
 
-  x
   @RequestMapping(value = "/distribute/good/create")
   HttpResponseEntity updateGoodByid(Good good);
 
@@ -32,7 +31,7 @@ public interface FeignApi {
   HttpResponseEntity getGoodByid(Long id);
 
   @RequestMapping(value = "/distribute/good/create")
-  HttpResponseEntity deleteBuyByGoodid(Long id);
+  HttpResponseEntity deleteBuyByGoodid(Map<String,Object > map);
 
   @RequestMapping(value = "/distribute/good/create")
   HttpResponseEntity updateBuyByid(Map<String,Object > map);
