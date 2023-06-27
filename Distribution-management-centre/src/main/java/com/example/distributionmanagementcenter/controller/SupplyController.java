@@ -30,7 +30,6 @@ public class SupplyController {
     @Autowired
     private SupplyService supplyService;
 
-
     @PostMapping(value = "/{id}")
     public HttpResponseEntity<Supply> getById(@PathVariable("id") String id) {
         HttpResponseEntity<Supply> httpResponseEntity = new HttpResponseEntity<Supply>();

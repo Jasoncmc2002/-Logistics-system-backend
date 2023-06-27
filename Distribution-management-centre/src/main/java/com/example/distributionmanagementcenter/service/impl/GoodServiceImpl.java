@@ -27,7 +27,7 @@ import java.util.Map;
  * @since 2023-06-19
  */
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class GoodServiceImpl extends ServiceImpl<GoodMapper, Good> implements GoodService {
     @Autowired
     private GoodMapper goodMapper;

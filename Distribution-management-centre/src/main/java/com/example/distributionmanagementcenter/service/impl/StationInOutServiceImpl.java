@@ -30,7 +30,7 @@ import java.util.Map;
  * @since 2023-06-20
  */
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, StationInOut> implements StationInOutService {
     @Autowired
     private  StationInOutMapper stationInOutMapper;

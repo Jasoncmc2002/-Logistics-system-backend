@@ -31,7 +31,7 @@ import java.util.Map;
  * @since 2023-06-19
  */
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class StationServiceImpl extends ServiceImpl<StationMapper, Station> implements StationService {
 @Autowired
 private StationInOutMapper stationInOutMapper;

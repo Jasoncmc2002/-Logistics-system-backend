@@ -17,4 +17,5 @@ import java.util.Map;
  */
 public interface GoodService extends IService<Good> {
     PageInfo getListByOrderId(Map<String, Object> map) throws ParseException;
+
 }

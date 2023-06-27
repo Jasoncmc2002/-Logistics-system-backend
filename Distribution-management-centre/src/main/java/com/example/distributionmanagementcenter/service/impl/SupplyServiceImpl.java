@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since 2023-06-19
  */
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class SupplyServiceImpl extends ServiceImpl<SupplyMapper, Supply> implements SupplyService {
 
 }

@@ -25,7 +25,7 @@ import java.util.Map;
  * @since 2023-06-20
  */
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuyService {
       @Autowired
       private  BuyMapper buyMapper;

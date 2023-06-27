@@ -22,7 +22,7 @@ import java.util.Map;
  * @since 2023-06-19
  */
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper, CentralStation> implements CentralstationService {
    @Autowired
    private CentralStationMapper centralStationMapper;
