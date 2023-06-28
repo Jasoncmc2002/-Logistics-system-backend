@@ -17,4 +17,8 @@ import java.util.Map;
  */
 public interface BuyService extends IService<Buy> {
    PageInfo  getListByDateSupply(Map<String, Object> map) throws ParseException;
+   int deleteBuyByIds(Map<String, Object> map) throws ParseException;
+
+   int updateBuyByIds (Map<String, Object> map) throws ParseException;
+
 }

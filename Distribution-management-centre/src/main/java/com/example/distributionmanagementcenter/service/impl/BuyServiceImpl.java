@@ -45,4 +45,33 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
         PageInfo pageInfo = new PageInfo(records);
         return pageInfo;
     }
+
+    @Override
+    public int deleteBuyByIds(Map<String, Object> map) throws ParseException {
+//        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+//                Integer.valueOf(String.valueOf(map.get("pageSize"))));
+        Integer goodId=Integer.valueOf(String.valueOf(map.get("good_id")));
+        Integer orderId=Integer.valueOf(String.valueOf(map.get("order_id")));
+        Integer buyType=Integer.valueOf(String.valueOf(map.get("buy_type")));
+        QueryWrapper<Buy> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("good_id",goodId).eq("order_id",orderId).eq("buy_type",buyType);
+        return buyMapper.delete(queryWrapper);
+    }
+
+    @Override
+    public int updateBuyByIds(Map<String, Object> map) throws ParseException {
+        int flag=1;
+        Integer goodId=Integer.valueOf(String.valueOf(map.get("good_id")));
+        Integer orderId=Integer.valueOf(String.valueOf(map.get("order_id")));
+        Integer number=Integer.valueOf(String.valueOf(map.get("number")));
+        QueryWrapper<Buy> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("good_id",goodId)
+                .eq("order_id",orderId);
+        List<Buy> records = buyMapper.selectList(queryWrapper);
+        for (Buy buy:records){
+            buy.setNumber(number);
+           flag=flag* buyMapper.updateById(buy);
+        }
+        return flag;
+    }
 }

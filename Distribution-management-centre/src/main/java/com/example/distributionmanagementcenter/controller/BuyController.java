@@ -138,4 +138,37 @@ public class BuyController {
         }
         return httpResponseEntity;
     }
+    @PostMapping(value="/deleteBuyByGoodId")
+    public HttpResponseEntity deleteBuyByGoodId(@RequestBody Map<String, Object> map) {
+
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try{
+            httpResponseEntity.setData(buyService.deleteBuyByIds(map));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("根据货物与订单ID删掉购物单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+    @PostMapping(value="/updateBuyByGoodId")
+    public HttpResponseEntity updateBuyByGoodId(@RequestBody Map<String, Object> map) {
+
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try{
+            httpResponseEntity.setData(buyService.updateBuyByIds(map));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("根据货物与订单ID修改商品数量>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
 }
