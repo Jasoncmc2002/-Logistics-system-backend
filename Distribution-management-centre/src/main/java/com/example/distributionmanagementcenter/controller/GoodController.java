@@ -142,4 +142,21 @@ public class GoodController {
         }
         return httpResponseEntity;
     }
+    @PostMapping(value = "/getGoodByOrderId")
+    public HttpResponseEntity getGoodByOrderId(@RequestBody Integer id) {
+
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+                httpResponseEntity.setData(goodService.getGoodByOrderId(id));
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+
+        } catch (Exception e) {
+            logger.info("update 更新货物>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }

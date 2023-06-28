@@ -5,6 +5,7 @@ import com.example.distributionmanagementcenter.entity.Good;
 import com.github.pagehelper.PageInfo;
 
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,5 +18,5 @@ import java.util.Map;
  */
 public interface GoodService extends IService<Good> {
     PageInfo getListByOrderId(Map<String, Object> map) throws ParseException;
-
+    List<Good> getGoodByOrderId(Integer id);
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.distributionmanagementcenter.entity.Buy;
 import com.example.distributionmanagementcenter.entity.Good;
+import com.example.distributionmanagementcenter.mapper.BuyMapper;
 import com.example.distributionmanagementcenter.mapper.GoodMapper;
 import com.example.distributionmanagementcenter.service.GoodService;
 ;
@@ -31,6 +32,8 @@ import java.util.Map;
 public class GoodServiceImpl extends ServiceImpl<GoodMapper, Good> implements GoodService {
     @Autowired
     private GoodMapper goodMapper;
+    @Autowired
+    private BuyMapper buyMapper;
     @Override
     public PageInfo getListByOrderId(Map<String, Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
@@ -41,5 +44,13 @@ public class GoodServiceImpl extends ServiceImpl<GoodMapper, Good> implements Go
         List<Good> records= goodMapper.selectList(queryWrapper);
         PageInfo pageInfo = new PageInfo(records);
         return pageInfo;
+    }
+//功能同上
+    @Override
+    public List<Good> getGoodByOrderId(Integer id) {
+        QueryWrapper<Good> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("key_id",id);
+        List<Good> records= goodMapper.selectList(queryWrapper);
+        return records;
     }
 }
