@@ -39,6 +39,7 @@ public class GoodServiceImpl extends ServiceImpl<GoodMapper, Good> implements Go
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
                 Integer.valueOf(String.valueOf(map.get("pageSize"))));
         Integer keyId=Integer.valueOf(String.valueOf(map.get("keyId")));
+        System.out.println(map);
         QueryWrapper<Good> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("key_id",keyId);
         List<Good> records= goodMapper.selectList(queryWrapper);

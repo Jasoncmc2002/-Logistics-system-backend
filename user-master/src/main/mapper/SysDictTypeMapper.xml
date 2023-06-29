@@ -6,12 +6,12 @@
 
     <resultMap id="BaseResultMap" type="com.youlai.system.model.entity.SysDictType">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <resultStation property="name" column="name" jdbcType="VARCHAR"/>
-            <resultStation property="code" column="code" jdbcType="VARCHAR"/>
-            <resultStation property="status" column="status" jdbcType="TINYINT"/>
-            <resultStation property="remark" column="remark" jdbcType="VARCHAR"/>
-            <resultStation property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <resultStation property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="code" column="code" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
