@@ -5,7 +5,9 @@ import com.example.financialmanagement.entity.Good;
 import java.util.Map;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -26,10 +28,19 @@ public interface FeignApi {
   @RequestMapping(value = "/distribute/good/getByOrderId")
   HttpResponseEntity getGoodByOrderId(Integer id);
 
-  @RequestMapping(value = "/distribute/good/getByOrderId")
-  HttpResponseEntity getBuyBySupplyFin(Map<String,Object> map);
+
 
   @RequestMapping(value = "/distribute/good/getByOrderId")
   HttpResponseEntity getGoodById(Integer id);
+
+  //供货商结算
+  @RequestMapping(value = "/distribute/buy/getListByDateSupplyBuyType")
+  HttpResponseEntity getBuyBySupplyFin(Map<String,Object> map);
+
+  @RequestMapping(value = "/distribute/central-station/{id}",method = RequestMethod.POST)
+  HttpResponseEntity getStockByGoodId(@PathVariable("id")String id);
+
+  @RequestMapping(value = "/distribute/stationInOut/getListByConditions1")
+  HttpResponseEntity getStationByGoodIdDate(Map<String,Object> map);
 
 }

@@ -16,6 +16,13 @@ public class UUIDUtil {
         //去掉“-”符号
         return s.substring(0,8)+s.substring(9,13)+s.substring(14,18)+s.substring(19,23)+s.substring(24);
     }
+
+    public static String get6UUID(){
+        //获取UUID
+        String s = UUID.randomUUID().toString();
+        //去掉“-”符号
+        return s.substring(0,6);
+    }
     /**
      * 获得指定数目的UUID
      * @param number int 需要获得的UUID数量

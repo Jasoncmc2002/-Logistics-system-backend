@@ -8,20 +8,34 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.financialmanagement.beans.HttpResponseEntity;
+import com.example.financialmanagement.common.Constans;
 import com.example.financialmanagement.entity.pay.AliPay;
 import com.example.financialmanagement.entity.pay.AlipayConfig;
+import com.example.financialmanagement.entity.vo.ResultSupply;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import com.example.financialmanagement.service.impl.FinancialServiceImpl;
+import javax.annotation.Resource;
+
+import org.apache.catalina.connector.ResponseFacade;
+import org.mockito.Mockito;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
 // xjlugv6874@sandbox.com
 // 9428521.24 - 30 = 9428491.24 + 30 = 9428521.24
 @RestController
@@ -36,16 +50,17 @@ public class AliPayController {
 
     @Autowired
     private AlipayConfig aliPayConfig;
-
+    private final Logger logger = LoggerFactory.getLogger(FinancialAction.class);
     @Autowired
     private FinancialServiceImpl financialService;
 
-    @PostMapping("/pay") // &subject=xxx&traceNo=xxx&totalAmount=xxx
+    @RequestMapping(value = "/pay",headers = "Accept=application/json") // &subject=xxx&traceNo
+    // =xxx&totalAmount=xxx
     public void pay(AliPay aliPay, HttpServletResponse httpResponse) throws Exception {
         // 1. 创建Client，通用SDK提供的Client，负责调用支付宝的API
         AlipayClient alipayClient = new DefaultAlipayClient(GATEWAY_URL, aliPayConfig.getAppId(),
-                aliPayConfig.getAppPrivateKey(), FORMAT, CHARSET, aliPayConfig.getAlipayPublicKey(), SIGN_TYPE);
-
+            aliPayConfig.getAppPrivateKey(), FORMAT, CHARSET, aliPayConfig.getAlipayPublicKey(), SIGN_TYPE);
+        System.out.println(aliPay);
         // 2. 创建 Request并设置Request参数
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();  // 发送请求的 Request类
         request.setNotifyUrl(aliPayConfig.getNotifyUrl());
@@ -65,10 +80,12 @@ public class AliPayController {
             e.printStackTrace();
         }
         httpResponse.setContentType("text/html;charset=" + CHARSET);
+        System.out.println(form);
         httpResponse.getWriter().write(form);// 直接将完整的表单html输出到页面
         httpResponse.getWriter().flush();
         httpResponse.getWriter().close();
     }
+
 
     @PostMapping("/notify")  // 注意这里必须是POST接口
     public String payNotify(HttpServletRequest request) throws Exception {

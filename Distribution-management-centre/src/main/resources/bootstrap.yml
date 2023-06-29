@@ -7,6 +7,7 @@ spring:
     url: jdbc:mysql://62.234.23.101:3306/logistics?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
     username: root
     password: Neu123
+    type: com.alibaba.druid.pool.DruidDataSource
     hikari:
         connection-timeout: 10000
         validation-timeout: 3000
@@ -17,19 +18,17 @@ spring:
         minimum-idle: 5
         read-only: false
         auto-commit: false #自动提交关闭，事务处理
-
-  #    type: com.alibaba.druid.pool.DruidDataSource
-#    druid:
-#      initial-size: 5
-#      min-idle: 5
-#      max-active: 20
-#      max-wait: 6000
-#      time-between-eviction-runs-millis: 60000
-#      min-evictable-idle-time-millis: 30000
-#      test-on-borrow: false
-#      test-on-return: false
-#      pool-prepared-statements: true
-#      max-pool-prepared-statement-per-connection-size: 20
+    druid:
+      initial-size: 5
+      min-idle: 5
+      max-active: 20
+      max-wait: 6000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 30000
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
   application:
     name: distribution-application  # ????????????? name+file-extension ??nacos?project.yml
   cloud:

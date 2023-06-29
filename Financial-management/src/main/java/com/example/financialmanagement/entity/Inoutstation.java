@@ -2,21 +2,20 @@ package com.example.financialmanagement.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.util.Date;
 import lombok.Data;
 
 /**
  * <p>
- * 中心库房存量
+ * 库房出入库
  * </p>
  *
- * @author yangfuchao
- * @since 2023-06-26
+ * @author 杨富超
+ * @since 2023-06-29
  */
 @Data
-@TableName("stock_central_station")
-public class CentralStation implements Serializable {
+public class Inoutstation implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,7 +28,32 @@ public class CentralStation implements Serializable {
     /**
      * 用户名
      */
-    private String goodClass;
+    private Integer stationClass;
+
+    /**
+     * 用户名
+     */
+    private Long alloId;
+
+    /**
+     * 用户名
+     */
+    private Long stationId;
+
+    /**
+     * 用户名
+     */
+    private Long taskId;
+
+    /**
+     * 用户名
+     */
+    private Long goodId;
+
+    /**
+     * 用户名
+     */
+    private Object goodPrice;
 
     /**
      * 用户名
@@ -39,37 +63,31 @@ public class CentralStation implements Serializable {
     /**
      * 用户名
      */
-    private Integer stock;
-
-    /**
-     * 用户名
-     */
-    private Integer withdrawal;
-
-    /**
-     * 用户名
-     */
-    private Integer waitAllo;
-
-    /**
-     * 用户名
-     */
-    private Integer doneAllo;
-
-    /**
-     * 用户名
-     */
-    private Integer warn;
-
-    /**
-     * 用户名
-     */
-    private Integer max;
-    private Double goodPrice;
-    private Double goodSale;
-    private Double goodCost;
     private String goodUnit;
-    private String supplyName;
 
+    /**
+     * 用户名
+     */
+    private String goodFactory;
+
+    /**
+     * 用户名
+     */
+    private Long number;
+
+    /**
+     * 用户名
+     */
+    private Date date;
+
+    /**
+     * 用户名
+     */
+    private String remark;
+
+    /**
+     * 用户名
+     */
+    private String type;
 
 }

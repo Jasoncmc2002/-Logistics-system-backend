@@ -104,8 +104,8 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
   @Override
   public PageInfo selectOrder(Map<String, Object> map) {
     System.out.println(map);
-    PageHelper.startPage(Integer.valueOf((String)map.get("pageNum")),
-        Integer.valueOf((String)map.get("pageSize")));
+    PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+        Integer.valueOf(String.valueOf(map.get("pageSize"))));
 //    List<Customer> res= customerMapper.getAllCustomer();
 //    QueryWrapper<Order> wrapper = new QueryWrapper<>();
 //    wrapper.eq("customer_id",map.get("customerId"));

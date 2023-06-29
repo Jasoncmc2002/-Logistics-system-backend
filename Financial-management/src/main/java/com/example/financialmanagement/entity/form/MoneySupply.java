@@ -9,10 +9,10 @@ import lombok.Data;
  * @date 2023-06-27 20:01
  */
 public class MoneySupply {
-  private Integer id;
-  private String goodClass;
+  private String id;
   private String goodName;
   private Double goodPrice;
+  private Double goodCost;
   private Integer goodSupplyNumber;
   private Integer goodReturnNumber;
   private Integer goodSettleNumber;//结算数量

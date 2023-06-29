@@ -3,6 +3,7 @@ package com.example.financialmanagement.controller;
 import com.example.financialmanagement.beans.HttpResponseEntity;
 import com.example.financialmanagement.common.Constans;
 import com.example.financialmanagement.entity.vo.ResultStation;
+import com.example.financialmanagement.entity.vo.ResultSupply;
 import com.example.financialmanagement.service.impl.FinancialServiceImpl;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ public class FinancialAction {
     public HttpResponseEntity SettlementSupply(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            ResultStation res=financialService.settlementSupply(map);
+            ResultSupply res=financialService.settlementSupply(map);
             if(res!=null)
             {
                 httpResponseEntity.setData(res);
