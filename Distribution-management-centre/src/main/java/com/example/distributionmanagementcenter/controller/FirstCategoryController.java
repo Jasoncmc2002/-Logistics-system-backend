@@ -145,8 +145,6 @@ public class FirstCategoryController {
                 httpResponseEntity.setData(pageInfo);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-
-
         } catch (Exception e) {
             logger.info("一级商品种类列表>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);

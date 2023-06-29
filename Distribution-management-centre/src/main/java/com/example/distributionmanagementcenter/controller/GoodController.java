@@ -176,4 +176,21 @@ public class GoodController {
         }
         return httpResponseEntity;
     }
+    @PostMapping(value = "/getGoodByGoodId1")
+    public HttpResponseEntity getGoodByGoodId1(@RequestBody Map<String, Object> map) {
+
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            httpResponseEntity.setData(goodService.getListByGoodId1(map));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+
+        } catch (Exception e) {
+            logger.info("后端专用：根据货物ID查找商品记录>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }
