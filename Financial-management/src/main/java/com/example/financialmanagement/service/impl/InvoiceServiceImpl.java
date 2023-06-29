@@ -17,5 +17,10 @@ import com.example.financialmanagement.entity.*;
 @Service
 public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> implements
     InvoiceService {
-
+   private InvoiceMapper invoiceMapper;
+  @Override
+  public int addInvoice(Invoice invoice) {
+     int res = invoiceMapper.insert(invoice);
+    return res;
+  }
 }

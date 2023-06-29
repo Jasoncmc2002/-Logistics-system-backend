@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author yangfuchao
  * @since 2023-06-20
  */
-@Controller
+@RestController
 @RequestMapping("/financial")
 public class InvoiceAction {
 

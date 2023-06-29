@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -21,18 +22,18 @@ public interface FeignApi {
   @RequestMapping(value = "/distribute/good/create")
   HttpResponseEntity addGoods(Good good);
 
-  @RequestMapping(value = "/distribute/good/create")
+  @RequestMapping(value = "/distribute/good/update")
   HttpResponseEntity updateGoodByid(Good good);
 
-  @RequestMapping(value = "/distribute/good/create")
-  HttpResponseEntity deleteGoodByid(Good good);
+  @RequestMapping(value = "/distribute/good/delete/{id}")
+  HttpResponseEntity deleteGoodByid(@PathVariable("id") String id);
 
-  @RequestMapping(value = "/distribute/good/create")
-  HttpResponseEntity getGoodByid(Long id);
+  @RequestMapping(value = "/distribute/good/{id}")
+  HttpResponseEntity getGoodByid(@PathVariable("id")Long id);
 
-  @RequestMapping(value = "/distribute/good/create")
+  @RequestMapping(value = "/distribute/good/deleteBuyByGoodId")
   HttpResponseEntity deleteBuyByGoodid(Map<String,Object > map);
 
-  @RequestMapping(value = "/distribute/good/create")
+  @RequestMapping(value = "/distribute/good/updateBuyByGoodId")
   HttpResponseEntity updateBuyByid(Map<String,Object > map);
 }

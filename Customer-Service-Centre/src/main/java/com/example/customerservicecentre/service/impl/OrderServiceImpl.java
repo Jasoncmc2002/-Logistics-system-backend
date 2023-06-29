@@ -279,7 +279,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     for(Good good:goods){
       if(good.getGoodNumber()==0)
       {
-        HttpResponseEntity delete= feignApi.deleteGoodByid(good);
+        HttpResponseEntity delete= feignApi.deleteGoodByid(String.valueOf(good.getId()));
         good.setKeyId(Math.toIntExact(orderId));
         HttpResponseEntity addGoodhttp= feignApi.addGoods(good);//新good，更新了数量
         Map<String,Object > goodmap=new HashMap<>();
@@ -354,12 +354,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     if (!map.get("substation").equals("")) {
       orderWrapper.eq("substation", map.get("substation"));
     }
-    orderWrapper.or().eq("order_type", map.get("新订"))
-        .or().eq("order_type", map.get("退货"));
+    orderWrapper.or().eq("order_type", "新订")
+        .or().eq("order_type", "退货");
+    orderWrapper.eq("order_status","完成");
 
-    if (!map.get("order_status").equals("")) {
-      orderWrapper.eq("order_status","完成");
-    }
 
     /* 根据订单表查询结果获取对应的order_id列表*/
     Date finalStartTime = startTime;

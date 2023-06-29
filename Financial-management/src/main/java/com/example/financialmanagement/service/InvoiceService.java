@@ -12,5 +12,5 @@ import com.example.financialmanagement.entity.Invoice;
  * @since 2023-06-20
  */
 public interface InvoiceService extends IService<Invoice> {
-
+    int addInvoice(Invoice invoice);
 }

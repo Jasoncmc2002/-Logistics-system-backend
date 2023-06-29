@@ -9,6 +9,7 @@ import lombok.Data;
  * @date 2023-06-27 20:01
  */
 public class Money {
+  private Integer id;
   private String goodClass;
   private String goodName;
   private Integer goodGetNumber;

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author YANG FUCHAO
@@ -16,13 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient(name = "api-gateway")
 public interface FeignApi {
 
+//  @RequestMapping(value = "/customer/getOrderByStationFin")
+//  HttpResponseEntity getOrderByStationFin(@RequestParam Map<String,Object> map);
 
   @RequestMapping(value = "/customer/getOrderByStationFin")
-  HttpResponseEntity getOrderByStationFin(Map<String,Object> map);
+  HttpResponseEntity getOrderByStationFin( Map<String,Object> map);
 
-
-  //To do
-  @RequestMapping(value = "/distribute/good/create")
+  @RequestMapping(value = "/distribute/good/getByOrderId")
   HttpResponseEntity getGoodByOrderId(Integer id);
+
 
 }
