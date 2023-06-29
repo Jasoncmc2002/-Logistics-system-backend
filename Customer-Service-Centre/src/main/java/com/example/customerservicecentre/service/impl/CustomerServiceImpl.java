@@ -42,6 +42,7 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 
   @Override
   public int updatebyId(Customer customer) {
+    System.out.println("testcustoeer");
     int res=customerMapper.updateById(customer);
     return res;
   }
@@ -53,12 +54,15 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 
   @Override
   public PageInfo selectAll(Map<String,Object> map) {
-    PageHelper.startPage(Integer.valueOf((String)map.get("pageNum")),
-        Integer.valueOf((String)map.get("pageSize")));
+    PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+        Integer.valueOf(String.valueOf(map.get("pageSize"))));
+    System.out.println("mapsss"+map);
       List<Customer> res= customerMapper.selectList(null);
+    System.out.println(res);
     PageInfo pageInfo = new PageInfo(res);
     return pageInfo;
   }
+
 
   @Override
   public int deletebyId(Long id) {
