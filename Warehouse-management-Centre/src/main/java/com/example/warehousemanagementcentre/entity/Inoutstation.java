@@ -92,6 +92,6 @@ public class Inoutstation implements Serializable {
     /**
      * 用户名
      */
-    private Long type;
+    private String type;
 
 }

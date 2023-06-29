@@ -1,9 +1,7 @@
 package com.example.warehousemanagementcentre.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.warehousemanagementcentre.beans.HttpResponseEntity;
 import com.example.warehousemanagementcentre.entity.Station;
-import com.example.warehousemanagementcentre.feign.DistributionFeign;
 import com.example.warehousemanagementcentre.mapper.StationMapper;
 import com.example.warehousemanagementcentre.service.StationService;
 import com.github.pagehelper.PageHelper;
@@ -28,8 +26,7 @@ public class StationServiceImpl extends ServiceImpl<StationMapper, Station> impl
     @Autowired
     private StationMapper stationMapper;
 
-    @Autowired
-    private DistributionFeign distributionFeign;
+
 
 
     @Override

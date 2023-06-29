@@ -155,4 +155,15 @@ public class Constans {
     public static final String GROUPNAME_CODE = "60001";
     public static final String GROUPNAME_MESSAGE = "群组名已存在";
 
+    /**
+     * Created by hzn
+     * Descriptions:退货状态码
+     */
+    public static final String RETURN_FAILED_CODE = "555";
+    public static final String RETURN_FAILED_MESSAGE= "退货失败";
+
+    public static final String RETURN_FOBIDDEN_MESSAGE = "该商品不允许退货";
+
+    public static final String Good_NOT_EXIST = "商品不存在";
+
 }

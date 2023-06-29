@@ -54,9 +54,11 @@ public class CentralStationController {
     public HttpResponseEntity inStation(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
+            System.out.println(map);
             int res=centralstationService.toInStation(map);
             if(res==1)
             {
+                httpResponseEntity.setData(res);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else
@@ -114,12 +116,103 @@ public class CentralStationController {
             }
 
         } catch (Exception e) {
-            logger.info("分站客房入库>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("分站库房入库>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
         return httpResponseEntity;
     }
+
+    @RequestMapping(value = "/takeGoods",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity takeGoods(@RequestBody Map<String,Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=centralstationService.takeGoods(map);
+            if(res==1)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else if(res == 3){
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.Good_NOT_EXIST);
+            }
+            else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("分站库房入库>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+    @RequestMapping(value = "/returnGoodsToSub",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity returnGoodsToSub(@RequestBody Map<String,Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            System.out.println(map);
+            int res=centralstationService.returnGoodsToSub(map);
+            if(res==1)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else if(res==2){
+                httpResponseEntity.setCode(Constans.RETURN_FAILED_CODE);
+                httpResponseEntity.setMessage(Constans.RETURN_FOBIDDEN_MESSAGE);
+            }else if(res == 3){
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.Good_NOT_EXIST);
+            }
+            else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.RETURN_FAILED_MESSAGE);
+            }
+        } catch (Exception e) {
+            logger.info("退货，分站库房入库>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+    @RequestMapping(value = "/returnGoodsToCenter",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity returnGoodsToCenter(@RequestBody Map<String,Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=centralstationService.returnGoodsToCenter(map);
+            if(res==1)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else if(res==2){
+                httpResponseEntity.setCode(Constans.RETURN_FAILED_CODE);
+                httpResponseEntity.setMessage(Constans.RETURN_FOBIDDEN_MESSAGE);
+            }else if(res == 3){
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.Good_NOT_EXIST);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.RETURN_FAILED_CODE);
+                httpResponseEntity.setMessage(Constans.RETURN_FAILED_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            logger.info("退货，分站退回中心库房>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+
 
 
 

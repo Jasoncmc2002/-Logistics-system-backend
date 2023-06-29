@@ -24,4 +24,10 @@ public interface CentralstationService extends IService<CentralStation> {
     int toOutStation(Map<String,Object> map);
 
     int toInSubstation(Map<String,Object> map);
+
+    int takeGoods(Map<String, Object> map);
+
+    int returnGoodsToSub(Map<String, Object> map);
+
+    int returnGoodsToCenter(Map<String,Object> map);
 }
