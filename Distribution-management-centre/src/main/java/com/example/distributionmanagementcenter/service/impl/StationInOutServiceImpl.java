@@ -41,8 +41,8 @@ public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, Sta
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
                 Integer.valueOf(String.valueOf(map.get("pageSize"))));
         Integer stationType=Integer.valueOf(String.valueOf(map.get("stationType")));
-        Integer outType=Integer.valueOf(String.valueOf(map.get("outType")));
         String goodName=(String)map.get("goodName");
+        String outType=(String)map.get("outType");
         QueryWrapper<Good> queryWrapper1 = new QueryWrapper<>();
          queryWrapper1.eq("good_name",goodName);
         List<Good> records1= goodMapper.selectList(queryWrapper1);
@@ -54,9 +54,10 @@ public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, Sta
         QueryWrapper<StationInOut> queryWrapper = new QueryWrapper<>();
         queryWrapper.between("date", startTime, endTime)
                 .eq("type",outType)
-                .eq("station_class",stationType);
+                .eq("station_class",stationType)
+                .eq("type",outType);
         for(Good good :records1){
-            queryWrapper.eq("good_id",good.getId());
+            queryWrapper.eq("good_id",good.getGoodId());
         }
         List<StationInOut> records= stationInOutMapper.selectList(queryWrapper);
         PageInfo pageInfo = new PageInfo(records);

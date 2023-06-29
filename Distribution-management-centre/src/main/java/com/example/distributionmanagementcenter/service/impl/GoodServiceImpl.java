@@ -54,4 +54,17 @@ public class GoodServiceImpl extends ServiceImpl<GoodMapper, Good> implements Go
         List<Good> records= goodMapper.selectList(queryWrapper);
         return records;
     }
+
+    @Override
+    public PageInfo getListByGoodId(Map<String, Object> map) throws ParseException {
+        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+                Integer.valueOf(String.valueOf(map.get("pageSize"))));
+        Integer goodId=Integer.valueOf(String.valueOf(map.get("goodId")));
+        System.out.println(map);
+        QueryWrapper<Good> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("good_id",goodId);
+        List<Good> records= goodMapper.selectList(queryWrapper);
+        PageInfo pageInfo = new PageInfo(records);
+        return pageInfo;
+    }
 }
