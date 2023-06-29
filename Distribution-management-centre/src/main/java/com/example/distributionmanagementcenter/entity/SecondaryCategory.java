@@ -28,6 +28,6 @@ public class SecondaryCategory implements Serializable {
     @TableField(value="sname")
     private String sName;
     @TableField(value="f_id")
-    private String fId;
+    private Integer fId;
     private String description;
 }
