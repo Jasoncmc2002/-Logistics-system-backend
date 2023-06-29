@@ -23,9 +23,9 @@ spring:
   data:
     redis:
       database: 6
-      host: 47.117.115.107
+      host: 62.234.23.101
       port: 6379
-      password: 123456
+      password: Neu123
       timeout: 10s
       lettuce:
         pool:
