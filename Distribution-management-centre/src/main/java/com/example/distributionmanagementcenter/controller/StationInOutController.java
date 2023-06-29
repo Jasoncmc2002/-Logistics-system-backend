@@ -149,4 +149,20 @@ public class StationInOutController {
         }
         return httpResponseEntity;
     }
+    @PostMapping(value = "/getListByConditions1")
+    public HttpResponseEntity getListByConditions1(@RequestBody Map<String, Object> map) {
+
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            httpResponseEntity.setData(stationInOutService.getListByConditions1(map));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("后端专用：根据库房类型，商品名称，日期，出库类型查询出入库记录>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }

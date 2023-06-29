@@ -63,4 +63,24 @@ public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, Sta
         PageInfo pageInfo = new PageInfo(records);
         return pageInfo;
     }
+
+    @Override
+    public List<StationInOut> getListByConditions1(Map<String, Object> map) throws ParseException {
+        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+                Integer.valueOf(String.valueOf(map.get("pageSize"))));
+        Integer stationType=Integer.valueOf(String.valueOf(map.get("stationType")));
+        Integer goodId=(Integer)map.get("good_id");
+        String outType=(String)map.get("outType");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date startTime =sdf.parse((String) map.get("startTime"));
+        Date endTime = sdf.parse((String) map.get("endTime"));
+        QueryWrapper<StationInOut> queryWrapper = new QueryWrapper<>();
+        queryWrapper.between("date", startTime, endTime)
+                .eq("type",outType)
+                .eq("station_class",stationType)
+                .eq("type",outType)
+                .eq("good_id",goodId);
+        List<StationInOut> records= stationInOutMapper.selectList(queryWrapper);
+        return records;
+    }
 }

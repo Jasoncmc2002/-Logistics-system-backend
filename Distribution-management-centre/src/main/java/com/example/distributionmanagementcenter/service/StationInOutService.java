@@ -5,6 +5,7 @@ import com.example.distributionmanagementcenter.entity.StationInOut;
 import com.github.pagehelper.PageInfo;
 
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,4 +18,5 @@ import java.util.Map;
  */
 public interface StationInOutService extends IService<StationInOut> {
     PageInfo getListByConditions(Map<String, Object> map) throws ParseException;
+    List<StationInOut> getListByConditions1(Map<String, Object> map) throws ParseException;
 }
