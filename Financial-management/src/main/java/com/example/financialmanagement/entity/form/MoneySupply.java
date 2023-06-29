@@ -8,12 +8,13 @@ import lombok.Data;
  * @version 1.0
  * @date 2023-06-27 20:01
  */
-public class Money {
+public class MoneySupply {
   private Integer id;
   private String goodClass;
   private String goodName;
-  private Integer goodGetNumber;
-  private Double goodGetMoney;
+  private Double goodPrice;
+  private Integer goodSupplyNumber;
   private Integer goodReturnNumber;
-  private Double goodReturnMoney;
+  private Integer goodSettleNumber;//结算数量
+  private Double goodSettleMoney;//结算金额
 }

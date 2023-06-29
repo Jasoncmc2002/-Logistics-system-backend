@@ -44,19 +44,19 @@
     <!-- 用户表单信息映射 -->
     <resultMap id="UserFormMap" type="com.youlai.system.model.bo.UserFormBO">
         <id property="id" column="id" jdbcType="BIGINT"/>
-        <result property="username" column="username" jdbcType="VARCHAR"/>
-        <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
-        <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
-        <result property="gender" column="gender" jdbcType="TINYINT"/>
-        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
-        <result property="email" column="email" jdbcType="VARCHAR"/>
-        <result property="status" column="status" jdbcType="BOOLEAN"/>
-        <result property="deptId" column="dept_id" jdbcType="BIGINT"></result>
+        <resultStation property="username" column="username" jdbcType="VARCHAR"/>
+        <resultStation property="nickname" column="nickname" jdbcType="VARCHAR"/>
+        <resultStation property="mobile" column="mobile" jdbcType="VARCHAR"/>
+        <resultStation property="gender" column="gender" jdbcType="TINYINT"/>
+        <resultStation property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <resultStation property="email" column="email" jdbcType="VARCHAR"/>
+        <resultStation property="status" column="status" jdbcType="BOOLEAN"/>
+        <resultStation property="deptId" column="dept_id" jdbcType="BIGINT"></resultStation>
         <collection
                 property="roleIds"
                 column="id"
                 select="com.youlai.system.mapper.SysUserRoleMapper.listRoleIdsByUserId" >
-            <result column="role_id" />
+            <resultStation column="role_id" />
         </collection>
     </resultMap>
 
@@ -79,12 +79,12 @@
     <!-- 用户认证信息映射 -->
     <resultMap id="UserAuthMap" type="com.youlai.system.model.dto.UserAuthInfo">
         <id property="userId" column="userId" jdbcType="BIGINT"/>
-        <result property="username" column="username" jdbcType="VARCHAR"/>
-        <result property="password" column="password" jdbcType="VARCHAR"/>
-        <result property="status" column="status" jdbcType="BOOLEAN"/>
-        <result property="deptId" column="dept_id" jdbcType="BIGINT"></result>
+        <resultStation property="username" column="username" jdbcType="VARCHAR"/>
+        <resultStation property="password" column="password" jdbcType="VARCHAR"/>
+        <resultStation property="status" column="status" jdbcType="BOOLEAN"/>
+        <resultStation property="deptId" column="dept_id" jdbcType="BIGINT"></resultStation>
         <collection property="roles" ofType="string" javaType="java.util.Set">
-            <result column="code"></result>
+            <resultStation column="code"></resultStation>
         </collection>
     </resultMap>
 

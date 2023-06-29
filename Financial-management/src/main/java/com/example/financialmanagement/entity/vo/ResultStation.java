@@ -10,7 +10,7 @@ import lombok.Data;
  * @date 2023-06-20 11:48
  */
 @Data
-public class Result {
+public class ResultStation {
   private PageInfo pageInfo;
   private double sumMoney;
   private double getMoney;

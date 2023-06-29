@@ -89,7 +89,7 @@ public class CustomerAction {
         }
         return httpResponseEntity;
     }
-    @RequestMapping(value = "/selectAllUser",method = RequestMethod.GET, headers = "Accept"
+    @RequestMapping(value = "/selectAllUser",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity selectAllUser(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
@@ -133,7 +133,7 @@ public class CustomerAction {
         return httpResponseEntity;
     }
 
-    @RequestMapping(value = "/search",method = RequestMethod.GET, headers = "Accept"
+    @RequestMapping(value = "/search",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity search(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
@@ -150,7 +150,7 @@ public class CustomerAction {
         return httpResponseEntity;
     }
 
-    @RequestMapping(value = "/selectOrderbyCustomer",method = RequestMethod.GET, headers = "Accept"
+    @RequestMapping(value = "/selectOrderbyCustomer",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity selectOrderbyCustomer(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();

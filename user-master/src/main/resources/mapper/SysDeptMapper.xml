@@ -6,14 +6,14 @@
 
     <resultMap id="BaseResultMap" type="com.youlai.system.model.entity.SysDept">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
-            <result property="treePath" column="tree_path" jdbcType="VARCHAR"/>
-            <result property="sort" column="sort" jdbcType="INTEGER"/>
-            <result property="status" column="status" jdbcType="TINYINT"/>
-            <result property="deleted" column="deleted" jdbcType="TINYINT"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <resultStation property="name" column="name" jdbcType="VARCHAR"/>
+            <resultStation property="parentId" column="parent_id" jdbcType="BIGINT"/>
+            <resultStation property="treePath" column="tree_path" jdbcType="VARCHAR"/>
+            <resultStation property="sort" column="sort" jdbcType="INTEGER"/>
+            <resultStation property="status" column="status" jdbcType="TINYINT"/>
+            <resultStation property="deleted" column="deleted" jdbcType="TINYINT"/>
+            <resultStation property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <resultStation property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
