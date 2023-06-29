@@ -17,7 +17,7 @@ import java.util.Date;
  * @author Jason_Cai
  * @since 2023-06-20
  */
-@TableName("in_station")
+@TableName("inoutstation")
 @Data
 public class StationInOut implements Serializable {
 
@@ -78,7 +78,7 @@ public class StationInOut implements Serializable {
     /**
      * 用户名
      */
-    private Integer number;
+    private Long number;
 
     /**
      * 用户名
@@ -90,7 +90,7 @@ public class StationInOut implements Serializable {
      * 用户名
      */
     private String remark;
-    private Integer type;
+    private String type;
 
 
 }

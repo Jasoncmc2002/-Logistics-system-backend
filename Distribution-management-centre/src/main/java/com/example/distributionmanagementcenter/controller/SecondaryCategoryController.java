@@ -6,13 +6,14 @@ import com.example.distributionmanagementcenter.entity.HttpResponseEntity;
 import com.example.distributionmanagementcenter.entity.SecondaryCategory;
 import com.example.distributionmanagementcenter.service.FirstCategoryService;
 import com.example.distributionmanagementcenter.service.SecondaryCategoryService;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+import java.util.Map;
 
 
 /**
@@ -135,6 +136,24 @@ public class SecondaryCategoryController {
 
         } catch (Exception e) {
             logger.info("update 更新种类>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+    @PostMapping(value = "/getList")
+    public HttpResponseEntity getList(@RequestBody Map<String, Object> map) {
+
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try{
+            PageInfo pageInfo= secondaryCategoryService.getList(map);
+            httpResponseEntity.setData(pageInfo);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+
+        } catch (Exception e) {
+            logger.info("二级级商品种类列表>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }

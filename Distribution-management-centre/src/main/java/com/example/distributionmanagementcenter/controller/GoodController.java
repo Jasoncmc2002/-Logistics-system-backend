@@ -123,7 +123,7 @@ public class GoodController {
     public HttpResponseEntity<Good> update(@RequestBody Good params) {
 
         HttpResponseEntity<Good> httpResponseEntity = new HttpResponseEntity<Good>();
-        try {
+        try{
             boolean flag=goodService.updateById(params);
             if(flag)
             {
@@ -154,6 +154,23 @@ public class GoodController {
 
         } catch (Exception e) {
             logger.info("update 更新货物>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+    @PostMapping(value = "/getGoodByGoodId")
+    public HttpResponseEntity getGoodByGoodId(@RequestBody Map<String, Object> map) {
+
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            httpResponseEntity.setData(goodService.getListByGoodId(map));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+
+        } catch (Exception e) {
+            logger.info("根据货物ID查找商品记录>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
