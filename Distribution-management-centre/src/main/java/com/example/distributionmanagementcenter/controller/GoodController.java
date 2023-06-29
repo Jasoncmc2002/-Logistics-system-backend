@@ -150,8 +150,6 @@ public class GoodController {
                 httpResponseEntity.setData(goodService.getGoodByOrderId(id));
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-
-
         } catch (Exception e) {
             logger.info("update 更新货物>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
@@ -167,8 +165,6 @@ public class GoodController {
             httpResponseEntity.setData(goodService.getListByGoodId(map));
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-
-
         } catch (Exception e) {
             logger.info("根据货物ID查找商品记录>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
@@ -178,14 +174,11 @@ public class GoodController {
     }
     @PostMapping(value = "/getGoodByGoodId1")
     public HttpResponseEntity getGoodByGoodId1(@RequestBody Map<String, Object> map) {
-
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
             httpResponseEntity.setData(goodService.getListByGoodId1(map));
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-
-
         } catch (Exception e) {
             logger.info("后端专用：根据货物ID查找商品记录>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);

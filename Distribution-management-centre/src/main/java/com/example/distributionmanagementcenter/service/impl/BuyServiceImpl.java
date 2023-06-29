@@ -34,7 +34,6 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
                 Integer.valueOf(String.valueOf(map.get("pageSize"))));
         String supplyName=(String)map.get("supplyName");
-        Integer goodId=Integer.valueOf(String.valueOf(map.get("goodId")));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date startTime =sdf.parse((String) map.get("startTime"));
         Date endTime = sdf.parse((String) map.get("endTime"));
@@ -44,6 +43,22 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
         List<Buy> records= buyMapper.selectList(queryWrapper);
         PageInfo pageInfo = new PageInfo(records);
         return pageInfo;
+    }
+    @Override
+    public List<Buy> getListByDateSupplyBuyType(Map<String, Object> map) throws ParseException {
+        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+                Integer.valueOf(String.valueOf(map.get("pageSize"))));
+        String supplyName=(String)map.get("supplyName");
+        Integer buyType=Integer.valueOf(String.valueOf(map.get("buyType")));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date startTime =sdf.parse((String) map.get("startTime"));
+        Date endTime = sdf.parse((String) map.get("endTime"));
+        QueryWrapper<Buy> queryWrapper = new QueryWrapper<>();
+        queryWrapper.between("date", startTime, endTime)
+                .eq("supply",supplyName)
+                .ne("buy_type",buyType);
+        List<Buy> records= buyMapper.selectList(queryWrapper);
+        return records;
     }
 
     @Override

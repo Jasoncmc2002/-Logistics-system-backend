@@ -138,6 +138,24 @@ public class BuyController {
         }
         return httpResponseEntity;
     }
+    @PostMapping(value="/getListByDateSupplyBuyType")
+    public HttpResponseEntity getListByDateSupplyBuyType(@RequestBody Map<String, Object> map) {
+
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try{
+
+            httpResponseEntity.setData(buyService.getListByDateSupplyBuyType(map));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+
+        } catch (Exception e) {
+            logger.info("后端专用：根据供货商和日期查询订单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
     @PostMapping(value="/deleteBuyByGoodId")
     public HttpResponseEntity deleteBuyByGoodId(@RequestBody Map<String, Object> map) {
 

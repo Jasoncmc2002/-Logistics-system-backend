@@ -66,9 +66,9 @@ public class Buy implements Serializable {
 
     private int type;
     @TableField("buy_type")
-    private Long buyType;
+    private Byte buyType;
     @TableField("order_id")
-    private int orderId;
+    private Long orderId;
 
 
 }
