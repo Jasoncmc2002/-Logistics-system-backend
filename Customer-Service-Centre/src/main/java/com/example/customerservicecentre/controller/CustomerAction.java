@@ -92,9 +92,11 @@ public class CustomerAction {
     @RequestMapping(value = "/selectAllUser",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity selectAllUser(@RequestBody Map<String,Object> map) {
+        System.out.println(map+"\n\n\n\n");
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
             PageInfo pageInfo= customerService.selectAll(map);
+            System.out.println(pageInfo+"\n\n\n\n");
             httpResponseEntity.setData(pageInfo);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
