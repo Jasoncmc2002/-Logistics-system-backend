@@ -134,17 +134,21 @@ public class FinancialServiceImpl {
     List<Buy> buyList=JSON.parseArray(jsonString1, Buy.class);
 
     Map<String, Map<String, Object>> statistics = new HashMap<>();
+    Map<Integer, Integer> good_id_map = new HashMap<>();
     Double sumMoney=0.0;
     for (Buy buy : buyList) {
 
       HttpResponseEntity resgood= feignApi.getGoodByOrderId(Math.toIntExact(buy.getGoodId()));
+      if (!statistics.containsKey(buy.getGoodId())) {
+        statistics.put(category_name, new HashMap<>());
+      }
       /*查询并统计结果*/
       List<Good> goodsList = (List<Good>) resgood.getData();
 
       for (Good goods : goodsList) {
         String category = goods.getGoodSubclass();
         String name = goods.getGoodName();
-        double price = goods.getGoodPrice();
+        double price = goods.getGoodPrice();//单价
         Long quantity = goods.getGoodNumber();
 
         String category_name = category + "_" + name;

@@ -60,7 +60,7 @@ public class TaskAction {
         return httpResponseEntity;
     }
 
-    @RequestMapping(value = "/getTasksByCriteria",method = RequestMethod.GET, headers = "Accept"
+    @RequestMapping(value = "/getTasksByCriteria",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity getOrdersByCriteria(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();

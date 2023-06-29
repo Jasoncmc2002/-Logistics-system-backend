@@ -96,8 +96,8 @@ public class CustomerAction {
         try {
             PageInfo pageInfo= customerService.selectAll(map);
             httpResponseEntity.setData(pageInfo);
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 
 
         } catch (Exception e) {
