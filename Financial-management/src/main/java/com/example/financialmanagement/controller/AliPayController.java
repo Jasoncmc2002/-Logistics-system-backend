@@ -117,8 +117,10 @@ public class AliPayController {
                 System.out.println("买家在支付宝唯一id: " + params.get("buyer_id"));
                 System.out.println("买家付款时间: " + params.get("gmt_payment"));
                 System.out.println("买家付款金额: " + params.get("buyer_pay_amount"));
-
                 // 查询订单
+            }
+            financialService.changeBuyTypeByGoodId(){
+
             }
         }
         return "success";

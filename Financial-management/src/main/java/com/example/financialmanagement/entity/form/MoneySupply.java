@@ -17,4 +17,5 @@ public class MoneySupply {
   private Integer goodReturnNumber;
   private Integer goodSettleNumber;//结算数量
   private Double goodSettleMoney;//结算金额
+  private String goodType;//结算金额
 }

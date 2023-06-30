@@ -129,7 +129,7 @@ public class FinancialServiceImpl {
   public ResultSupply settlementSupply(Map<String, Object> map)  {
     PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
-    map.put("buyType","2");
+    //0是删除，1是已经进货，2是已经支付（已操作），3是已经操作对应中心库房入库
     System.out.println(map);
     HttpResponseEntity res= feignApi.getBuyBySupplyFin(map);
     String jsonString1 = JSON.toJSONString(res.getData());  // 将对象转换成json格式数据
@@ -151,7 +151,13 @@ public class FinancialServiceImpl {
 
       categoryStatsBuy.put("供货数量",
           Integer.parseInt(String.valueOf(categoryStatsBuy.getOrDefault("供货数量", 0) ))+ buy.getNumber());
-
+      //0是删除，1是已经进货，2是已经支付（已操作），3是已经操作对应中心库房入库
+      if(buy.getBuyType()==2){
+        categoryStatsBuy.put("支付状态", "已支付");
+      }else
+      {
+        categoryStatsBuy.put("支付状态", "未支付");
+      }
       //从stock中查原价
       HttpResponseEntity res2= feignApi.getStockByGoodId(String.valueOf(buy.getGoodId()));
       String jsonString2 = JSON.toJSONString(res2.getData());  // 将对象转换成json格式数据
@@ -205,8 +211,8 @@ public class FinancialServiceImpl {
       String goodName= entry.getKey().split("_")[0];
       moneySupply.setId(entry.getKey().split("_")[1]);
       moneySupply.setGoodName(goodName);
-
       Map<String, Object> message=entry.getValue();
+      moneySupply.setGoodType(String.valueOf(message.get("支付状态")));
 
       moneySupply.setGoodSupplyNumber(Integer.parseInt(String.valueOf(message.getOrDefault("供货数量",0))));
       moneySupply.setGoodReturnNumber(Integer.parseInt(String.valueOf(message.getOrDefault("退回数量",0))));

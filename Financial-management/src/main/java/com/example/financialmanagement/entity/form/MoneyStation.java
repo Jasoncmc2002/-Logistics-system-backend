@@ -16,4 +16,5 @@ public class MoneyStation {
   private Double goodGetMoney;
   private Integer goodReturnNumber;
   private Double goodReturnMoney;
+  private String goodType;//结算金额
 }

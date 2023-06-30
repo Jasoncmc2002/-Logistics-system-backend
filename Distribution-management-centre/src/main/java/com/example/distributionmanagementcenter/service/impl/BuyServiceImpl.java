@@ -56,7 +56,6 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
         String supplyName=(String)map.get("supplyName");
         System.out.println("后端"+map);
 
-        Integer buyType= Integer.valueOf(String.valueOf( map.get("buyType")));
 
         DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
         ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
@@ -69,9 +68,17 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
 //        Date startTime =sdf.parse((String) map.get("startTime"));
 //        Date endTime = sdf.parse((String) map.get("endTime"));
         QueryWrapper<Buy> queryWrapper = new QueryWrapper<>();
+        System.out.println(map.get("buyType"));
+        System.out.println(map.get("buyType").equals("全部"));
+        if(!(map.get("buyType").equals("全部"))){
+            if(map.get("buyType").equals("已支付"))
+            {queryWrapper.eq("buy_type",2);}
+            else if(map.get("buyType").equals("未支付")){
+                queryWrapper.ne("buy_type",2);
+            }
+        }
         queryWrapper.between("date", startDate, endDate)
-                .eq("supply",supplyName)
-                .ne("buy_type",buyType);
+                .eq("supply",supplyName);
         List<Buy> records= buyMapper.selectList(queryWrapper);
         return records;
     }
