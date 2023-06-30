@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -43,11 +45,17 @@ private CentralStationMapper centralStationMapper;
     public PageInfo stationInOutQueryService(Map<String, Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
                 Integer.valueOf(String.valueOf(map.get("pageSize"))));
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startTime =sdf.parse((String) map.get("startTime"));
-        Date endTime = sdf.parse((String) map.get("endTime"));
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Date startTime =sdf.parse((String) map.get("startTime"));
+//        Date endTime = sdf.parse((String) map.get("endTime"));
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+        ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
+        ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String startDate = outputFormatter.format(startTime);
+        String endDate = outputFormatter.format(endTime);
         QueryWrapper<StationInOut> queryWrapper = new QueryWrapper<>();
-        queryWrapper.between("date", startTime, endTime);
+        queryWrapper.between("date", startDate, endDate);
         List<StationInOut> records= stationInOutMapper.selectList(queryWrapper);
 
         PageInfo pageInfo = new PageInfo(records);
@@ -62,11 +70,17 @@ private CentralStationMapper centralStationMapper;
         String supplyName=(String)map.get("supplyName");
 
         Integer goodId=Integer.valueOf(String.valueOf(map.get("goodId")));
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startTime =sdf.parse((String) map.get("startTime"));
-        Date endTime = sdf.parse((String) map.get("endTime"));
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Date startTime =sdf.parse((String) map.get("startTime"));
+//        Date endTime = sdf.parse((String) map.get("endTime"));
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+        ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
+        ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String startDate = outputFormatter.format(startTime);
+        String endDate = outputFormatter.format(endTime);
         QueryWrapper<Buy> queryWrapper = new QueryWrapper<>();
-        queryWrapper.between("date", startTime, endTime)
+        queryWrapper.between("date", startDate, endDate)
                 .eq("good_id",goodId)
                 .eq("supply",supplyName);
         //得到buy列表

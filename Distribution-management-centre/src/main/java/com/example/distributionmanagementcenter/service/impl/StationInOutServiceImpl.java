@@ -49,12 +49,15 @@ public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, Sta
          queryWrapper1.eq("good_name",goodName);
         List<Good> records1= goodMapper.selectList(queryWrapper1);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startTime =sdf.parse((String) map.get("startTime"));
-        Date endTime = sdf.parse((String) map.get("endTime"));
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+        ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
+        ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String startDate = outputFormatter.format(startTime);
+        String endDate = outputFormatter.format(endTime);
 
         QueryWrapper<StationInOut> queryWrapper = new QueryWrapper<>();
-        queryWrapper.between("date", startTime, endTime)
+        queryWrapper.between("date", startDate, endDate)
                 .eq("type",outType)
                 .eq("station_class",stationType)
                 .eq("type",outType);
@@ -86,7 +89,7 @@ public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, Sta
         String endDate = outputFormatter.format(endTime);
 
         QueryWrapper<StationInOut> queryWrapper = new QueryWrapper<>();
-        queryWrapper.between("date", startTime, endTime)
+        queryWrapper.between("date", startDate, endDate)
                 .eq("type",outType)
                 .eq("station_class",stationType)
                 .eq("good_id",goodId);

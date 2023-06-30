@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -163,7 +165,8 @@ public class CentralstationController {
     @RequestMapping(value = "/checkAll",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
     public HttpResponseEntity checkAllVacancy(@RequestBody Map<String, Object> map) {
-
+        DateTimeFormatter df5 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+        System.out.println(df5.format(ZonedDateTime.now()));
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try{
             PageInfo pageInfo=centralstationService.getList(map);

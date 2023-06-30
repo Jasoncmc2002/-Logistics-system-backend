@@ -36,11 +36,14 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
                 Integer.valueOf(String.valueOf(map.get("pageSize"))));
         String supplyName=(String)map.get("supplyName");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startTime =sdf.parse((String) map.get("startTime"));
-        Date endTime = sdf.parse((String) map.get("endTime"));
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+        ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
+        ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String startDate = outputFormatter.format(startTime);
+        String endDate = outputFormatter.format(endTime);
         QueryWrapper<Buy> queryWrapper = new QueryWrapper<>();
-        queryWrapper.between("date", startTime, endTime)
+        queryWrapper.between("date", startDate, endDate)
                 .eq("supply",supplyName);
         List<Buy> records= buyMapper.selectList(queryWrapper);
         PageInfo pageInfo = new PageInfo(records);
