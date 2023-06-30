@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -35,6 +36,8 @@ public class FinancialServiceImpl {
 
    @Autowired
    private FeignApi feignApi;
+   @Autowired
+   private RedisTemplate redisTemplate;
 
    private Double sumMoney=0.0;
   public ResultStation settlementStation(Map<String, Object> map)  {
@@ -200,6 +203,11 @@ public class FinancialServiceImpl {
     ResultSupply resultSupply =new ResultSupply();
     resultSupply.setPageInfo(resinfo);
     resultSupply.setSumMoney(this.sumMoney);
+
+    //redis
+    redisTemplate.opsForValue().set("startTime", map.get("startTime"));
+    redisTemplate.opsForValue().set("endTime", map.get("endTime"));
+    redisTemplate.opsForValue().set("supplyName", map.get("supplyName"));
     return resultSupply;
   }
 
@@ -231,5 +239,15 @@ public class FinancialServiceImpl {
     return moneyStationList;
   }
 
-
+   public int  changeBuyTypeByGoodId(String goodId){
+    Map<String,Object>map =new HashMap<>();
+    map.put("good_id",goodId);
+    map.put("buyType",2);
+    map.put("startTime",redisTemplate.opsForValue().get("startTime"));
+    map.put("endTime",redisTemplate.opsForValue().get("endTime"));
+    map.put("supplyName",redisTemplate.opsForValue().get("supplyName"));
+    System.out.println("notify"+map);
+    HttpResponseEntity res=  feignApi.changeBuyTypeNotify(map);
+     return (int) res.getData();
+   }
 }

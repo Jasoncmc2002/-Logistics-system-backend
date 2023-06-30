@@ -111,4 +111,34 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
         }
         return flag;
     }
+
+    @Override
+    public int changeBuyTypeNotify(Map<String, Object> map) throws ParseException {
+        System.out.println("后端Notify"+map);
+
+
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+        ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
+        ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String startDate = outputFormatter.format(startTime);
+        String endDate = outputFormatter.format(endTime);
+
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Date startTime =sdf.parse((String) map.get("startTime"));
+//        Date endTime = sdf.parse((String) map.get("endTime"));
+        String supplyName=(String)map.get("supplyName");
+        Integer goodId=Integer.valueOf(String.valueOf(map.get("good_id")));
+        QueryWrapper<Buy> queryWrapper = new QueryWrapper<>();
+        System.out.println(map.get("buyType"));
+
+        queryWrapper.between("date", startDate, endDate)
+            .eq("supply",supplyName)
+            .eq("good_id",goodId);
+
+        Buy buy = new Buy();
+        buy.setBuyType((byte) Integer.parseInt(String.valueOf(map.get("buyType"))));
+        int res=buyMapper.update(buy,queryWrapper);
+        return res;
+    }
 }

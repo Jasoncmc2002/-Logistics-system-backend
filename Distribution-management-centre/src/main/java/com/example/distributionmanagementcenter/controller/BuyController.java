@@ -188,5 +188,21 @@ public class BuyController {
         }
         return httpResponseEntity;
     }
+    @PostMapping(value="/changeBuyTypeNotify")
+    public HttpResponseEntity changeBuyTypeNotify(@RequestBody Map<String, Object> map) {
+
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try{
+            httpResponseEntity.setData(buyService.changeBuyTypeNotify(map));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("支付后的通知修改状态  changeBuyTypeNotify>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 
 }

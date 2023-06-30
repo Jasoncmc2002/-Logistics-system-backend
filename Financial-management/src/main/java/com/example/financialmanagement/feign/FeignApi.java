@@ -43,4 +43,8 @@ public interface FeignApi {
   @RequestMapping(value = "/distribute/stationInOut/getListByConditions1")
   HttpResponseEntity getStationByGoodIdDate(Map<String,Object> map);
 
+
+  @RequestMapping(value = "/distribute/buy/changeBuyTypeNotify")
+  HttpResponseEntity changeBuyTypeNotify(Map<String,Object> map);
+
 }

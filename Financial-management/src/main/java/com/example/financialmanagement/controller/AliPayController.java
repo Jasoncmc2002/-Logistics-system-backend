@@ -4,6 +4,7 @@ import cn.hutool.json.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.domain.BFActivityFundInfo;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -119,11 +120,12 @@ public class AliPayController {
                 System.out.println("买家付款金额: " + params.get("buyer_pay_amount"));
                 // 查询订单
             }
-            financialService.changeBuyTypeByGoodId(){
-
+            int res = financialService.changeBuyTypeByGoodId(outTradeNo.split("_")[1]);
+            if(res!=0){
+                return "success";
             }
         }
-        return "success";
+        return "fail";
     }
 
 }
