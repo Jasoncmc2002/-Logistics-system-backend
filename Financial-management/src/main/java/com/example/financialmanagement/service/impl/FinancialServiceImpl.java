@@ -43,7 +43,7 @@ public class FinancialServiceImpl {
   public ResultStation settlementStation(Map<String, Object> map)  {
     PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
-
+    System.out.println(map);
     HttpResponseEntity res= feignApi.getOrderByStationFin(map);
     String jsonString1 = JSON.toJSONString(res.getData());  // 将对象转换成json格式数据
 //    JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
