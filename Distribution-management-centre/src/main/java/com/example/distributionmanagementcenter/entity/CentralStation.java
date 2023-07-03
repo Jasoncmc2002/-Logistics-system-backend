@@ -64,8 +64,7 @@ public class CentralStation implements Serializable {
 
 
     @TableField("sell_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date sellDate;
+    private Integer sellDate;
 
     private Byte isReturn;
 
