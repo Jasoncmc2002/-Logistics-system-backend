@@ -16,6 +16,7 @@ import java.util.Map;
  * @since 2023-06-19
  */
 public interface CentralstationService extends IService<CentralStation> {
+    PageInfo getListByCondition(Map<String, Object> map) throws ParseException;
     PageInfo getList(Map<String, Object> map) throws ParseException;
 
 }
