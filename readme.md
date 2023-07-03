@@ -61,3 +61,11 @@ etSql(String sql); // 用于设置 set 字段值。例: setSql("name = '老李�
 lambda(); // 返回一个 LambdaUpdateWrapper 
 
 
+sentinel:
+resource：资源名称
+limitApp：来源应用
+grade：阀值类型，0：线程数，1：QPS
+count：单机阀值
+strategy：流控模式，0：直接，1：关联，2：链路
+controlBehavior：流控效果，0：快速失败，1：warmUp，2：排队等待
+clusterMode：是否集群

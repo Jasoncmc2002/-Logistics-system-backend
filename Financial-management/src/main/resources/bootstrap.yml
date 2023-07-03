@@ -2,6 +2,11 @@ server:
   port : 8088
 
 spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 1024MB
+      max-request-size: 1024MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://62.234.23.101:3306/logistics?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
@@ -24,7 +29,7 @@ spring:
           enabled: true
 
   application:
-    name: financial-application  # ????????????? name+file-extension ??nacos?project.yml
+    name: financial-application # ????????????? name+file-extension ??nacos?project.yml
   cloud:
     nacos:
       config:
@@ -41,6 +46,20 @@ spring:
           default:
             connectTimeout: 10000
             readTimeout: 600000
+    sentinel:
+      transport:
+        # ??sentinel??????
+#        dashboard: http://62.234.23.101:9100
+        dashboard: localhost:8080
+      datasource:
+        ds1:
+          nacos:
+            server-addr: 62.234.23.101:8848
+            dataId: financialRules
+            groupId: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow
+            namespace: da2783df-bd99-4c9c-abab-1c6c8fd5c257  #  ?????????
 
   data:
     redis:
@@ -83,3 +102,8 @@ alipay:
   alipayPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjJ8LHqXtzZjFbZVeLuJ3ziw5Gi7zGKpb4Vuv/kF/Z3jhmFUIKNReEaaRo6M0BiKV2khjvHEWH1XyaU3sGiiylxHtf5OSO23COjbITA/0JCKVy1zctzLnmLLcVVweFO4EaDjeE44V9wsVreKeZTr1HJ1uOyOYfuYbypUskVc6trVUBYPHd5jwWoZdZvJfjrPzDY/ek+nbGbXzZ5eM48NDpOOqXZ3bbAjBfuAjo/G7lPsrtvHa4D/kr0hr2DRfT3UA5jYIdtOEdLfEEcUcXfOaC7CPjmRQUM5VYtqi0vZmyosN7lUV3zLFato6K0lsyH2jc5iQidjl+Hr/NgPre1UCiQIDAQAB
   notifyUrl: http://rc4k8g.natappfree.cc/financial/alipay/notify
   returnUrl: http://localhost:3000/#/supply
+
+
+#feign:
+#  sentinel:
+#    enabled: true

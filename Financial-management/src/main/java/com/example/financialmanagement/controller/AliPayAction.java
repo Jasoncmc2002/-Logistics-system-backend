@@ -41,7 +41,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 // 9428521.24 - 30 = 9428491.24 + 30 = 9428521.24
 @RestController
 @RequestMapping("/financial/alipay")
-public class AliPayController {
+public class AliPayAction {
      //url是新地址
     private static final String GATEWAY_URL = "https://openapi-sandbox.dl.alipaydev.com/gateway.do";
     private static final String FORMAT = "JSON";
