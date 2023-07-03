@@ -30,4 +30,8 @@ public interface CentralstationService extends IService<CentralStation> {
     int returnGoodsToSub(Map<String, Object> map);
 
     int returnGoodsToCenter(Map<String,Object> map);
+
+
+
+    PageInfo searchInCentral(Map<String,Object> map);
 }

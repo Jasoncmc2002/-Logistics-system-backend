@@ -28,6 +28,7 @@ public class SecondaryCategoryServiceImpl extends ServiceImpl<SecondaryCategoryM
     public PageInfo getList(Map<String, Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
                 Integer.valueOf(String.valueOf(map.get("pageSize"))));
+
         QueryWrapper<SecondaryCategory> queryWrapper = new QueryWrapper<>();
         if((String) map.get("keywords")!=null&& !Objects.equals((String) map.get("keywords"), "")){
             String pattern = (String) map.get("keywords");
@@ -35,6 +36,8 @@ public class SecondaryCategoryServiceImpl extends ServiceImpl<SecondaryCategoryM
         }
         List<SecondaryCategory> records= secondaryCategoryMapper.selectList(queryWrapper);
         PageInfo pageInfo = new PageInfo(records);
+//        pageInfo.setPageSize(Integer.valueOf(String.valueOf(map.get("pageSize"))));
+        System.out.println(pageInfo.getPageSize());
         return pageInfo;
     }
 }

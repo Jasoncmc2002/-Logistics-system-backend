@@ -61,6 +61,38 @@ public class CentralstationController {
         }
         return httpResponseEntity;
     }
+    @PostMapping(value = "/getList")
+    public HttpResponseEntity getList(@RequestBody Map<String, Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            PageInfo pageInfo=centralstationService.getList(map);
+                httpResponseEntity.setData(pageInfo);
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("查找商品列表" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+    @PostMapping(value = "/getListByCondition")
+    public HttpResponseEntity getListByCondition(@RequestBody Map<String, Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            PageInfo pageInfo=centralstationService.getListByCondition(map);
+            httpResponseEntity.setData(pageInfo);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("根据条件查找商品列表" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 
 
     @PostMapping(value = "/create")
@@ -165,8 +197,8 @@ public class CentralstationController {
     @RequestMapping(value = "/checkAll",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
     public HttpResponseEntity checkAllVacancy(@RequestBody Map<String, Object> map) {
-        DateTimeFormatter df5 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-        System.out.println(df5.format(ZonedDateTime.now()));
+//        DateTimeFormatter df5 = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+//        System.out.println(df5.format(ZonedDateTime.now()));
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try{
             PageInfo pageInfo=centralstationService.getList(map);
@@ -244,4 +276,5 @@ public class CentralstationController {
         }
         return httpResponseEntity;
     }
+
 }

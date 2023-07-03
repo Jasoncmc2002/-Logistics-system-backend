@@ -145,12 +145,13 @@ public class SecondaryCategoryController {
     public HttpResponseEntity getList(@RequestBody Map<String, Object> map) {
 
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        System.out.println(map);
         try{
             PageInfo pageInfo= secondaryCategoryService.getList(map);
+            System.out.println(pageInfo.getPageSize());
             httpResponseEntity.setData(pageInfo);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-
 
         } catch (Exception e) {
             logger.info("二级级商品种类列表>>>>>>>>>>>" + e.getLocalizedMessage());
