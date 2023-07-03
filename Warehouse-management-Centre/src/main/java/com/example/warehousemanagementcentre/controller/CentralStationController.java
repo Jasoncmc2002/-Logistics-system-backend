@@ -213,6 +213,22 @@ public class CentralStationController {
     }
 
 
+    @RequestMapping(value = "/searchInCentral",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity searchInCentral(@RequestBody Map<String,Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            PageInfo pageInfo = centralstationService.searchInCentral(map);
+            httpResponseEntity.setData(pageInfo);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+        } catch (Exception e) {
+            logger.info("search 搜索购货单信息>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 
 
 
