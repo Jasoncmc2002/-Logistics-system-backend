@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.PrivilegedAction;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,8 @@ import java.util.Objects;
 public class SecondaryCategoryServiceImpl extends ServiceImpl<SecondaryCategoryMapper, SecondaryCategory> implements SecondaryCategoryService {
     @Autowired
     private SecondaryCategoryMapper secondaryCategoryMapper;
+    @Autowired
+    private FirstCategoryMapper firstCategoryMapper;
     @Override
     public PageInfo getList(Map<String, Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
@@ -35,9 +38,18 @@ public class SecondaryCategoryServiceImpl extends ServiceImpl<SecondaryCategoryM
             queryWrapper.like("sname",pattern);
         }
         List<SecondaryCategory> records= secondaryCategoryMapper.selectList(queryWrapper);
+        for(SecondaryCategory secondaryCategory :records){
+            String fName="";
+            if(firstCategoryMapper.selectById(secondaryCategory.getFId())==null){
+                fName="EMPTY";
+            }else {
+                fName=firstCategoryMapper.selectById(secondaryCategory.getFId()).getFName();
+            }
+            secondaryCategory.setFName(fName);
+        }
         PageInfo pageInfo = new PageInfo(records);
 //        pageInfo.setPageSize(Integer.valueOf(String.valueOf(map.get("pageSize"))));
-        System.out.println(pageInfo.getPageSize());
+
         return pageInfo;
     }
 }

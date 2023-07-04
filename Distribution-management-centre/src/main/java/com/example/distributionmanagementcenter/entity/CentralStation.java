@@ -29,8 +29,14 @@ public class CentralStation implements Serializable {
     @TableField("good_class_id")
     private Integer goodClassId;
 
+    @TableField(exist = false)
+    private String goodClassName;
+
     @TableField("good_subclass_id")
     private Integer goodSubclassId;
+
+    @TableField(exist = false)
+    private String goodSubClassName;
 
     @TableField("good_name")
     private String goodName;
@@ -56,19 +62,22 @@ public class CentralStation implements Serializable {
     @TableField("good_cost")
     private Double goodCost;
 
-
     private String goodUnit;
 
-
     private Integer supplyId;
-
+    @TableField(exist = false)
+    private String supplyName;
 
     @TableField("sell_date")
     private Integer sellDate;
 
     private Byte isReturn;
+    @TableField(exist = false)
+    private String isReturnName;
 
     private Byte isChange;
+    @TableField(exist = false)
+    private String isChangeName;
 
     private String remark;
 
