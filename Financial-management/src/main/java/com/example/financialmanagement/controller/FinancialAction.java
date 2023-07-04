@@ -63,6 +63,7 @@ public class FinancialAction {
         + "=application/json")
     public HttpResponseEntity SettlementStation(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        System.out.println(map);
         try {
             ResultStation res=financialService.settlementStation(map);
             if(res!=null)

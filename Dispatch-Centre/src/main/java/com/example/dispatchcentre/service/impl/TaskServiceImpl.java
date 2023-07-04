@@ -16,6 +16,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -91,13 +93,18 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
 /*  根据分站，状态，类型查询*/
   @Override
   public PageInfo searchbykey(Map<String, Object> map) throws ParseException  {
-    PageHelper.startPage(Integer.valueOf((String)map.get("pageNum")),
-        Integer.valueOf((String)map.get("pageSize")));
+    PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+        Integer.valueOf(String.valueOf(map.get("pageSize"))));
     QueryWrapper<Task> queryWrapper = new QueryWrapper<>();
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    Date startTime =sdf.parse((String) map.get("startTime"));
-    Date endTime = sdf.parse((String) map.get("endTime"));
-    queryWrapper.between("deadline", startTime, endTime)
+
+    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+    ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
+    ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
+    DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String startDate = outputFormatter.format(startTime);
+    String endDate = outputFormatter.format(endTime);
+
+    queryWrapper.between("deadline", startDate, endDate)
         .or().eq("substation",  map.get("substation"))
         .or().eq("task_type",  map.get("task_type"))
         .or().eq("task_status",  map.get("task_status"));
