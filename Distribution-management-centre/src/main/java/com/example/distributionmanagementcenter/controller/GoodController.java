@@ -151,7 +151,7 @@ public class GoodController {
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
-            logger.info("update 更新货物>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("后端用通过id得到good列表>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }

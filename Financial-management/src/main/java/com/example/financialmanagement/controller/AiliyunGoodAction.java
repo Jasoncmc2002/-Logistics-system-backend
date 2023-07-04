@@ -78,7 +78,7 @@ public class AiliyunGoodAction {
 //    String accessKeySecret = System.getenv("ALIBABA_CLOUD_ACCESS_KEY_SECRET");
       System.out.println(url);
       //和OSS不是同一个
-      com.aliyun.goodstech20191230.Client client = ClassifyCommodity.createClient("LTAI5tRsPP39TmLCWzPfvFQn", "nckf575Y8yVlC2dMG2myCBqAaITgBt");
+      com.aliyun.goodstech20191230.Client client = AiliyunGoodAction.createClient("LTAI5tRsPP39TmLCWzPfvFQn", "nckf575Y8yVlC2dMG2myCBqAaITgBt");
     com.aliyun.goodstech20191230.models.ClassifyCommodityRequest classifyCommodityRequest = new com.aliyun.goodstech20191230.models.ClassifyCommodityRequest()
         .setImageURL(url);
     com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();

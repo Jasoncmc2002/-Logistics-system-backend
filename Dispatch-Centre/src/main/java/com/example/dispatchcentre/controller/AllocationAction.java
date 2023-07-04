@@ -55,12 +55,12 @@ public class AllocationAction {
         return httpResponseEntity;
     }
 
-    @RequestMapping(value = "/updateAllocationbyId",method = RequestMethod.GET, headers = "Accept"
+    @RequestMapping(value = "/updateAllocationbyId",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity updateAllocationbyId(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            PageInfo res=allocationService.searchbykey(map);
+            int  res=allocationService.updatebyId(map);
             httpResponseEntity.setData(res);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);

@@ -49,7 +49,7 @@ public class FinancialServiceImpl {
 //    JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
 //    System.out.println("test");
     List<Orders> orderList=JSON.parseArray(jsonString1, Orders.class);
-
+    System.out.println(orderList);
     Map<String, Map<String, Object>> statistics = new HashMap<>();
     Double getMoney=0.0;
     Double returnMoney=0.0;
@@ -57,15 +57,19 @@ public class FinancialServiceImpl {
 
       HttpResponseEntity resgood= feignApi.getGoodByOrderId(Math.toIntExact(order.getId()));
       /*查询并统计结果*/
-      List<Good> goodsList = (List<Good>) resgood.getData();
+      String jsonString2 = JSON.toJSONString(resgood.getData());  // 将对象转换成json格式数据
+//    JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
+//    System.out.println("test");
+      List<Good> goodsList = JSON.parseArray(jsonString2,Good.class);
 
       for (Good goods : goodsList) {
         String category = goods.getGoodSubclass();
         String name = goods.getGoodName();
+        Long id = goods.getId();
         double price = goods.getGoodPrice();
         Long quantity = goods.getGoodNumber();
 
-        String category_name = category + "_" + name;
+        String category_name = category + "_" + name+"_"+id;
         /*  结果是否包含*/
         if (!statistics.containsKey(category_name)) {
           statistics.put(category_name, new HashMap<>());
@@ -88,7 +92,6 @@ public class FinancialServiceImpl {
                 Double.parseDouble(String.valueOf(categoryStats.getOrDefault("退货(金额)", 0.0))) + price * quantity);
             returnMoney+=price * quantity;
             break;
-
         }
       }
     }
@@ -104,17 +107,15 @@ public class FinancialServiceImpl {
 
   public List<MoneyStation> getMoneyStationMap(Map<String, Map<String, Object>> map){
     List<MoneyStation> moneyStationList =new ArrayList<>();
-    int id=1;
+
     for(Map.Entry<String, Map<String, Object>> entry : map.entrySet()){
       MoneyStation moneyStation =new MoneyStation();
-      moneyStation.setId(id);
-      id++;
       String goodClass= entry.getKey().split("_")[0];
       String goodName= entry.getKey().split("_")[1];
-
+      String id= entry.getKey().split("_")[2];
       moneyStation.setGoodName(goodName);
       moneyStation.setGoodClass(goodClass);
-
+      moneyStation.setId(id);
       Map<String, Object> message=entry.getValue();
       moneyStation.setGoodGetNumber(Integer.parseInt(String.valueOf(message.getOrDefault("新订(数量)",0))));
       moneyStation.setGoodGetMoney(Double.parseDouble(String.valueOf(message.getOrDefault("新订(金额)"

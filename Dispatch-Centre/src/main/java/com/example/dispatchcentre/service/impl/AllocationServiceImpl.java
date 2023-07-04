@@ -34,7 +34,7 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
     UpdateWrapper<Allocation> updateWrapper = new UpdateWrapper<>();
     updateWrapper.eq("id",map.get("id")).set("allo_type", map.get("allo_type"));
     Integer rows = allocationMapper.update(null, updateWrapper);
-    return 0;
+    return rows;
   }
 
   @Override
