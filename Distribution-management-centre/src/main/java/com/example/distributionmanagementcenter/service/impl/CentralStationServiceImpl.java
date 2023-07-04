@@ -4,6 +4,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.distributionmanagementcenter.entity.CentralStation;
 import com.example.distributionmanagementcenter.entity.FirstCategory;
 import com.example.distributionmanagementcenter.mapper.CentralStationMapper;
+import com.example.distributionmanagementcenter.mapper.FirstCategoryMapper;
+import com.example.distributionmanagementcenter.mapper.SecondaryCategoryMapper;
+import com.example.distributionmanagementcenter.mapper.SupplyMapper;
 import com.example.distributionmanagementcenter.service.CentralstationService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -29,23 +32,74 @@ import java.util.Objects;
 public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper, CentralStation> implements CentralstationService {
    @Autowired
    private CentralStationMapper centralStationMapper;
+   @Autowired
+   private SupplyMapper supplyMapper;
+   @Autowired
+   private FirstCategoryMapper firstCategoryMapper;
+   @Autowired
+   private SecondaryCategoryMapper secondaryCategoryMapper;
 
     @Override
     public PageInfo getListByCondition(Map<String, Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
                 Integer.valueOf(String.valueOf(map.get("pageSize"))));
-        Integer goodClassId= (Integer) map.get("goodClassId");
-        Integer goodSubclassId= (Integer) map.get("goodSubclassId");
+//        PageHelper.startPage((Integer)map.get("pageNum"),(Integer)map.get("pageSize"));
+//        Integer goodClassId= Integer.valueOf(String.valueOf(map.get("goodClassId"));
+//        Integer goodSubclassId= Integer.valueOf(String.valueOf(map.get("goodSubclassId")));
         QueryWrapper<CentralStation> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("good_class_id",goodClassId);
-        queryWrapper.eq("good_subclass_id",goodSubclassId);
+        if(map.get("goodClassId")!=null){
+            queryWrapper.eq("good_class_id",map.get("goodClassId"));
+        }
+        if(map.get("goodSubclassId")!=null){
+            queryWrapper.eq("good_subclass_id",map.get("goodSubclassId"));
+        }
         if((String) map.get("keywords")!=null&& !Objects.equals((String) map.get("keywords"), "")){
             String pattern = (String) map.get("keywords");
             queryWrapper.like("good_name",pattern);
         }
-        Integer supplyId= (Integer) map.get("supplyId");
-        queryWrapper.eq("supply_id",supplyId);
+//        Integer supplyId= (Integer) map.get("supplyId");
+        if(map.get("supplyId")!=null){
+            queryWrapper.eq("supply_id",map.get("supplyId"));
+        }
         List<CentralStation> records= centralStationMapper.selectList(queryWrapper);
+        for(CentralStation centralStation :records){
+            String goodClassName="";
+            if(firstCategoryMapper.selectById(centralStation.getGoodClassId())==null){
+                goodClassName="EMPTY";
+            }
+            else{
+                goodClassName=firstCategoryMapper.selectById(centralStation.getGoodClassId()).getFName();
+            }
+            centralStation.setGoodClassName(goodClassName);
+            String goodSubClassName ="";
+            if(secondaryCategoryMapper.selectById(centralStation.getGoodSubclassId())==null){
+                goodSubClassName="EMPTY";
+            }
+            else{
+                goodSubClassName= secondaryCategoryMapper.selectById(centralStation.getGoodSubclassId()).getSName();
+            }
+            centralStation.setGoodSubClassName(goodSubClassName);
+            String supplyName ="";
+            if(supplyMapper.selectById(centralStation.getSupplyId())==null){
+                supplyName="EMPTY";
+            }
+            else{
+                supplyName= supplyMapper.selectById(centralStation.getSupplyId()).getName();
+            }
+            centralStation.setSupplyName(supplyName);
+            if(centralStation.getIsReturn()==1){
+                centralStation.setIsReturnName("是");
+            }
+            if(centralStation.getIsReturn()==0){
+                centralStation.setIsReturnName("是");
+            }
+            if(centralStation.getIsChange()==1){
+             centralStation.setIsChangeName("是");
+            }
+            if(centralStation.getIsChange()==0){
+                centralStation.setIsChangeName("否");
+            }
+        }
         PageInfo pageInfo = new PageInfo(records);
         return pageInfo;
     }
