@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 /**
  * <p>
@@ -14,6 +15,7 @@ import java.util.Date;
  * @author yangfuchao
  * @since 2023-06-25
  */
+@Data
 @TableName("good_allocation")
 public class Allocation implements Serializable {
 
@@ -50,63 +52,9 @@ public class Allocation implements Serializable {
      */
     private Byte alloType;
 
-    public Long getId() {
-        return id;
-    }
+    private String distributors;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    private String signer;
 
-    public Long getTaskId() {
-        return taskId;
-    }
 
-    public void setTaskId(Long taskId) {
-        this.taskId = taskId;
-    }
-
-    public String getOutStation() {
-        return outStation;
-    }
-
-    public void setOutStation(String outStation) {
-        this.outStation = outStation;
-    }
-
-    public String getInStation() {
-        return inStation;
-    }
-
-    public void setInStation(String inStation) {
-        this.inStation = inStation;
-    }
-
-    public Date getAllocationDate() {
-        return allocationDate;
-    }
-
-    public void setAllocationDate(Date allocationDate) {
-        this.allocationDate = allocationDate;
-    }
-
-    public Byte getAlloType() {
-        return alloType;
-    }
-
-    public void setAlloType(Byte alloType) {
-        this.alloType = alloType;
-    }
-
-    @Override
-    public String toString() {
-        return "Allocation{" +
-        ", id = " + id +
-        ", taskId = " + taskId +
-        ", outStation = " + outStation +
-        ", inStation = " + inStation +
-        ", allocationDate = " + allocationDate +
-        ", alloType = " + alloType +
-        "}";
-    }
 }
