@@ -6,6 +6,7 @@ import com.example.financialmanagement.entity.Use;
 import com.github.pagehelper.PageInfo;
 import java.text.ParseException;
 import java.util.Map;
+import org.springframework.stereotype.Service;
 
 /**
  * <p>
@@ -15,6 +16,7 @@ import java.util.Map;
  * @author yangfuchao
  * @since 2023-06-28
  */
+@Service
 public interface UseService extends IService<Use> {
   //领用
   int addInvoice(Use use);

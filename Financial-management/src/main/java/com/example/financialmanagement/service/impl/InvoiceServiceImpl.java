@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.example.financialmanagement.mapper.InvoiceMapper;
 import com.example.financialmanagement.service.InvoiceService;
+import java.util.Map;
 import org.springframework.stereotype.Service;
 import com.example.financialmanagement.entity.*;
 /**
@@ -22,5 +23,15 @@ public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> impl
   public int addInvoice(Invoice invoice) {
      int res = invoiceMapper.insert(invoice);
     return res;
+  }
+
+  @Override
+  public int invoiceService(Map<String, Object> map) {
+    return 0;
+  }
+
+  @Override
+  public int addUseInvoice(Map<String, Object> map) {
+    return 0;
   }
 }
