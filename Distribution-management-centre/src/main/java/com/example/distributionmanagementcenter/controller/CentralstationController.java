@@ -168,6 +168,22 @@ public class CentralstationController {
         }
         return httpResponseEntity;
     }
+    @PostMapping("/updateList")
+    public HttpResponseEntity<CentralStation> updateList(@RequestBody Map<String, Object> map) {
+
+        HttpResponseEntity<CentralStation> httpResponseEntity = new HttpResponseEntity<CentralStation>();
+        try {
+            centralstationService.updateList(map);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("列表更新>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
     //缺货检查
     @RequestMapping(value = "/check/{id}",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")

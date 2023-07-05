@@ -23,72 +23,31 @@ public class StationInOut implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 用户名
-     */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    /**
-     * 用户名
-     */
     private Integer stationClass;
 
-    /**
-     * 用户名
-     */
     private Long alloId;
 
-    /**
-     * 用户名
-     */
     private Long stationId;
 
-    /**
-     * 用户名
-     */
     private Long taskId;
 
-    /**
-     * 用户名
-     */
     private Long goodId;
 
-
-    /**
-     * 用户名
-     */
     private Double goodPrice;
 
-    /**
-     * 用户名
-     */
     private String goodName;
 
-    /**
-     * 用户名
-     */
     private String goodUnit;
 
-    /**
-     * 用户名
-     */
     private String goodFactory;
 
-    /**
-     * 用户名
-     */
     private Long number;
 
-    /**
-     * 用户名
-     */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date;
-
-    /**
-     * 用户名
-     */
     private String remark;
     private String type;
 

@@ -21,5 +21,4 @@ public interface StationService extends IService<Station> {
 
     PageInfo getList(Map<String, Object> map) throws ParseException;
 
-
 }

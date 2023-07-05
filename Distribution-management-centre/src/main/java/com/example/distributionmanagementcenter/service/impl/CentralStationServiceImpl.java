@@ -3,10 +3,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.distributionmanagementcenter.entity.CentralStation;
 import com.example.distributionmanagementcenter.entity.FirstCategory;
-import com.example.distributionmanagementcenter.mapper.CentralStationMapper;
-import com.example.distributionmanagementcenter.mapper.FirstCategoryMapper;
-import com.example.distributionmanagementcenter.mapper.SecondaryCategoryMapper;
-import com.example.distributionmanagementcenter.mapper.SupplyMapper;
+import com.example.distributionmanagementcenter.mapper.*;
 import com.example.distributionmanagementcenter.service.CentralstationService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -38,6 +35,8 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
    private FirstCategoryMapper firstCategoryMapper;
    @Autowired
    private SecondaryCategoryMapper secondaryCategoryMapper;
+   @Autowired
+   private StationMapper stationMapper;
 
     @Override
     public PageInfo getListByCondition(Map<String, Object> map) throws ParseException {
@@ -57,7 +56,9 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
             String pattern = (String) map.get("keywords");
             queryWrapper.like("good_name",pattern);
         }
-//        Integer supplyId= (Integer) map.get("supplyId");
+       if(map.get("stationId")!=null){
+           queryWrapper.eq("station_id",map.get("stationId"));
+       }
         if(map.get("supplyId")!=null){
             queryWrapper.eq("supply_id",map.get("supplyId"));
         }
@@ -79,6 +80,14 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                 goodSubClassName= secondaryCategoryMapper.selectById(centralStation.getGoodSubclassId()).getSName();
             }
             centralStation.setGoodSubClassName(goodSubClassName);
+            String stationName ="";
+            if(stationMapper.selectById(centralStation.getStationId())==null){
+                stationName="EMPTY";
+            }
+            else{
+                stationName= stationMapper.selectById(centralStation.getStationId()).getName();
+            }
+            centralStation.setStationName(stationName);
             String supplyName ="";
             if(supplyMapper.selectById(centralStation.getSupplyId())==null){
                 supplyName="EMPTY";
@@ -112,5 +121,19 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         List<CentralStation> records= centralStationMapper.selectList(null);
         PageInfo pageInfo = new PageInfo(records);
         return pageInfo;
+    }
+
+    @Override
+    public int updateList(Map<String, Object> map) throws ParseException {
+        List<Integer> list = (List<Integer>) map.get("idList");
+        QueryWrapper<CentralStation> queryWrapper = new QueryWrapper<>();
+        for(Integer integer :list){
+            CentralStation centralStation = new CentralStation();
+            centralStation.setId(integer);
+            centralStation.setMax(Long.valueOf((String)map.get("max")));
+            centralStation.setWarn(Long.valueOf((String)map.get("warn")));
+            centralStationMapper.updateById(centralStation);
+        }
+        return 0;
     }
 }

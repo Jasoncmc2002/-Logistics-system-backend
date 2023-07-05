@@ -81,5 +81,12 @@ public class CentralStation implements Serializable {
 
     private String remark;
 
+    @TableField("station_id")
+    private Integer stationId;
+    @TableField(exist = false)
+    private String stationName;
+
+
+
 
 }
