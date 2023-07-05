@@ -65,8 +65,8 @@ public class ChartController {
         }
         Chart chart = new Chart();
         BeanUtils.copyProperties(chartAddRequest, chart);
-        User loginUser = userService.getLoginUser(request);
-        chart.setUserId(loginUser.getId());
+//        User loginUser = userService.getLoginUser(request);
+//        chart.setUserId(loginUser.getId());
         boolean result = chartService.save(chart);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         long newChartId = chart.getId();
@@ -86,15 +86,15 @@ public class ChartController {
         if (deleteRequest == null || deleteRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        User user = userService.getLoginUser(request);
+//        User user = userService.getLoginUser(request);
         long id = deleteRequest.getId();
         // 判断是否存在
         Chart oldChart = chartService.getById(id);
         ThrowUtils.throwIf(oldChart == null, ErrorCode.NOT_FOUND_ERROR);
         // 仅本人或管理员可删除
-        if (!oldChart.getUserId().equals(user.getId()) && !userService.isAdmin(request)) {
-            throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
-        }
+//        if (!oldChart.getUserId().equals(user.getId()) && !userService.isAdmin(request)) {
+//            throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
+//        }
         boolean b = chartService.removeById(id);
         return ResultUtils.success(b);
     }
@@ -174,8 +174,7 @@ public class ChartController {
         if (chartQueryRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        User loginUser = userService.getLoginUser(request);
-        chartQueryRequest.setUserId(loginUser.getId());
+//        User loginUser = userService.getLoginUser(request);
         long current = chartQueryRequest.getCurrent();
         long size = chartQueryRequest.getPageSize();
         // 限制爬虫
@@ -206,9 +205,9 @@ public class ChartController {
         Chart oldChart = chartService.getById(id);
         ThrowUtils.throwIf(oldChart == null, ErrorCode.NOT_FOUND_ERROR);
         // 仅本人或管理员可编辑
-        if (!oldChart.getUserId().equals(loginUser.getId()) && !userService.isAdmin(loginUser)) {
-            throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
-        }
+//        if (!oldChart.getUserId().equals(loginUser.getId()) && !userService.isAdmin(loginUser)) {
+//            throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
+//        }
         boolean result = chartService.updateById(chart);
         return ResultUtils.success(result);
     }
@@ -230,7 +229,7 @@ public class ChartController {
         String goal = chartQueryRequest.getGoal();
         String chartName = chartQueryRequest.getChartName();
         String chartType = chartQueryRequest.getChartType();
-        Long userId = chartQueryRequest.getUserId();
+        String creator = chartQueryRequest.getCreator();
         String sortField = chartQueryRequest.getSortField();
         String sortOrder = chartQueryRequest.getSortOrder();
         // 根据前端传来条件进行拼接查询条件
@@ -238,7 +237,7 @@ public class ChartController {
         queryWrapper.eq(ObjectUtils.isNotEmpty(goal), "goal", goal);
         queryWrapper.like(ObjectUtils.isNotEmpty(chartName), "chartName", chartName);
         queryWrapper.eq(ObjectUtils.isNotEmpty(chartType), "chartType", chartType);
-        queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "userId", userId);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(creator), "creator", creator);
 
         queryWrapper.eq("isDelete", false);
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),

@@ -38,7 +38,7 @@ public class ChartQueryRequest extends PageRequest implements Serializable {
     /**
      * 创建图标用户 id
      */
-    private Long userId;
+    private String creator;
 
 
     private static final long serialVersionUID = 1L;

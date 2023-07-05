@@ -63,7 +63,7 @@ public class Chart implements Serializable {
     /**
      * 创建图标用户 id
      */
-    private Long userId;
+    private String creator;
 
     /**
      * 创建时间

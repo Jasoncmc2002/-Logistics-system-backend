@@ -65,7 +65,8 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
         String chartName = genChartByAiRequest.getChartName();
         String goal = genChartByAiRequest.getGoal();
         String chartType = genChartByAiRequest.getChartType();
-        User loginUser = userService.getLoginUser(request);
+        String creator = genChartByAiRequest.getCreator();
+//        User loginUser = userService.getLoginUser(request);
         // 校验
         ThrowUtils.throwIf(StringUtils.isBlank(goal), ErrorCode.PARAMS_ERROR, "图表分析目标为空");
         ThrowUtils.throwIf(StringUtils.isNotBlank(chartName) && chartName.length() > 200, ErrorCode.PARAMS_ERROR, "图表名称过长");
@@ -81,7 +82,7 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
         ThrowUtils.throwIf(!VALID_FILE_SUFFIX.contains(suffix), ErrorCode.PARAMS_ERROR, "不支持该类型文件");
 
         // 用户每秒限流
-        boolean tryAcquireRateLimit = redisLimiterManager.doRateLimit("genChartByAi_" + loginUser.getId());
+        boolean tryAcquireRateLimit = redisLimiterManager.doRateLimit("genChartByAi_" + creator);
         if (!tryAcquireRateLimit) {
             throw new BusinessException(ErrorCode.TOO_MANY_REQUEST);
         }
@@ -126,7 +127,7 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
         chart.setGenChart(preGenChart);
         //chart.setGenChart(validGenChart);
         chart.setGenResult(genResult);
-        chart.setUserId(loginUser.getId());
+        chart.setCreator(creator);
         chart.setChartStatus(ChartStatusEnum.SUCCEED.getValue());
         boolean saveResult = this.save(chart);
         ThrowUtils.throwIf(!saveResult, ErrorCode.SYSTEM_ERROR, "图表保存失败");
@@ -153,7 +154,8 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
         String chartName = genChartByAiRequest.getChartName();
         String goal = genChartByAiRequest.getGoal();
         String chartType = genChartByAiRequest.getChartType();
-        User loginUser = userService.getLoginUser(request);
+        String creator = genChartByAiRequest.getCreator();
+//        User loginUser = userService.getLoginUser(request);
         // 校验
         ThrowUtils.throwIf(StringUtils.isBlank(goal), ErrorCode.PARAMS_ERROR, "图表分析目标为空");
         ThrowUtils.throwIf(StringUtils.isNotBlank(chartName) && chartName.length() > 200, ErrorCode.PARAMS_ERROR, "图表名称过长");
@@ -169,7 +171,7 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
         ThrowUtils.throwIf(!VALID_FILE_SUFFIX.contains(suffix), ErrorCode.PARAMS_ERROR, "不支持该类型文件");
 
         // 用户每秒限流
-        boolean tryAcquireRateLimit = redisLimiterManager.doRateLimit("genChartByAi_" + loginUser.getId());
+        boolean tryAcquireRateLimit = redisLimiterManager.doRateLimit("genChartByAi_" + creator);
         if (!tryAcquireRateLimit) {
             throw new BusinessException(ErrorCode.TOO_MANY_REQUEST);
         }
@@ -197,8 +199,9 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
         chart.setChartData(csvData);
         chart.setChartName(chartName);
         chart.setChartType(chartType);
+        chart.setCreator(creator);
         chart.setChartStatus(ChartStatusEnum.WAIT.getValue());
-        chart.setUserId(loginUser.getId());
+//        chart.setUserId(loginUser.getId());
         boolean saveResult = this.save(chart);
         ThrowUtils.throwIf(!saveResult, ErrorCode.SYSTEM_ERROR, "图表保存失败");
 
@@ -256,8 +259,7 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
 
         // 等待太久了，抛异常，超时时间
         try {
-            completableFuture.get(10, TimeUnit.SECONDS);
-
+            completableFuture.get(20, TimeUnit.SECONDS);
         } catch (Exception e) {
             // 超时失败了
             Chart updateChartFailed = new Chart();
@@ -287,7 +289,8 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
         String chartName = genChartByAiRequest.getChartName();
         String goal = genChartByAiRequest.getGoal();
         String chartType = genChartByAiRequest.getChartType();
-        User loginUser = userService.getLoginUser(request);
+        String creator = genChartByAiRequest.getCreator();
+//        User loginUser = userService.getLoginUser(request);
         // 校验
         ThrowUtils.throwIf(StringUtils.isBlank(goal), ErrorCode.PARAMS_ERROR, "图表分析目标为空");
         ThrowUtils.throwIf(StringUtils.isNotBlank(chartName) && chartName.length() > 200, ErrorCode.PARAMS_ERROR, "图表名称过长");
@@ -303,7 +306,7 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
         ThrowUtils.throwIf(!VALID_FILE_SUFFIX.contains(suffix), ErrorCode.PARAMS_ERROR, "不支持该类型文件");
 
         // 用户每秒限流
-        redisLimiterManager.doRateLimit("genChartByAi_" + loginUser.getId());
+        redisLimiterManager.doRateLimit("genChartByAi_" +creator);
 
         // 无需Prompt，直接调用现有模型
         // 构造用户输入
@@ -329,7 +332,8 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
         chart.setChartName(chartName);
         chart.setChartType(chartType);
         chart.setChartStatus(ChartStatusEnum.WAIT.getValue());
-        chart.setUserId(loginUser.getId());
+        chart.setCreator(creator);
+//        chart.setUserId(loginUser.getId());
         boolean saveResult = this.save(chart);
         ThrowUtils.throwIf(!saveResult, ErrorCode.SYSTEM_ERROR, "图表保存失败");
 
