@@ -5,7 +5,7 @@ import com.shier.shierbi.common.ErrorCode;
 /**
  * 自定义异常类
  *
- * @author Shier
+ * @author YANG FUCHAO
  */
 public class BusinessException extends RuntimeException {
 

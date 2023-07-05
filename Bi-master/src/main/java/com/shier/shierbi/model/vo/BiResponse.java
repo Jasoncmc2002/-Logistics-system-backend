@@ -3,7 +3,7 @@ package com.shier.shierbi.model.vo;
 import lombok.Data;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * CreateTime 2023/5/21 12:41
  * BI 返回结果
  */

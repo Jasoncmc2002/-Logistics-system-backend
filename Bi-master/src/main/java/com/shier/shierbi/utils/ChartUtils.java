@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import static com.shier.shierbi.constant.ChartConstant.*;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * CreateTime 2023/5/21 17:41
  * 图表工具类
  */

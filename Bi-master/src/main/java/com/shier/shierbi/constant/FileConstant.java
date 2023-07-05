@@ -3,7 +3,7 @@ package com.shier.shierbi.constant;
 /**
  * 文件常量
  *
- * @author Shier
+ * @author YANG FUCHAO
  */
 public interface FileConstant {
 

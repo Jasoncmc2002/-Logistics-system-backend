@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import static com.shier.shierbi.constant.BiMqConstant.*;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  */
 @Configuration
 public class RabbitMqConfig {

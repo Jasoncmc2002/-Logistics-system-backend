@@ -5,7 +5,7 @@ import com.shier.shierbi.common.ErrorCode;
 /**
  * 抛异常工具类
  *
- * @author Shier
+ * @author YANG FUCHAO
  */
 public class ThrowUtils {
 

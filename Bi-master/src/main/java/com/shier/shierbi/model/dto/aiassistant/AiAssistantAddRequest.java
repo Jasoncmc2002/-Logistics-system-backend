@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 /**
  * AI 问答助手信息表
- * @author Shier
+ * @author YANG FUCHAO
  * @TableName ai_assistant
  */
 

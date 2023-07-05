@@ -1,7 +1,7 @@
 package com.shier.shierbi.constant;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * CreateTime 2023/6/24 16:26
  * 应用到BI项目当中的mq常量
  */

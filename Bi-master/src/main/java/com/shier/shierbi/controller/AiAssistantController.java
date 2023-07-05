@@ -27,6 +27,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -37,25 +38,25 @@ import static com.shier.shierbi.constant.BiMqConstant.AI_QUESTION_EXCHANGE_NAME;
 import static com.shier.shierbi.constant.BiMqConstant.AI_QUESTION_ROUTING_KEY;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  */
 @RestController
-@RequestMapping("/aiAssistant")
+@RequestMapping("/bi/aiAssistant")
 @Api(tags = "AiAssistantController")
 @Slf4j
 //@CrossOrigin(origins = "http://bi.kongshier.top", allowCredentials = "true")
-@CrossOrigin(origins = "http://localhost:8000", allowCredentials = "true")
+//@CrossOrigin(origins = "http://localhost:8000", allowCredentials = "true")
 public class AiAssistantController {
 
-    @Resource
+    @Autowired
     private AiAssistantService aiAssistantService;
 
-    @Resource
+    @Autowired
     private UserService userService;
-    @Resource
+    @Autowired
     private RedisLimiterManager redisLimiterManager;
 
-    @Resource
+    @Autowired
     private RabbitTemplate rabbitTemplate;
 
     private final static Gson GSON = new Gson();

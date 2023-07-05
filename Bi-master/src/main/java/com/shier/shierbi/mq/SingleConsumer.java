@@ -9,7 +9,7 @@ import com.shier.shierbi.constant.BiMqConstant;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * 单向生产消费
  */
 public class SingleConsumer {

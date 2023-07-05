@@ -7,7 +7,7 @@ import com.rabbitmq.client.DeliverCallback;
 import com.shier.shierbi.constant.BiMqConstant;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * 广播交换机 - 消费者
  */
 public class FanoutConsumer {

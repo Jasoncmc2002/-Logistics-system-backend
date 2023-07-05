@@ -3,7 +3,7 @@ package com.shier.shierbi.constant;
 /**
  * 通用常量
  *
- * @author Shier
+ * @author YANG FUCHAO
  */
 public interface CommonConstant {
 

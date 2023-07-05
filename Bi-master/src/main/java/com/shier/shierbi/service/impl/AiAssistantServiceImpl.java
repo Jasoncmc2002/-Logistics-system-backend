@@ -8,7 +8,7 @@ import com.shier.shierbi.service.AiAssistantService;
 import org.springframework.stereotype.Service;
 
 /**
-* @author Shier
+* @author YANG FUCHAO
 * @description 针对表【ai_assistant(AI 问答助手信息表)】的数据库操作Service实现
 * @createDate 2023-06-25 18:54:46
 */

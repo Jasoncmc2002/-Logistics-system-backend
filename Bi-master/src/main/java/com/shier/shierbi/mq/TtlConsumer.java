@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * 消息过期机制 - 消费者
  */
 public class TtlConsumer {

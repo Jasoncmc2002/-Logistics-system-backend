@@ -8,7 +8,7 @@ import com.shier.shierbi.constant.BiMqConstant;
 import java.util.Scanner;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * 广播交换机 - 生产者
  */
 public class FanoutProducer {

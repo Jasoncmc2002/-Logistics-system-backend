@@ -5,12 +5,13 @@ import org.redisson.api.RRateLimiter;
 import org.redisson.api.RateIntervalUnit;
 import org.redisson.api.RateType;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * CreateTime 2023/5/27 23:07
  * 专门提供RedisLimiter 限流服务的
  */
@@ -18,7 +19,7 @@ import javax.annotation.Resource;
 @Slf4j
 public class RedisLimiterManager {
 
-    @Resource
+    @Autowired
     private RedissonClient redissonClient;
 
     /**

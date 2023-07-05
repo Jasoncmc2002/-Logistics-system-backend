@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * CreateTime 2023/6/7 20:31
  */
 @Configuration

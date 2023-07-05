@@ -9,7 +9,7 @@ import com.shier.shierbi.constant.BiMqConstant;
 import java.util.Scanner;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * 一生产者、多消费者
  */
 public class MultiProducer {

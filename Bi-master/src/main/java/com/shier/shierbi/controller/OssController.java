@@ -7,22 +7,23 @@ import com.shier.shierbi.exception.BusinessException;
 import com.shier.shierbi.service.OssService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  */
 @Api(tags = "阿里云文件管理")
 @RestController
-@RequestMapping("/oss")
+@RequestMapping("/bi/oss")
 //@CrossOrigin(origins = "http://localhost:8000", allowCredentials = "true")
-@CrossOrigin(origins = "http://bi.kongshier.top", allowCredentials = "true")
+//@CrossOrigin(origins = "http://bi.kongshier.top", allowCredentials = "true")
 public class OssController {
 
-    @Resource
+    @Autowired
     private OssService ossService;
 
     /**

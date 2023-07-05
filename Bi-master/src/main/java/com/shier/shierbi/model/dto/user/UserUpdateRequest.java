@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * 用户更新请求   管理员操作
  *
- * @author Shier
+ * @author YANG FUCHAO
  */
 @Data
 public class UserUpdateRequest implements Serializable {

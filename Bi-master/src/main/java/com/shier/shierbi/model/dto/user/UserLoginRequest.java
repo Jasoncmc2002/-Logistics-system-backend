@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * 用户登录请求
  *
- * @author Shier
+ * @author YANG FUCHAO
  */
 @Data
 public class UserLoginRequest implements Serializable {

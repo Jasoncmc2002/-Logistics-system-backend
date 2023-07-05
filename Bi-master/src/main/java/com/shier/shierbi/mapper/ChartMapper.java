@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* @author Shier
+* @author YANG FUCHAO
 * @description 针对表【chart(图表信息表)】的数据库操作Mapper
 * @createDate 2023-05-14 19:20:33
 * @Entity com.shier.shierbi.model.entity.Chart

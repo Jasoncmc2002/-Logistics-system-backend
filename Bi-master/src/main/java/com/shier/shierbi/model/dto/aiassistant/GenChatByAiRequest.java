@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * 文件上传请求
  *
- * @author Shier
+ * @author YANG FUCHAO
  */
 @Data
 public class GenChatByAiRequest implements Serializable {

@@ -6,20 +6,21 @@ import com.qcloud.cos.model.PutObjectResult;
 import com.shier.shierbi.config.CosClientConfig;
 import java.io.File;
 import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
  * Cos 对象存储操作
  *
- * @author Shier
+ * @author YANG FUCHAO
  */
 @Component
 public class CosManager {
 
-    @Resource
+    @Autowired
     private CosClientConfig cosClientConfig;
 
-    @Resource
+    @Autowired
     private COSClient cosClient;
 
     /**

@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.support.AmqpHeaders;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +23,7 @@ import javax.annotation.Resource;
 import static com.shier.shierbi.constant.ChartConstant.*;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * CreateTime 2023/6/24 15:53
  * BI项目 消费者
  */
@@ -30,10 +31,10 @@ import static com.shier.shierbi.constant.ChartConstant.*;
 @Slf4j
 public class BiMqMessageConsumer {
 
-    @Resource
+    @Autowired
     private ChartService chartService;
 
-    @Resource
+    @Autowired
     private AiManager aiManager;
 
     /**
