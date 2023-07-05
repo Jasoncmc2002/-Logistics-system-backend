@@ -37,6 +37,9 @@ public class SecondaryCategoryServiceImpl extends ServiceImpl<SecondaryCategoryM
             String pattern = (String) map.get("keywords");
             queryWrapper.like("sname",pattern);
         }
+        if(map.get("fId")!=null){
+            queryWrapper.eq("f_id",map.get("fId"));
+        }
         List<SecondaryCategory> records= secondaryCategoryMapper.selectList(queryWrapper);
         for(SecondaryCategory secondaryCategory :records){
             String fName="";
@@ -49,7 +52,6 @@ public class SecondaryCategoryServiceImpl extends ServiceImpl<SecondaryCategoryM
         }
         PageInfo pageInfo = new PageInfo(records);
 //        pageInfo.setPageSize(Integer.valueOf(String.valueOf(map.get("pageSize"))));
-
         return pageInfo;
     }
 }

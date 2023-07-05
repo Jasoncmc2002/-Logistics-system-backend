@@ -2,6 +2,7 @@ package com.example.substationmanagementcenter.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import lombok.Data;
 
 import java.io.Serializable;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
  * @author hzn
  * @since 2023-06-21
  */
+@Data
 public class Receipt implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -87,136 +89,4 @@ public class Receipt implements Serializable {
      * 用户名
      */
     private String remark;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Integer getReplyClass() {
-        return replyClass;
-    }
-
-    public void setReplyClass(Integer replyClass) {
-        this.replyClass = replyClass;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public String getMobilephone() {
-        return mobilephone;
-    }
-
-    public void setMobilephone(String mobilephone) {
-        this.mobilephone = mobilephone;
-    }
-
-    public String getSubstation() {
-        return substation;
-    }
-
-    public void setSubstation(String substation) {
-        this.substation = substation;
-    }
-
-    public String getTaskType() {
-        return taskType;
-    }
-
-    public void setTaskType(String taskType) {
-        this.taskType = taskType;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getGoodName() {
-        return goodName;
-    }
-
-    public void setGoodName(String goodName) {
-        this.goodName = goodName;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public Double getGoodPrice() {
-        return goodPrice;
-    }
-
-    public void setGoodPrice(Double goodPrice) {
-        this.goodPrice = goodPrice;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public String getTaskStatus() {
-        return taskStatus;
-    }
-
-    public void setTaskStatus(String taskStatus) {
-        this.taskStatus = taskStatus;
-    }
-
-    public String getCustomerSatis() {
-        return customerSatis;
-    }
-
-    public void setCustomerSatis(String customerSatis) {
-        this.customerSatis = customerSatis;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    @Override
-    public String toString() {
-        return "Receipt{" +
-        ", id = " + id +
-        ", replyClass = " + replyClass +
-        ", customerName = " + customerName +
-        ", mobilephone = " + mobilephone +
-        ", substation = " + substation +
-        ", taskType = " + taskType +
-        ", address = " + address +
-        ", goodName = " + goodName +
-        ", number = " + number +
-        ", goodPrice = " + goodPrice +
-        ", price = " + price +
-        ", taskStatus = " + taskStatus +
-        ", customerSatis = " + customerSatis +
-        ", remark = " + remark +
-        "}";
-    }
 }

@@ -3,6 +3,7 @@ package com.example.distributionmanagementcenter.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.distributionmanagementcenter.entity.Buy;
+import com.example.distributionmanagementcenter.entity.SecondaryCategory;
 import com.example.distributionmanagementcenter.entity.Station;
 import com.example.distributionmanagementcenter.entity.StationInOut;
 import com.example.distributionmanagementcenter.mapper.BuyMapper;
@@ -20,10 +21,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 /**
  * <p>
  * 库房 服务实现类
@@ -41,6 +40,8 @@ private StationInOutMapper stationInOutMapper;
 private BuyMapper buyMapper;
 @Autowired
 private CentralStationMapper centralStationMapper;
+@Autowired
+private StationMapper stationMapper;
     @Override
     public PageInfo stationInOutQueryService(Map<String, Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
@@ -93,6 +94,44 @@ private CentralStationMapper centralStationMapper;
 //           res.put("WaitAllocation"+centralStation.getGoodName(),centralStation.getWaitAllo());
 //        }
         PageInfo pageInfo = new PageInfo(records);
+        return pageInfo;
+    }
+
+    @Override
+    public PageInfo getList(Map<String, Object> map) throws ParseException {
+        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+                Integer.valueOf(String.valueOf(map.get("pageSize"))));
+
+        QueryWrapper<Station> queryWrapper = new QueryWrapper<>();
+        if((String) map.get("nameKeyword")!=null&& !Objects.equals((String) map.get("nameKeyword"), "")){
+            String pattern = (String) map.get("nameKeyword");
+            queryWrapper.like("name",pattern);
+        }
+        if((String) map.get("addrKeyword")!=null&& !Objects.equals((String) map.get("addrKeyword"), "")){
+            String pattern1 = (String) map.get("addrKeyword");
+            queryWrapper.like("address",pattern1);
+        }
+        if(map.get("stationClass")!=null){
+            queryWrapper.eq("station_class",map.get("stationClass"));
+        }
+        List<Station> records= stationMapper.selectList(queryWrapper);
+        for(Station station :records){
+            String className="";
+            if(station.getStationClass()==1){
+                className="中心库房";
+            }
+            else {
+                if(station.getStationClass()==2){
+                    className="分站库房";
+                }
+                else{
+                    className="未设置";
+                }
+            }
+            station.setStationClassName(className);
+        }
+        PageInfo pageInfo = new PageInfo(records);
+//        pageInfo.setPageSize(Integer.valueOf(String.valueOf(map.get("pageSize"))));
         return pageInfo;
     }
 }

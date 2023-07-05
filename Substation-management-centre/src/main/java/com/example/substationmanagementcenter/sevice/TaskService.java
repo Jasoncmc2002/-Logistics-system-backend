@@ -26,4 +26,7 @@ public interface TaskService extends IService<Task> {
 
     PageInfo getTaskToReceipt(Map<String,Object> map) throws ParseException;
 
+    PageInfo selectTaskById(Map<String,Object> map) throws ParseException;
+
+
 }

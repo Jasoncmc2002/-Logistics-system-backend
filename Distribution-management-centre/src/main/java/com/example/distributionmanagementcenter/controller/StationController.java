@@ -54,6 +54,22 @@ public class StationController {
         }
         return httpResponseEntity;
     }
+    @PostMapping(value = "/getList")
+    public HttpResponseEntity getList(@RequestBody Map<String, Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            PageInfo pageInfo=stationService.getList(map);
+            httpResponseEntity.setData(pageInfo);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("查找库房列表" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 
     @PostMapping(value = "/create")
     public HttpResponseEntity<Station> create(@RequestBody Station params) {

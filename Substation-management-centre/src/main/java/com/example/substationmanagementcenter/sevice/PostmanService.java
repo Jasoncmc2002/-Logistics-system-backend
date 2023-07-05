@@ -2,6 +2,9 @@ package com.example.substationmanagementcenter.sevice;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.substationmanagementcenter.entity.Postman;
+import com.github.pagehelper.PageInfo;
+
+import java.util.Map;
 
 
 /**
@@ -14,4 +17,5 @@ import com.example.substationmanagementcenter.entity.Postman;
  */
 public interface PostmanService extends IService<Postman> {
 
+    PageInfo selectAll(Map<String,Object> map);
 }
