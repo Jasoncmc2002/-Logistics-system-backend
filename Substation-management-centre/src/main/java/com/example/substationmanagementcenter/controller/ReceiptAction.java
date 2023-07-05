@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2023-06-21
  */
 @RestController
-@RequestMapping("/receipt")
+@RequestMapping("/substation/receipt")
 public class ReceiptAction {
 
 

@@ -19,7 +19,7 @@ import java.util.Map;
  */
 
 @RestController
-@RequestMapping("/task")
+@RequestMapping("/substation/task")
 public class TaskAction {
 
     private final Logger logger = LoggerFactory.getLogger(TaskAction.class);
@@ -49,9 +49,9 @@ public class TaskAction {
 
 
 
-    @RequestMapping(value = "/getTaskListByCriteria",method = RequestMethod.GET, headers = "Accept"
+    @RequestMapping(value = "/getTaskListByCriteria",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
-    public HttpResponseEntity getTaskListByDeadline(@RequestBody Map<String,Object> map){
+    public HttpResponseEntity getTaskListByCriteria(@RequestBody Map<String,Object> map){
 
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
@@ -135,6 +135,27 @@ public class TaskAction {
         }
         return httpResponseEntity;
 
+    }
+
+    @RequestMapping(value = "/selectTaskById",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity selectTaskById(@RequestBody Map<String,Object> map){
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+//            System.out.println(map);
+            PageInfo pageInfo= taskService.selectTaskById(map);
+
+            httpResponseEntity.setData(pageInfo);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+
+        } catch (Exception e) {
+            logger.info("updateUser 更新客户信息>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
     }
 
 

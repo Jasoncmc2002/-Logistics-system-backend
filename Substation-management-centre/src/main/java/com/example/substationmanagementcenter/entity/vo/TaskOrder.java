@@ -1,7 +1,8 @@
-package com.example.substationmanagementcenter.entity;
+package com.example.substationmanagementcenter.entity.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.example.substationmanagementcenter.entity.Task;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,22 +10,18 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * <p>
- * 退订
- * </p>
- *
  * @author hzn
- * @since 2023-06-19
+ * @create 2023-07-04 15:25
  */
 @Data
-public class Task implements Serializable{
-
+public class TaskOrder implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 用户名
-     */
-    @TableId(value = "id", type = IdType.AUTO)
+    private String recieveName;
+    private Double goodsum;
+    private Integer isInvoice;
+
+//    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -93,4 +90,6 @@ public class Task implements Serializable{
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endDate;
+
+
 }
