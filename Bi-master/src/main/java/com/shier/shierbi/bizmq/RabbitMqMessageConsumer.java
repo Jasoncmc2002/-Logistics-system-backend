@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * CreateTime 2023/6/24 15:53
  * RabbitMQ 消费者
  */

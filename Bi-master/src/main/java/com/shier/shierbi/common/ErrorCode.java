@@ -2,7 +2,7 @@ package com.shier.shierbi.common;
 
 /**
  * 自定义错误码
- * @author Shier
+ * @author YANG FUCHAO
  */
 public enum ErrorCode {
 

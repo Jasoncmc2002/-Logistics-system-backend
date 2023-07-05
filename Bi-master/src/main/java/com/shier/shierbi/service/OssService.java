@@ -3,7 +3,7 @@ package com.shier.shierbi.service;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  */
 public interface OssService {
     /**

@@ -2,19 +2,20 @@ package com.shier.shierbi.bizmq;
 
 import com.shier.shierbi.constant.BiMqConstant;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * CreateTime 2023/6/24 15:53
  * BI项目 生产者
  */
 @Component
 public class BiMqMessageProducer {
 
-    @Resource
+    @Autowired
     private RabbitTemplate rabbitTemplate;
 
     /**

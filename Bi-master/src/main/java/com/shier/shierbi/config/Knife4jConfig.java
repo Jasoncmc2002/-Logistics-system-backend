@@ -13,7 +13,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * Knife4j 接口文档配置
  * https://doc.xiaominfo.com/knife4j/documentation/get_start.html
  */

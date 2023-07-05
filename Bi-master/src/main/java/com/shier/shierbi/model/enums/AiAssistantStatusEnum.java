@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 /**
  * 图表状态枚举类
  *
- * @author Shier
+ * @author YANG FUCHAO
  */
 public enum AiAssistantStatusEnum {
 

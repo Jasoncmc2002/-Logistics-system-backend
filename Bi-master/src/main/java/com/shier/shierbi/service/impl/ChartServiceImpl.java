@@ -19,6 +19,7 @@ import com.shier.shierbi.service.UserService;
 import com.shier.shierbi.utils.ChartUtils;
 import com.shier.shierbi.utils.ExcelUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,26 +30,26 @@ import java.util.concurrent.*;
 import static com.shier.shierbi.constant.ChartConstant.*;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * @description 针对表【chart(图表信息表)】的数据库操作Service实现
  * @createDate 2023-05-14 19:20:33
  */
 @Service
 public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements ChartService {
 
-    @Resource
+    @Autowired
     private UserService userService;
 
-    @Resource
+    @Autowired
     private AiManager aiManager;
 
-    @Resource
+    @Autowired
     private RedisLimiterManager redisLimiterManager;
 
-    @Resource
+    @Autowired
     private ThreadPoolExecutor threadPoolExecutor;
 
-    @Resource
+    @Autowired
     private BiMqMessageProducer biMqMessageProducer;
 
     /**

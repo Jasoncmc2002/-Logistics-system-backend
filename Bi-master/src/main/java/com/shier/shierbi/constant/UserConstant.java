@@ -2,7 +2,7 @@ package com.shier.shierbi.constant;
 
 /**
  * 用户常量
- * @author Shier
+ * @author YANG FUCHAO
  */
 public interface UserConstant {
 

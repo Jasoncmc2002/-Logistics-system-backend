@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * 死信队列 - 消费者
  */
 public class DlxDirectConsumer {

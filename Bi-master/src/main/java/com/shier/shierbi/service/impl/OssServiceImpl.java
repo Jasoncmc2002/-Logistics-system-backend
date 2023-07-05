@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.util.UUID;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  */
 @Service
 public class OssServiceImpl implements OssService {

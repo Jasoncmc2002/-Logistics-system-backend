@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * CreateTime 2023/5/21 17:38
  */
 public interface ChartConstant {

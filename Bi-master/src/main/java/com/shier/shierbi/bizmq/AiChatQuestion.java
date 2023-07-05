@@ -13,6 +13,7 @@ import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -22,7 +23,7 @@ import static com.shier.shierbi.constant.BiMqConstant.*;
 import static com.shier.shierbi.constant.CommonConstant.AI_MODEL_ID;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * CreateTime 2023/6/25 20:07
  */
 @Slf4j
@@ -32,9 +33,9 @@ public class AiChatQuestion {
 
     private final static Gson GSON = new Gson();
 
-    @Resource
+    @Autowired
     private AiManager aiManager;
-    @Resource
+    @Autowired
     private AiAssistantService aiAssistantService;
 
 

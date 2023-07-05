@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * 用户服务
  *
- * @author Shier
+ * @author YANG FUCHAO
  */
 public interface UserService extends IService<User> {
 

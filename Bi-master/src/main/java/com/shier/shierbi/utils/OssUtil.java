@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * 常量类，读取配置文件application.properties中的配置
- * @author Shier
+ * @author YANG FUCHAO
  */
 @Component
 public class OssUtil implements InitializingBean {

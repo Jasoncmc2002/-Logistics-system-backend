@@ -3,6 +3,7 @@ package com.shier.shierbi.controller;
 import cn.hutool.json.JSONUtil;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,18 +19,18 @@ import java.util.concurrent.ThreadPoolExecutor;
 /**
  * 队列测试
  *
- * @author Shier
+ * @author YANG FUCHAO
  */
 @RestController
-@RequestMapping("/queue")
+@RequestMapping("/bi/queue")
 @Slf4j
 @Profile({ "dev", "local" })
 @Api(tags = "QueueController")
 //@CrossOrigin(origins = "http://bi.kongshier.top", allowCredentials = "true")
-@CrossOrigin(origins = "http://localhost:8000", allowCredentials = "true")
+//@CrossOrigin(origins = "http://localhost:8000", allowCredentials = "true")
 public class QueueController {
 
-    @Resource
+    @Autowired
     private ThreadPoolExecutor threadPoolExecutor;
 
     @GetMapping("/add")

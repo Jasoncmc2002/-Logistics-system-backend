@@ -6,7 +6,7 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.shier.shierbi.constant.BiMqConstant;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * CreateTime 2023/6/24 16:08
  * 用于BI项目,创建测试测序用到的交换机和队列 (仅执行一次)
  */

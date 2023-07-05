@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  * 网络工具类
  *
- * @author Shier
+ * @author YANG FUCHAO
  */
 public class NetUtils {
 

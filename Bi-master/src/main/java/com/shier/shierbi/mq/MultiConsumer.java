@@ -7,7 +7,7 @@ import com.rabbitmq.client.DeliverCallback;
 import com.shier.shierbi.constant.BiMqConstant;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * 一生产者 - 多消费者
  */
 public class MultiConsumer {

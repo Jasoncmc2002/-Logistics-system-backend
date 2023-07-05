@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,20 +34,20 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  * 图表接口
  *
- * @author Shier
+ * @author YANG FUCHAO
  */
 @RestController
-@RequestMapping("/chart")
+@RequestMapping("/bi/chart")
 @Slf4j
 @Api(tags = "ChartController")
 //@CrossOrigin(origins = "http://bi.kongshier.top", allowCredentials = "true")
-@CrossOrigin(origins = "http://localhost:8000", allowCredentials = "true")
+//@CrossOrigin(origins = "http://localhost:8000", allowCredentials = "true")
 public class ChartController {
 
-    @Resource
+    @Autowired
     private ChartService chartService;
 
-    @Resource
+    @Autowired
     private UserService userService;
 
     /**

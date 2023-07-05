@@ -9,7 +9,7 @@ import com.shier.shierbi.constant.BiMqConstant;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * 消息过期机制 - 生产者
  */
 public class TtlProducer {

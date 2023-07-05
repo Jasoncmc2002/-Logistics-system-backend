@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * AI 问答助手信息表
- * @author Shier
+ * @author YANG FUCHAO
  * @TableName ai_assistant
  */
 @Data

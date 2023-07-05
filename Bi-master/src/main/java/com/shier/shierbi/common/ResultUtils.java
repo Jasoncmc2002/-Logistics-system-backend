@@ -3,7 +3,7 @@ package com.shier.shierbi.common;
 /**
  * 返回工具类
  *
- * @author Shier
+ * @author YANG FUCHAO
  */
 public class ResultUtils {
 

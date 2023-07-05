@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author Shier
+ * @author YANG FUCHAO
  * CreateTime 2023/6/24 16:17
  */
 @SpringBootTest
