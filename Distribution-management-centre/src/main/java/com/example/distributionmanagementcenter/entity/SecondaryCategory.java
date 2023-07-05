@@ -29,5 +29,7 @@ public class SecondaryCategory implements Serializable {
     private String sName;
     @TableField(value="f_id")
     private Integer fId;
+    @TableField(exist = false)
+    private String fName;
     private String description;
 }

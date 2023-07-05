@@ -46,7 +46,6 @@ private SupplyMapper supplyMapper;
     public PageInfo getListByConditions(Map<String, Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
                 Integer.valueOf(String.valueOf(map.get("pageSize"))));
-
         QueryWrapper<Supply> queryWrapper = new QueryWrapper<>();
         String name=(String) map.get("nameKeywords");
         String addr=(String) map.get("addrKeywords");
@@ -55,10 +54,18 @@ private SupplyMapper supplyMapper;
 //        if(name!=null&& !Objects.equals(name, "")){
 //            queryWrapper.like("good_name",name);
 //        }
-           queryWrapper.like("name",name)
-                   .like("address",addr)
-                   .like("admin_name",admin)
-                   .like("phone",tel);
+        if(name!=null){
+            queryWrapper.like("name",name);
+        }
+        if(addr!=null){
+            queryWrapper.like("address",addr);
+        }
+        if(admin!=null){
+            queryWrapper.like("admin_name",admin);
+        }
+        if(tel!=null){
+            queryWrapper.like("phone",tel);
+        }
         List<Supply> records= supplyMapper.selectList(queryWrapper);
         PageInfo pageInfo = new PageInfo(records);
         return pageInfo;
