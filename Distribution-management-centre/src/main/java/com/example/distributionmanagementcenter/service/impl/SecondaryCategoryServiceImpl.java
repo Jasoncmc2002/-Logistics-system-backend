@@ -37,7 +37,7 @@ public class SecondaryCategoryServiceImpl extends ServiceImpl<SecondaryCategoryM
             String pattern = (String) map.get("keywords");
             queryWrapper.like("sname",pattern);
         }
-        if(map.get("fId")!=null){
+        if(map.get("fId")!=null&&map.get("fId")!=""){
             queryWrapper.eq("f_id",map.get("fId"));
         }
         List<SecondaryCategory> records= secondaryCategoryMapper.selectList(queryWrapper);

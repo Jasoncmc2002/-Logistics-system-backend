@@ -1,6 +1,7 @@
 package com.example.distributionmanagementcenter.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -27,10 +28,14 @@ public class StationInOut implements Serializable {
     private Long id;
 
     private Integer stationClass;
+    @TableField(exist = false)
+    private String stationClassName;
 
     private Long alloId;
 
     private Long stationId;
+    @TableField(exist = false)
+    private String stationName;
 
     private Long taskId;
 

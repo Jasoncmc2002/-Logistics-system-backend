@@ -34,7 +34,6 @@ public class StationInOutController {
     private StationInOutService stationInOutService;
 
 
-
     @PostMapping(value = "/{id}")
     public HttpResponseEntity<StationInOut> getById(@PathVariable("id") String id) {
         HttpResponseEntity<StationInOut> httpResponseEntity = new HttpResponseEntity<StationInOut>();

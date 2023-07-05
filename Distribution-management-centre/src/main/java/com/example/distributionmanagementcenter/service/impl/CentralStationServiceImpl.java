@@ -126,7 +126,6 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
     @Override
     public int updateList(Map<String, Object> map) throws ParseException {
         List<Integer> list = (List<Integer>) map.get("idList");
-        QueryWrapper<CentralStation> queryWrapper = new QueryWrapper<>();
         for(Integer integer :list){
             CentralStation centralStation = new CentralStation();
             centralStation.setId(integer);

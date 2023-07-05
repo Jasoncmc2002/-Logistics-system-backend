@@ -54,16 +54,16 @@ private SupplyMapper supplyMapper;
 //        if(name!=null&& !Objects.equals(name, "")){
 //            queryWrapper.like("good_name",name);
 //        }
-        if(name!=null){
+        if(name!=null&&name!=""){
             queryWrapper.like("name",name);
         }
-        if(addr!=null){
+        if(addr!=null&&addr!=""){
             queryWrapper.like("address",addr);
         }
-        if(admin!=null){
+        if(admin!=null&&admin!=""){
             queryWrapper.like("admin_name",admin);
         }
-        if(tel!=null){
+        if(tel!=null&&tel!=""){
             queryWrapper.like("phone",tel);
         }
         List<Supply> records= supplyMapper.selectList(queryWrapper);

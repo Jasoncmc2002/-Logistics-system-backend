@@ -111,7 +111,7 @@ private StationMapper stationMapper;
             String pattern1 = (String) map.get("addrKeyword");
             queryWrapper.like("address",pattern1);
         }
-        if(map.get("stationClass")!=null){
+        if(map.get("stationClass")!=null&&map.get("stationClass")!=""){
             queryWrapper.eq("station_class",map.get("stationClass"));
         }
         List<Station> records= stationMapper.selectList(queryWrapper);
