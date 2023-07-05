@@ -87,14 +87,11 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
             //由task找对应的order
             Map map1 = new HashMap<>();
             map1.put("id",task.getOrderId());
-            HttpResponseEntity resOrder = feignApi.getByOrderId(map1);
+            HttpResponseEntity resOrder = feignApi.getOrderByid(map1);
             System.out.println("resOrder"+resOrder);
             String jsonString1 = JSON.toJSONString(resOrder.getData());  // 将对象转换成json格式数据
-            JSONObject jsonObject = JSON.parseObject(jsonString1); // 再转回去
-            Orders order = JSON.parseObject(jsonObject.getString("Orders"), Orders.class); // 这样就可以了
-            Orders order1 = (Orders) resOrder.getData();
+            Orders order = JSON.parseObject(jsonString1, Orders.class); // 这样就可以了
             System.out.println("order"+order);
-            System.out.println("order1"+order);
 
 
             //列表内每一列的数据
