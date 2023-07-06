@@ -168,4 +168,21 @@ public class CustomerAction {
         }
         return httpResponseEntity;
     }
+    @RequestMapping(value = "/selectByCustomerId",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity selectByCustomerId(@RequestBody Long Id) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            Customer customer = customerService.selectbyId(Id);
+            httpResponseEntity.setData(customer);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+        } catch (Exception e) {
+            logger.info("selectByCustomerId 通过id得到客户>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
 }
