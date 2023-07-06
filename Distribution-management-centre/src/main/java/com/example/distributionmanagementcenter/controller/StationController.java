@@ -144,34 +144,34 @@ public class StationController {
     }
 
     //库存量查询
-@RequestMapping(value = "/stock/{sid}/{cid}",method = RequestMethod.POST, headers = "Accept"
-        + "=application/json")
-public HttpResponseEntity  stockQuery(@PathVariable("sid") String sid,@PathVariable("cid") String cid) {
-    HttpResponseEntity  httpResponseEntity = new HttpResponseEntity();
-    try {
-        Station station = stationService.getById(sid);
-        CentralStation centralStation= centralstationService.getById(cid);
-        HashMap<String,Object> responseContent=new HashMap<String,Object>();
-
-        responseContent.put("StationName",station.getName());
-        responseContent.put("GoodName",centralStation.getGoodName());
-        Long allStock=centralStation.getWaitAllo()+centralStation.getWithdrawal()+centralStation.getDoneAllo();
-        responseContent.put("AllStock",allStock);
-        responseContent.put("Withdrawal",centralStation.getWithdrawal());
-        responseContent.put("DoneAllo",centralStation.getDoneAllo());
-        responseContent.put("WaitAllo",centralStation.getWaitAllo());
-        httpResponseEntity.setData(responseContent);
-        httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-        httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-
-
-    } catch (Exception e) {
-        logger.info("stockQuery 库存量查询>>>>>>>>>>>" + e.getLocalizedMessage());
-        httpResponseEntity.setCode(Constans.EXIST_CODE);
-        httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
-    }
-    return httpResponseEntity;
-}
+//@RequestMapping(value = "/stock/{sid}/{cid}",method = RequestMethod.POST, headers = "Accept"
+//        + "=application/json")
+//public HttpResponseEntity  stockQuery(@PathVariable("sid") String sid,@PathVariable("cid") String cid) {
+//    HttpResponseEntity  httpResponseEntity = new HttpResponseEntity();
+//    try {
+//        Station station = stationService.getById(sid);
+//        CentralStation centralStation= centralstationService.getById(cid);
+//        HashMap<String,Object> responseContent=new HashMap<String,Object>();
+//
+//        responseContent.put("StationName",station.getName());
+//        responseContent.put("GoodName",centralStation.getGoodName());
+//        Long allStock=centralStation.getWaitAllo()+centralStation.getWithdrawal()+centralStation.getDoneAllo();
+//        responseContent.put("AllStock",allStock);
+//        responseContent.put("Withdrawal",centralStation.getWithdrawal());
+//        responseContent.put("DoneAllo",centralStation.getDoneAllo());
+//        responseContent.put("WaitAllo",centralStation.getWaitAllo());
+//        httpResponseEntity.setData(responseContent);
+//        httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+//        httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+//
+//
+//    } catch (Exception e) {
+//        logger.info("stockQuery 库存量查询>>>>>>>>>>>" + e.getLocalizedMessage());
+//        httpResponseEntity.setCode(Constans.EXIST_CODE);
+//        httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+//    }
+//    return httpResponseEntity;
+//}
 
     @RequestMapping(value = "/stationInOut/{sid}/{gid}",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")

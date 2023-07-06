@@ -21,6 +21,8 @@ public interface CentralstationService extends IService<CentralStation> {
 
     int updateList(Map<String, Object> map) throws ParseException;
 
-    int addBuyList(Map<String, Object> map) throws ParseException;
+   String addBuyList(Map<String, Object> map) throws ParseException;
+
+   String addRegistList(Map<String, Object> map) throws ParseException;
 
 }

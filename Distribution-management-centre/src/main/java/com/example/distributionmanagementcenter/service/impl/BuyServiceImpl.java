@@ -2,7 +2,9 @@ package com.example.distributionmanagementcenter.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.distributionmanagementcenter.entity.Buy;
+import com.example.distributionmanagementcenter.entity.CentralStation;
 import com.example.distributionmanagementcenter.mapper.BuyMapper;
+import com.example.distributionmanagementcenter.mapper.CentralStationMapper;
 import com.example.distributionmanagementcenter.service.BuyService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -17,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * <p>
@@ -31,21 +34,72 @@ import java.util.Map;
 public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuyService {
       @Autowired
       private  BuyMapper buyMapper;
+      @Autowired
+      private CentralStationMapper centralStationMapper;
     @Override
     public PageInfo getListByDateSupply(Map<String, Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
                 Integer.valueOf(String.valueOf(map.get("pageSize"))));
-        String supplyName=(String)map.get("supplyName");
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-        ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
-        ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String startDate = outputFormatter.format(startTime);
-        String endDate = outputFormatter.format(endTime);
         QueryWrapper<Buy> queryWrapper = new QueryWrapper<>();
-        queryWrapper.between("date", startDate, endDate)
-                .eq("supply",supplyName);
+        if(map.get("supplyName")!=null&&map.get("supplyName")!=""){
+            queryWrapper.like("supply",map.get("supplyName"));
+        }
+        if(map.get("startTime")!=null&&map.get("endTime")!=null&&map.get("startTime")!=""&&map.get("endTime")!=""){
+            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+            ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
+            ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String startDate = outputFormatter.format(startTime);
+            String endDate = outputFormatter.format(endTime);
+            queryWrapper.between("date", startDate, endDate);
+        }
+        if(map.get("id")!=null&&map.get("id")!=""){
+            queryWrapper.eq("good_id",map.get("id"));
+        }
         List<Buy> records= buyMapper.selectList(queryWrapper);
+        for(Buy buy:records){
+          String typeName="";
+
+              if(buy.getType()==1){
+                  typeName="进货单";
+              }else {
+                  if(buy.getType()==2){
+                      typeName="购货入库调拨单";
+                  }else {
+                      typeName="未设定";
+                  }
+              }
+
+
+          buy.setTypeName(typeName);
+            String BuyTypeName="";
+
+                switch (buy.getBuyType()){
+                    case 0:
+                        BuyTypeName="删除";
+                        break;
+                    case 1:
+                        BuyTypeName="已进货";
+                        break;
+                    case 2:
+                        BuyTypeName="已支付";
+                        break;
+                    case 3:
+                        BuyTypeName="中心库房已入库";
+                        break;
+                    default:
+                        BuyTypeName="未设定";
+                }
+
+            buy.setBuyTypeName(BuyTypeName);
+
+            CentralStation centralStation = centralStationMapper.selectById(buy.getGoodId());
+            buy.setGoodName(centralStation.getGoodName());
+            buy.setWaitAllo(centralStation.getWaitAllo());
+            buy.setWithdrawal(centralStation.getWithdrawal());
+            buyMapper.updateById(buy);
+
+        }
         PageInfo pageInfo = new PageInfo(records);
         return pageInfo;
     }
@@ -100,7 +154,7 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
         int flag=1;
         Integer goodId=Integer.valueOf(String.valueOf(map.get("good_id")));
         Integer orderId=Integer.valueOf(String.valueOf(map.get("order_id")));
-        Integer number=Integer.valueOf(String.valueOf(map.get("number")));
+        Long number=Long.valueOf(String.valueOf(map.get("number")));
         QueryWrapper<Buy> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("good_id",goodId)
                 .eq("order_id",orderId);
@@ -145,6 +199,35 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
     @Override
     public List<Buy> getList(Map<String, Object> map) throws ParseException {
         return buyMapper.selectList(null);
+    }
+
+    @Override
+    public String withdrawal(Map<String, Object> map) throws ParseException {
+        System.out.println(map);
+        int flag=1;
+        String result="";
+        for (Map.Entry<String,Object> entry : map.entrySet()) {
+            if(!Objects.equals(String.valueOf(entry.getValue()), "") &&String.valueOf(entry.getValue())!=null){
+                Buy buy = buyMapper.selectById(Long.valueOf(entry.getKey()));
+                CentralStation centralStation=centralStationMapper.selectById(buy.getGoodId());
+                Long number =Long.valueOf(String.valueOf(entry.getValue()));
+                if(number<=centralStation.getWaitAllo()){
+                    centralStation.setWaitAllo(centralStation.getWaitAllo()-number);
+                    centralStation.setWithdrawal(centralStation.getWithdrawal()+number);
+                    centralStationMapper.updateById(centralStation);
+
+                }else {
+                     flag=0;
+                }
+            }
+        }
+        if(flag==0){
+            result="Fail";
+        }
+        else{
+            result="Success";
+        }
+        return result;
     }
 
 }

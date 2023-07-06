@@ -222,6 +222,24 @@ public class BuyController {
         return httpResponseEntity;
     }
 
+    @PostMapping(value="/withdrawal")
+
+    public HttpResponseEntity withdrawal(@RequestBody Map<String, Object> map) {
+
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            httpResponseEntity.setData(buyService.withdrawal(map));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("退货>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
 
 
 }

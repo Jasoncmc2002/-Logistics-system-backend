@@ -231,39 +231,12 @@ public class CentralstationController {
         return httpResponseEntity;
     }
     //新增进货单
-    @RequestMapping(value = "/addBuy/{id}",method = RequestMethod.POST, headers = "Accept"
-            + "=application/json")
-    public HttpResponseEntity addBuy(@PathVariable("id") int id,@RequestBody Buy param) {
-        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
-        try{
-            CentralStation centralStation=centralstationService.getById(id);
-            if(param.getNumber()<=(centralStation.getMax()-centralStation.getWaitAllo())){
-                param.setType(1);
-                buyService.save(param);
-                httpResponseEntity.setData("Success");
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else{
-                httpResponseEntity.setData("Invalid input number");
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
-            }
-
-        }catch(Exception e){
-            logger.info("addBuy 新增进货单>>>>>>>>>>>" + e.getLocalizedMessage());
-            httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
-        }
-        return httpResponseEntity;
-
-    }
-
     @RequestMapping(value = "/addBuyList",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
     public HttpResponseEntity addBuyList(@RequestBody Map<String, Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try{
-            centralstationService.addBuyList(map);
+            httpResponseEntity.setData(centralstationService.addBuyList(map));
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         }catch(Exception e){
@@ -275,30 +248,22 @@ public class CentralstationController {
 
     }
     //进货登记
-    @RequestMapping(value = "/registerBuy/{id}",method = RequestMethod.POST, headers = "Accept"
+
+    @RequestMapping(value = "/addRegisterList",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
-    public HttpResponseEntity registerBuy(@PathVariable("id") int id,@RequestBody Buy param) {
+    public HttpResponseEntity addRegisterList(@RequestBody Map<String, Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try{
-            CentralStation centralStation=centralstationService.getById(id);
-            if(param.getNumber()<=(centralStation.getMax()-centralStation.getWaitAllo())){
-                param.setType(2);
-                buyService.save(param);
-                httpResponseEntity.setData("Success");
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else{
-                httpResponseEntity.setData("Invalid input number");
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
-            }
-
+           httpResponseEntity.setData(centralstationService.addRegistList(map));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         }catch(Exception e){
-            logger.info("registerBuy 进货登记>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("addRegister 新增购货入库调拨单列表>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
         return httpResponseEntity;
+
     }
 
 }

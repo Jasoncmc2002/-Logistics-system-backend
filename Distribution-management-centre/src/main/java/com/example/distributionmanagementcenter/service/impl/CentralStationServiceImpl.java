@@ -51,20 +51,20 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
 //        Integer goodClassId= Integer.valueOf(String.valueOf(map.get("goodClassId"));
 //        Integer goodSubclassId= Integer.valueOf(String.valueOf(map.get("goodSubclassId")));
         QueryWrapper<CentralStation> queryWrapper = new QueryWrapper<>();
-        if(map.get("goodClassId")!=null){
+        if(map.get("goodClassId")!=null&&Objects.equals((String) map.get("goodClassId"), "")){
             queryWrapper.eq("good_class_id",map.get("goodClassId"));
         }
-        if(map.get("goodSubclassId")!=null){
+        if(map.get("goodSubclassId")!=null&&Objects.equals((String) map.get("goodSubclassId"), "")){
             queryWrapper.eq("good_subclass_id",map.get("goodSubclassId"));
         }
         if((String) map.get("keywords")!=null&& !Objects.equals((String) map.get("keywords"), "")){
             String pattern = (String) map.get("keywords");
             queryWrapper.like("good_name",pattern);
         }
-       if(map.get("stationId")!=null){
+       if(map.get("stationId")!=null&& !Objects.equals((String) map.get("stationId"), "")){
            queryWrapper.eq("station_id",map.get("stationId"));
        }
-        if(map.get("supplyId")!=null){
+        if(map.get("supplyId")!=null&& !Objects.equals((String) map.get("supplyId"), "")){
             queryWrapper.eq("supply_id",map.get("supplyId"));
         }
         List<CentralStation> records= centralStationMapper.selectList(queryWrapper);
@@ -149,10 +149,10 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
     }
 
     @Override
-    public int addBuyList(Map<String, Object> map) throws ParseException {
-        System.out.println(map);
+    public String addBuyList(Map<String, Object> map) throws ParseException {
+        int flag=1;
+        String result="";
         Map<String,String> list =  (Map<String,String>)map.get("list");
-        System.out.println(list);
        Date date= new Date();
         if(map.get("time")!=null&&map.get("time")!=""){
             DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
@@ -177,14 +177,74 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                buy.setGoodName(centralStation.getGoodName());
                buy.setGoodUnit(centralStation.getGoodUnit());
                buy.setType(1);
-               Integer number =Integer.valueOf(entry.getValue());
+               Long number =Long.valueOf(entry.getValue());
                buy.setNumber(number);
                 buy.setDate(date);
-                buyMapper.insert(buy);
+                if(number<=centralStation.getMax()-centralStation.getWaitAllo()){
+                    buyMapper.insert(buy);
+                }else {
+                    flag=0;
+                }
             }
         }
+        if(flag==0){
+            result="Fail";
+        }
+        else{
+            result="Success";
+        }
 
-        return 0;
+        return result;
+    }
+
+    @Override
+    public String addRegistList(Map<String, Object> map) throws ParseException {
+        String result="";
+        int flag=1;
+        Map<String,String> list =  (Map<String,String>)map.get("list");
+        Date date= new Date();
+        if(map.get("time")!=null&&map.get("time")!=""){
+            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+            ZonedDateTime time = ZonedDateTime.parse((String) map.get("time"), inputFormatter);
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String dateString = outputFormatter.format(time);
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateString);
+
+        }
+        else{
+            String dateString=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateString);
+
+        }
+
+        for (Map.Entry<String,String> entry : list.entrySet()) {
+
+            if(!Objects.equals(entry.getValue(), "") &&entry.getValue()!=null){
+                Buy buy = new Buy();
+                buy.setGoodId(Long.valueOf(entry.getKey()));
+                CentralStation centralStation=centralStationMapper.selectById(Long.valueOf(entry.getKey()));
+                buy.setGoodName(centralStation.getGoodName());
+                buy.setGoodUnit(centralStation.getGoodUnit());
+                buy.setType(2);
+                Long number =Long.valueOf(entry.getValue());
+                buy.setNumber(number);
+                buy.setDate(date);
+                if(number<=centralStation.getMax()-centralStation.getWaitAllo()){
+                    buyMapper.insert(buy);
+
+                }else {
+                    flag=0;
+                }
+
+            }
+        }
+        if(flag==0){
+            result="Fail";
+        }
+        else{
+            result="Success";
+        }
+        return result;
     }
 
 }

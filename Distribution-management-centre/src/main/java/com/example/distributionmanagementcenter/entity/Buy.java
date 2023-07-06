@@ -22,53 +22,40 @@ public class Buy implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 用户名
-     */
+
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    /**
-     * 用户名
-     */
     private String goodClass;
 
-    /**
-     * 用户名
-     */
     private Long goodId;
 
-    /**
-     * 用户名
-     */
     private String goodName;
 
-    /**
-     * 用户名
-     */
     private String goodUnit;
 
-    /**
-     * 用户名
-     */
     private String supply;
 
-    /**
-     * 用户名
-     */
-    private Integer number;
+    private Long number;
 
-    /**
-     * 用户名
-     */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date;
 
     private int type;
+    @TableField(exist = false)
+    private String typeName;
     @TableField("buy_type")
     private Byte buyType;
+    @TableField(exist = false)
+    private String buyTypeName;
+
     @TableField("order_id")
     private Long orderId;
 
+    //前端显示专用
+    @TableField(exist = false)
+    private Long waitAllo;
+    @TableField(exist = false)
+    private Long withdrawal;
 
 }
