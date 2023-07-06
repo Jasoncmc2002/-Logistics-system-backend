@@ -1,6 +1,7 @@
 package com.example.warehousemanagementcentre.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -21,60 +22,67 @@ import java.util.Date;
 public class CentralStation implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 用户名
-     */
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
-    /**
-     * 用户名
-     */
-    private String goodClassId;
+    @TableField("good_class_id")
+    private Integer goodClassId;
 
-    /**
-     * 用户名
-     */
+    @TableField(exist = false)
+    private String goodClassName;
+
+    @TableField("good_subclass_id")
+    private Integer goodSubclassId;
+
+    @TableField(exist = false)
+    private String goodSubClassName;
+
+    @TableField("good_name")
     private String goodName;
 
-    /**
-     * 用户名
-     */
-    private Integer stock;
+    private Long stock;
 
-    /**
-     * 用户名
-     */
-    private Integer withdrawal;
+    private Long withdrawal;
 
-    /**
-     * 用户名
-     */
-    private Integer waitAllo;
+    private Long waitAllo;
 
-    /**
-     * 用户名
-     */
-    private Integer doneAllo;
+    private Long doneAllo;
 
-    /**
-     * 用户名
-     */
-    private Integer warn;
+    private Long warn;
 
-    /**
-     * 用户名
-     */
-    private Integer max;
-    private Object goodPrice;
-    private Object goodSale;
-    private Object goodCost;
+    private Long max;
+
+    @TableField("good_price")
+    private Double goodPrice;
+
+    @TableField("good_sale")
+    private Double goodSale;
+
+    @TableField("good_cost")
+    private Double goodCost;
+
     private String goodUnit;
-    private Byte supplyId;
-    private String goodSubclassId;
-    private Date sellDate;
+
+    private Integer supplyId;
+    @TableField(exist = false)
+    private String supplyName;
+
+    @TableField("sell_date")
+    private Integer sellDate;
+
     private Byte isReturn;
+    @TableField(exist = false)
+    private String isReturnName;
+
     private Byte isChange;
+    @TableField(exist = false)
+    private String isChangeName;
+
     private String remark;
+
+    @TableField("station_id")
+    private Integer stationId;
+    @TableField(exist = false)
+    private String stationName;
+
 }

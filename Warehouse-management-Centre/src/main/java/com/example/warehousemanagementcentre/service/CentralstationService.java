@@ -2,6 +2,7 @@ package com.example.warehousemanagementcentre.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.warehousemanagementcentre.entity.CentralStation;
+import com.example.warehousemanagementcentre.entity.vo.ResultInCentral;
 import com.github.pagehelper.PageInfo;
 
 import java.util.Map;
@@ -34,4 +35,9 @@ public interface CentralstationService extends IService<CentralStation> {
 
 
     PageInfo searchInCentral(Map<String,Object> map);
+    int inCentral(Map<String,Object> map);
+
+    int outCentral(Map<String,Object> map);
+
+
 }
