@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.financialmanagement.beans.HttpResponseEntity;
 import com.example.financialmanagement.common.Constans;
 import com.example.financialmanagement.entity.Invoice;
+import com.example.financialmanagement.entity.Use;
 import com.example.financialmanagement.entity.vo.ResultStation;
 import com.example.financialmanagement.service.InvoiceService;
+import com.example.financialmanagement.service.UseService;
+import com.github.pagehelper.PageInfo;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,14 +38,16 @@ public class InvoiceAction {
     private final Logger logger = LoggerFactory.getLogger(FinancialAction.class);
     @Autowired
     private InvoiceService invoiceService;
+    @Autowired
+    private UseService useService;
     @RequestMapping(value = "/addInvoice",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity addInvoice(@RequestBody Invoice invoice) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         System.out.println(invoice);
         try {
-            int res=invoiceService.addInvoice(invoice);
-            if(res!=0)
+            String res=invoiceService.addInvoice(invoice);
+            if(res=="OK")
             {
                 httpResponseEntity.setData(res);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
@@ -50,7 +55,7 @@ public class InvoiceAction {
             }else
             {
                 httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+                httpResponseEntity.setMessage(res);
             }
 
         } catch (Exception e) {
@@ -63,12 +68,36 @@ public class InvoiceAction {
 
     @RequestMapping(value = "/addUseInvoice",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
-    public HttpResponseEntity addUseInvoice(@RequestBody Map<String,Object> map) {
+    public HttpResponseEntity addUseInvoice(@RequestBody Use use) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=useService.addUseInvoice(use);
+            if(res!=0)
+            {
+                httpResponseEntity.setData(res);
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+        } catch (Exception e) {
+            logger.info("addUseInvoice 添加使用的发票>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+    @RequestMapping(value = "/selectInvoice",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity selectInvoice(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         System.out.println(map);
         try {
-            int res=invoiceService.addUseInvoice(map);
-            if(res!=0)
+            PageInfo res=invoiceService.selectInvoice(map);
+            if(res!=null)
             {
                 httpResponseEntity.setData(res);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
@@ -87,14 +116,14 @@ public class InvoiceAction {
         return httpResponseEntity;
     }
 
-    @RequestMapping(value = "/changeUseInvoice",method = RequestMethod.POST, headers = "Accept"
+    @RequestMapping(value = "/selectUseInvoice",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
-    public HttpResponseEntity changeUseInvoice(@RequestBody Map<String,Object> map) {
+    public HttpResponseEntity selectUseInvoice(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         System.out.println(map);
         try {
-            int res=invoiceService.addUseInvoice(map);
-            if(res!=0)
+            PageInfo res=useService.select(map);
+            if(res!=null)
             {
                 httpResponseEntity.setData(res);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
@@ -106,7 +135,32 @@ public class InvoiceAction {
             }
 
         } catch (Exception e) {
-            logger.info("addUseInvoice 添加使用的发票>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("selectUseInvoice 搜索使用的发票>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+    @RequestMapping(value = "/getUseNumber",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity getUseNumber() {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            Long res=invoiceService.getUseNumber();
+            if(res!=0L)
+            {
+                httpResponseEntity.setData(res);
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.INVOICE_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("selectUseInvoice 搜索使用的发票>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }

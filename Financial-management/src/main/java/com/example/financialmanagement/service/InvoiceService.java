@@ -3,6 +3,7 @@ package com.example.financialmanagement.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.financialmanagement.entity.Invoice;
 import com.example.financialmanagement.entity.vo.ResultStation;
+import com.github.pagehelper.PageInfo;
 import java.util.Map;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +17,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public interface InvoiceService extends IService<Invoice> {
-    int addInvoice(Invoice invoice);
-
-  int invoiceService(Map<String, Object> map);
+  String addInvoice(Invoice invoice);
 
   int addUseInvoice(Map<String, Object> map);
+  Long getUseNumber();
+  PageInfo selectInvoice(Map<String, Object> map);
 }

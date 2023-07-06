@@ -12,9 +12,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,11 +31,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UseServiceImpl extends ServiceImpl<UseMapper, Use> implements UseService {
-
+  @Autowired
   private UseMapper useMapper;
 
   @Override
-  public int addInvoice(Use use) {
+  public int addUseInvoice(Use use) {
     int res=useMapper.insert(use);
     return res;
   }
@@ -48,38 +52,30 @@ public class UseServiceImpl extends ServiceImpl<UseMapper, Use> implements UseSe
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
 
     QueryWrapper<Use> queryWrapper = new QueryWrapper<>();
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    Date startTime =null;
-    Date endTime = null;
-    Date now= DateUtil.getCreateTime();
-    Date old=sdf.parse("1993-07-01 17:54:18");
-    if(!map.get("startTime").equals("")){
-      startTime =sdf.parse((String) map.get("startTime"));
-    }
-    if(!map.get("endTime").equals("")){
-      endTime =sdf.parse((String) map.get("endTime"));
-    }
-    // 判断name属性是否为空，如果不为空则作为查询条件
-    if (!map.get("type").equals("")) {
-      queryWrapper.like("type", map.get("type"));
-    }
-    if (startTime!=null&& endTime!=null) {
-      queryWrapper.between("order_date", startTime, endTime);
-    }
-    else if (startTime==null&& endTime!=null) {
-      queryWrapper.between("order_date", old, endTime);
-    }
-    else if (startTime!=null&& endTime==null) {
-      queryWrapper.between("order_date", startTime, now);
-    }
-    if (!map.get("station").equals("")) {
-      queryWrapper.eq("station", map.get("station"));
-    }
-    List<Use> res= useMapper.selectList(queryWrapper);
+    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+    ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
+    ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
+    DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String startDate = outputFormatter.format(startTime);
+    String endDate = outputFormatter.format(endTime);
 
+    String invoiceNumber=String.valueOf(map.get("invoiceNumber"));
+    String useName=String.valueOf(map.get("username"));
+
+    queryWrapper.like(ObjectUtils.isNotEmpty(invoiceNumber), "number", invoiceNumber);
+    queryWrapper.like(ObjectUtils.isNotEmpty(useName), "name", useName);
+    queryWrapper.between("date",startDate, endDate);
+    List<Use> res= useMapper.selectList(queryWrapper);
 //    System.out.println(res);
     PageInfo pageInfo = new PageInfo(res);
     return pageInfo;
+  }
+
+  @Override
+  public Long getNewNumber() {
+    QueryWrapper<Use> queryWrapper = new QueryWrapper<>();
+    queryWrapper.orderByDesc("date").last("limit 1");
+    return this.getOne(queryWrapper).getNumber();
   }
 
 }

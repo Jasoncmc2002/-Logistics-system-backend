@@ -10,6 +10,7 @@ import com.example.customerservicecentre.service.OrderService;
 import com.github.pagehelper.PageInfo;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -185,17 +186,17 @@ public class CustomerAction {
         }
         return httpResponseEntity;
     }
-    @RequestMapping(value = "/gteUUId",method = RequestMethod.POST, headers = "Accept"
+    @RequestMapping(value = "/getUUId",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity gteUUId() {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            String res= UUIDUtil.getUUID(8).toString();
+            String res= UUID.randomUUID().toString().substring(0,8);
             httpResponseEntity.setData(res);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
-            logger.info("gteUUId getuuid>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("getUUId getuuid>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
+import lombok.Data;
 
 /**
  * <p>
@@ -14,6 +15,7 @@ import java.util.Date;
  * @author yangfuchao
  * @since 2023-06-28
  */
+@Data
 @TableName("invoice_use")
 public class Use implements Serializable {
 
@@ -24,11 +26,6 @@ public class Use implements Serializable {
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-
-    /**
-     * 用户名
-     */
-    private Long invoiceId;
 
     /**
      * 用户名
@@ -70,99 +67,4 @@ public class Use implements Serializable {
      */
     private String station;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getInvoiceId() {
-        return invoiceId;
-    }
-
-    public void setInvoiceId(Long invoiceId) {
-        this.invoiceId = invoiceId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Long getNumber() {
-        return number;
-    }
-
-    public void setNumber(Long number) {
-        this.number = number;
-    }
-
-    public Integer getBatch() {
-        return batch;
-    }
-
-    public void setBatch(Integer batch) {
-        this.batch = batch;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    public Object getMoney() {
-        return money;
-    }
-
-    public void setMoney(Object money) {
-        this.money = money;
-    }
-
-    public String getStation() {
-        return station;
-    }
-
-    public void setStation(String station) {
-        this.station = station;
-    }
-
-    @Override
-    public String toString() {
-        return "Use{" +
-        ", id = " + id +
-        ", invoiceId = " + invoiceId +
-        ", type = " + type +
-        ", number = " + number +
-        ", batch = " + batch +
-        ", name = " + name +
-        ", date = " + date +
-        ", orderId = " + orderId +
-        ", money = " + money +
-        ", station = " + station +
-        "}";
-    }
 }

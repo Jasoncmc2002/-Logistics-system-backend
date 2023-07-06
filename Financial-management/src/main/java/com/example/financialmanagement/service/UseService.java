@@ -19,10 +19,11 @@ import org.springframework.stereotype.Service;
 @Service
 public interface UseService extends IService<Use> {
   //领用
-  int addInvoice(Use use);
+  int addUseInvoice(Use use);
   //退回 、.发票作废、丢失
   int changeUseByid(Use use);
-
   //查询
-  PageInfo select(Map<String,Object> map) throws ParseException;;
+  PageInfo select(Map<String,Object> map) throws ParseException;
+
+  Long getNewNumber();
 }
