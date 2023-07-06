@@ -38,12 +38,25 @@ public interface FeignApi {
   @RequestMapping(value = "/distribute/buy/update")
   HttpResponseEntity updateBuy(Buy buy);
 
+  //得到所有的buy
+  @RequestMapping(value = "/distribute/buy/getList1")
+  List<Buy> getListByConditions1(Map<String, Object> map);
+
   @RequestMapping(value = "/dispatch/changeTaskOrderType")
   HttpResponseEntity changeTaskOrderType(Map<String,Object> map);
 
 //  @RequestMapping(value = "/distribute/good/getByOrderId")
 //  HttpResponseEntity getByOrderId(Map<String, Object> map);
 
-  @RequestMapping(value = "/distribute/good/{id}")
+  @RequestMapping(value = "/distribute/good/{id}",method = RequestMethod.POST)
   HttpResponseEntity getGoodById(@PathVariable("id")String id);
+
+  @RequestMapping(value = "/dispatch/getAllocation")
+  HttpResponseEntity getAllocation(Map<String,Object> map);
+
+  @RequestMapping(value = "/dispatch/updateAllocationbyId",method = RequestMethod.POST)
+  HttpResponseEntity updateAllocationbyId(Map<String, Object> map);
+
+  @RequestMapping(value = "/substation/selectTaskById",method = RequestMethod.POST)
+  HttpResponseEntity selectTaskById(Map<String, Object> map);
 }

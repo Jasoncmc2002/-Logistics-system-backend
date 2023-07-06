@@ -155,6 +155,13 @@ public class Constans {
     public static final String GROUPNAME_CODE = "60001";
     public static final String GROUPNAME_MESSAGE = "群组名已存在";
 
+
+    /**
+     * Created by hzn
+     * Descriptions:进货状态码
+     */
+    public static final String STORAGE_SHORTAGE = "库存不足";
+
     /**
      * Created by hzn
      * Descriptions:退货状态码

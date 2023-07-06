@@ -2,6 +2,7 @@ package com.example.warehousemanagementcentre.controller;
 
 import com.example.warehousemanagementcentre.beans.HttpResponseEntity;
 import com.example.warehousemanagementcentre.common.Constans;
+import com.example.warehousemanagementcentre.entity.vo.ResultInCentral;
 import com.example.warehousemanagementcentre.service.CentralstationService;
 import com.example.warehousemanagementcentre.service.InoutstationService;
 import com.github.pagehelper.PageInfo;
@@ -218,8 +219,8 @@ public class CentralStationController {
     public HttpResponseEntity searchInCentral(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            PageInfo pageInfo = centralstationService.searchInCentral(map);
-            httpResponseEntity.setData(pageInfo);
+            PageInfo res = centralstationService.searchInCentral(map);
+            httpResponseEntity.setData(res);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
@@ -230,6 +231,91 @@ public class CentralStationController {
         return httpResponseEntity;
     }
 
+    @RequestMapping(value = "/inCentral",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity inCentral(@RequestBody Map<String,Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=centralstationService.inCentral(map);
+            if(res==1)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else if(res==2){
+                httpResponseEntity.setCode(Constans.RETURN_FAILED_CODE);
+                httpResponseEntity.setMessage(Constans.STORAGE_SHORTAGE);
+            }else if(res == 3){
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.Good_NOT_EXIST);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.RETURN_FAILED_CODE);
+                httpResponseEntity.setMessage(Constans.RETURN_FAILED_MESSAGE);
+            }
+        } catch (Exception e) {
+            logger.info("search 搜索购货单信息>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+    @RequestMapping(value = "/outCentral",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity outCentral(@RequestBody Map<String,Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=centralstationService.outCentral(map);
+            if(res==1)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else if(res==2){
+                httpResponseEntity.setCode(Constans.RETURN_FAILED_CODE);
+                httpResponseEntity.setMessage(Constans.STORAGE_SHORTAGE);
+            }else if(res == 3){
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.Good_NOT_EXIST);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.RETURN_FAILED_CODE);
+                httpResponseEntity.setMessage(Constans.RETURN_FAILED_MESSAGE);
+            }
+        } catch (Exception e) {
+            logger.info("search 搜索购货单信息>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+//    @RequestMapping(value = "/inSub",method = RequestMethod.POST, headers = "Accept"
+//            + "=application/json")
+//    public HttpResponseEntity inSub(@RequestBody Map<String,Object> map) {
+//        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+//        try {
+//            int res=centralstationService.outCentral(map);
+//            if(res==1)
+//            {
+//                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+//                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+//            }else if(res==2){
+//                httpResponseEntity.setCode(Constans.RETURN_FAILED_CODE);
+//                httpResponseEntity.setMessage(Constans.STORAGE_SHORTAGE);
+//            }else if(res == 3){
+//                httpResponseEntity.setCode(Constans.EXIST_CODE);
+//                httpResponseEntity.setMessage(Constans.Good_NOT_EXIST);
+//            }else
+//            {
+//                httpResponseEntity.setCode(Constans.RETURN_FAILED_CODE);
+//                httpResponseEntity.setMessage(Constans.RETURN_FAILED_MESSAGE);
+//            }
+//        } catch (Exception e) {
+//            logger.info("search 搜索购货单信息>>>>>>>>>>>" + e.getLocalizedMessage());
+//            httpResponseEntity.setCode(Constans.EXIST_CODE);
+//            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+//        }
+//        return httpResponseEntity;
+//    }
 
 
 }

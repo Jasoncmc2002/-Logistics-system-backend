@@ -20,11 +20,11 @@ import lombok.Data;
 @Data
 @TableName("good")
 public class Good implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+
     @TableField(value = "good_id")
     private Long goodId;
     private Integer classId;
