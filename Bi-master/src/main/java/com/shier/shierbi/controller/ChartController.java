@@ -229,6 +229,7 @@ public class ChartController {
         String goal = chartQueryRequest.getGoal();
         String chartName = chartQueryRequest.getChartName();
         String chartType = chartQueryRequest.getChartType();
+        String chartStatus = chartQueryRequest.getChartStatus();
         String creator = chartQueryRequest.getCreator();
         String sortField = chartQueryRequest.getSortField();
         String sortOrder = chartQueryRequest.getSortOrder();
@@ -238,6 +239,7 @@ public class ChartController {
         queryWrapper.like(ObjectUtils.isNotEmpty(chartName), "chartName", chartName);
         queryWrapper.eq(ObjectUtils.isNotEmpty(chartType), "chartType", chartType);
         queryWrapper.eq(ObjectUtils.isNotEmpty(creator), "creator", creator);
+        queryWrapper.eq(ObjectUtils.isNotEmpty(chartStatus), "chartStatus", chartStatus);
 
         queryWrapper.eq("isDelete", false);
         queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),

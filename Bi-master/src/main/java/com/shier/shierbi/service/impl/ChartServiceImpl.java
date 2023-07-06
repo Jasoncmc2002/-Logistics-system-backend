@@ -229,6 +229,8 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
 
             // 解析内容
             String[] splits = chartResult.split(GEN_CONTENT_SPLITS);
+            System.out.println(chartResult);
+            System.out.println("splits.length"+splits.length);
             if (splits.length < GEN_ITEM_NUM) {
                 //throw new BusinessException(ErrorCode.SYSTEM_ERROR, "");
                 handleChartUpdateError(chart.getId(), "AI生成错误");
@@ -259,7 +261,7 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
 
         // 等待太久了，抛异常，超时时间
         try {
-            completableFuture.get(20, TimeUnit.SECONDS);
+            completableFuture.get(200, TimeUnit.SECONDS);
         } catch (Exception e) {
             // 超时失败了
             Chart updateChartFailed = new Chart();
@@ -268,7 +270,6 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
             this.updateById(updateChartFailed);
             throw new RuntimeException(e);
         }
-
         // 返回到前端
         BiResponse biResponse = new BiResponse();
         biResponse.setChartId(chart.getId());
