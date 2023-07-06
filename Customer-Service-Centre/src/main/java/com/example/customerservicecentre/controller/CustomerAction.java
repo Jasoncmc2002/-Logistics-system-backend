@@ -187,7 +187,7 @@ public class CustomerAction {
     }
     @RequestMapping(value = "/gteUUId",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
-    public HttpResponseEntity gteUUId(@RequestBody Long Id) {
+    public HttpResponseEntity gteUUId() {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
             String res= UUIDUtil.getUUID(8).toString();
