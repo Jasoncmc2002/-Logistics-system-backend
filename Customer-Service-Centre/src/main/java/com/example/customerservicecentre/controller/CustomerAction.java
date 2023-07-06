@@ -3,6 +3,7 @@ package com.example.customerservicecentre.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.customerservicecentre.beans.HttpResponseEntity;
 import com.example.customerservicecentre.common.Constans;
+import com.example.customerservicecentre.common.utils.UUIDUtil;
 import com.example.customerservicecentre.entity.Customer;
 import com.example.customerservicecentre.service.CustomerService;
 import com.example.customerservicecentre.service.OrderService;
@@ -184,5 +185,20 @@ public class CustomerAction {
         }
         return httpResponseEntity;
     }
-
+    @RequestMapping(value = "/gteUUId",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity gteUUId(@RequestBody Long Id) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            String res= UUIDUtil.getUUID(8).toString();
+            httpResponseEntity.setData(res);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+        } catch (Exception e) {
+            logger.info("gteUUId getuuid>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }
