@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.customerservicecentre.beans.HttpResponseEntity;
 import com.example.customerservicecentre.common.utils.DateUtil;
+import com.example.customerservicecentre.entity.Customer;
 import com.example.customerservicecentre.entity.Good;
 import com.example.customerservicecentre.entity.Orders;
 import com.example.customerservicecentre.entity.Return;
@@ -45,7 +46,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
   private FeignApi feignApi;
   @Autowired
   private GoodMapper goodMapper;
-
+  @Autowired
+  private CustomerServiceImpl customerService;
 
   @Override
   public int insert(Map<String,Object > map) {
@@ -101,7 +103,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
       queryWrapper.eq("order_type", map.get("order_type"));
     }
     List<Orders> res= orderMapper.selectList(queryWrapper);
-
+    for (Orders orders:res ) {
+      Long id = Long.valueOf(orders.getCustomerId());
+      Customer customer= customerService.selectbyId(id);
+      orders.setCustomerName(customer.getName());
+    }
 //    System.out.println(res);
     PageInfo pageInfo = new PageInfo(res);
     return pageInfo;
@@ -113,6 +119,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
     List<Orders> res=orderMapper.selectList(null);
+    for (Orders orders:res ) {
+       Long id = Long.valueOf(orders.getCustomerId());
+       Customer customer= customerService.selectbyId(id);
+       orders.setCustomerName(customer.getName());
+    }
     PageInfo<Orders> pageInfo = new PageInfo<Orders>(res);
     return pageInfo;
   }
@@ -128,6 +139,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
       queryWrapper.eq("customer_id", map.get("customerId"));
     }
     List<Orders> res=orderMapper.selectList(queryWrapper);
+    for (Orders orders:res ) {
+      Long id = Long.valueOf(orders.getCustomerId());
+      Customer customer= customerService.selectbyId(id);
+      orders.setCustomerName(customer.getName());
+    }
     PageInfo<Orders> pageInfo = new PageInfo<>(res);
     return pageInfo;
   }
