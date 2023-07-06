@@ -24,4 +24,6 @@ public interface BuyService extends IService<Buy> {
    int updateBuyByIds (Map<String, Object> map) throws ParseException;
    int changeBuyTypeNotify (Map<String, Object> map) throws ParseException;
 
+   List<Buy> getList(Map<String, Object> map) throws ParseException;
+
 }

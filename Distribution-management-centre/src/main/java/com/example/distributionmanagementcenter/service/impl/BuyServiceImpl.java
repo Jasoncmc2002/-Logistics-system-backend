@@ -141,4 +141,10 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
         int res=buyMapper.update(buy,queryWrapper);
         return res;
     }
+
+    @Override
+    public List<Buy> getList(Map<String, Object> map) throws ParseException {
+        return buyMapper.selectList(null);
+    }
+
 }
