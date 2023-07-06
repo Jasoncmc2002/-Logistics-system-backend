@@ -218,19 +218,9 @@ public class CentralstationController {
 //        System.out.println(df5.format(ZonedDateTime.now()));
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try{
-            PageInfo pageInfo=centralstationService.getList(map);
-            HashMap<String,Object> responseContent=new HashMap<String,Object>();
-            for(CentralStation centralStation:(List<CentralStation>)pageInfo.getList()){
-//                System.out.println(centralStation.getGoodName());
-//                responseContent.put("Good",centralStation.getGoodName());
-                if(centralStation.getWaitAllo()<=centralStation.getWarn()){
-                    responseContent.put(centralStation.getGoodName(),centralStation.getWarn()-centralStation.getWaitAllo());
-                }
-                else{
-                    responseContent.put(centralStation.getGoodName(),0);
-                }
-            }
-            httpResponseEntity.setData(responseContent);
+            PageInfo pageInfo=centralstationService.getListByCondition(map);
+
+            httpResponseEntity.setData(map);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         }catch(Exception e){
@@ -261,6 +251,23 @@ public class CentralstationController {
 
         }catch(Exception e){
             logger.info("addBuy 新增进货单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+
+    }
+
+    @RequestMapping(value = "/addBuyList",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity addBuyList(@RequestBody Map<String, Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try{
+            centralstationService.addBuyList(map);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+        }catch(Exception e){
+            logger.info("addBuyList 新增进货单列表>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }

@@ -80,13 +80,14 @@ public class CentralStation implements Serializable {
     private String isChangeName;
 
     private String remark;
+    private String goodFactory;
 
     @TableField("station_id")
     private Integer stationId;
     @TableField(exist = false)
     private String stationName;
 
-
-
+    @TableField(exist = false)
+    private Long vacancy;
 
 }

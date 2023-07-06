@@ -1,6 +1,7 @@
 package com.example.distributionmanagementcenter.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.distributionmanagementcenter.entity.Buy;
 import com.example.distributionmanagementcenter.entity.CentralStation;
 import com.example.distributionmanagementcenter.entity.FirstCategory;
 import com.example.distributionmanagementcenter.mapper.*;
@@ -12,9 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * <p>
@@ -37,6 +39,9 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
    private SecondaryCategoryMapper secondaryCategoryMapper;
    @Autowired
    private StationMapper stationMapper;
+
+   @Autowired
+   private BuyMapper buyMapper;
 
     @Override
     public PageInfo getListByCondition(Map<String, Object> map) throws ParseException {
@@ -108,6 +113,13 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
             if(centralStation.getIsChange()==0){
                 centralStation.setIsChangeName("否");
             }
+            //缺货检查
+            if(centralStation.getWaitAllo()<centralStation.getWarn()){
+               centralStation.setVacancy(centralStation.getWarn()-centralStation.getWaitAllo());
+            }
+            else{
+                centralStation.setVacancy(0L);
+            }
         }
         PageInfo pageInfo = new PageInfo(records);
         return pageInfo;
@@ -135,4 +147,44 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         }
         return 0;
     }
+
+    @Override
+    public int addBuyList(Map<String, Object> map) throws ParseException {
+        System.out.println(map);
+        Map<String,String> list =  (Map<String,String>)map.get("list");
+        System.out.println(list);
+       Date date= new Date();
+        if(map.get("time")!=null&&map.get("time")!=""){
+            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+            ZonedDateTime time = ZonedDateTime.parse((String) map.get("time"), inputFormatter);
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String dateString = outputFormatter.format(time);
+            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateString);
+
+        }
+        else{
+            String dateString=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
+           date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateString);
+
+        }
+
+        for (Map.Entry<String,String> entry : list.entrySet()) {
+
+            if(!Objects.equals(entry.getValue(), "") &&entry.getValue()!=null){
+               Buy buy = new Buy();
+               buy.setGoodId(Long.valueOf(entry.getKey()));
+               CentralStation centralStation=centralStationMapper.selectById(Long.valueOf(entry.getKey()));
+               buy.setGoodName(centralStation.getGoodName());
+               buy.setGoodUnit(centralStation.getGoodUnit());
+               buy.setType(1);
+               Integer number =Integer.valueOf(entry.getValue());
+               buy.setNumber(number);
+                buy.setDate(date);
+                buyMapper.insert(buy);
+            }
+        }
+
+        return 0;
+    }
+
 }
