@@ -51,20 +51,20 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
 //        Integer goodClassId= Integer.valueOf(String.valueOf(map.get("goodClassId"));
 //        Integer goodSubclassId= Integer.valueOf(String.valueOf(map.get("goodSubclassId")));
         QueryWrapper<CentralStation> queryWrapper = new QueryWrapper<>();
-        if(map.get("goodClassId")!=null&&Objects.equals((String) map.get("goodClassId"), "")){
+        if(map.get("goodClassId")!=null){
             queryWrapper.eq("good_class_id",map.get("goodClassId"));
         }
-        if(map.get("goodSubclassId")!=null&&Objects.equals((String) map.get("goodSubclassId"), "")){
+        if(map.get("goodSubclassId")!=null){
             queryWrapper.eq("good_subclass_id",map.get("goodSubclassId"));
         }
         if((String) map.get("keywords")!=null&& !Objects.equals((String) map.get("keywords"), "")){
             String pattern = (String) map.get("keywords");
             queryWrapper.like("good_name",pattern);
         }
-       if(map.get("stationId")!=null&& !Objects.equals((String) map.get("stationId"), "")){
+       if(map.get("stationId")!=null){
            queryWrapper.eq("station_id",map.get("stationId"));
        }
-        if(map.get("supplyId")!=null&& !Objects.equals((String) map.get("supplyId"), "")){
+        if(map.get("supplyId")!=null){
             queryWrapper.eq("supply_id",map.get("supplyId"));
         }
         List<CentralStation> records= centralStationMapper.selectList(queryWrapper);
@@ -140,7 +140,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         List<Integer> list = (List<Integer>) map.get("idList");
         for(Integer integer :list){
             CentralStation centralStation = new CentralStation();
-            centralStation.setId(integer);
+            centralStation.setId(integer.longValue());
             centralStation.setMax(Long.valueOf((String)map.get("max")));
             centralStation.setWarn(Long.valueOf((String)map.get("warn")));
             centralStationMapper.updateById(centralStation);
@@ -182,6 +182,9 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                 buy.setDate(date);
                 if(number<=centralStation.getMax()-centralStation.getWaitAllo()){
                     buyMapper.insert(buy);
+                    centralStation.setWaitAllo(centralStation.getWaitAllo()-number);
+                    centralStation.setWithdrawal(centralStation.getWithdrawal()+number);
+                    centralStationMapper.updateById(centralStation);
                 }else {
                     flag=0;
                 }

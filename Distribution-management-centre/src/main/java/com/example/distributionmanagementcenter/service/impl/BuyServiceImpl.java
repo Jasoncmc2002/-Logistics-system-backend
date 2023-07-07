@@ -3,9 +3,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.distributionmanagementcenter.entity.Buy;
 import com.example.distributionmanagementcenter.entity.CentralStation;
+import com.example.distributionmanagementcenter.entity.StationInOut;
 import com.example.distributionmanagementcenter.mapper.BuyMapper;
 import com.example.distributionmanagementcenter.mapper.CentralStationMapper;
 import com.example.distributionmanagementcenter.service.BuyService;
+import com.example.distributionmanagementcenter.service.StationInOutService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import java.time.ZonedDateTime;
@@ -21,14 +23,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * <p>
- * 进货单 服务实现类
- * </p>
- *
- * @author Jason_Cai
- * @since 2023-06-20
- */
 @Service
 @Transactional(rollbackFor=Exception.class)
 public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuyService {
@@ -36,6 +30,8 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
       private  BuyMapper buyMapper;
       @Autowired
       private CentralStationMapper centralStationMapper;
+      @Autowired
+      private StationInOutService stationInOutService;
     @Override
     public PageInfo getListByDateSupply(Map<String, Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
@@ -69,7 +65,6 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
                       typeName="未设定";
                   }
               }
-
 
           buy.setTypeName(typeName);
             String BuyTypeName="";
@@ -212,9 +207,16 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
                 CentralStation centralStation=centralStationMapper.selectById(buy.getGoodId());
                 Long number =Long.valueOf(String.valueOf(entry.getValue()));
                 if(number<=centralStation.getWaitAllo()){
-                    centralStation.setWaitAllo(centralStation.getWaitAllo()-number);
-                    centralStation.setWithdrawal(centralStation.getWithdrawal()+number);
-                    centralStationMapper.updateById(centralStation);
+                    StationInOut stationInOut = new StationInOut();
+                    stationInOut.setGoodId(centralStation.getId());
+                    stationInOut.setGoodName(centralStation.getGoodName());
+                    stationInOut.setGoodPrice(centralStation.getGoodPrice());
+                    stationInOut.setDate(new Date());
+                    stationInOut.setNumber(number);
+                    stationInOut.setGoodUnit(centralStation.getGoodUnit());
+                    stationInOut.setStationClass(1);
+                    stationInOut.setType("中心退货");
+                    stationInOutService.save(stationInOut);
 
                 }else {
                      flag=0;
