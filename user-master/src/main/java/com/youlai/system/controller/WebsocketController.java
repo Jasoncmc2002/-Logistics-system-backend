@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * WebSocket 测试控制器
  *
- * @author haoxr
+ * @author YANG FUCHAO
  * @since 2.3.0
  */
 @RestController

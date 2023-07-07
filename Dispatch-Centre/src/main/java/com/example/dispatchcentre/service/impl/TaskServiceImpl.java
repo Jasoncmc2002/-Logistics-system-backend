@@ -135,4 +135,21 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     return (int) res.getData();
   }
 
+
+  @Override
+  public List<Task> selectByDate(Map<String, Object> map) {
+
+    QueryWrapper<Task> queryWrapper = new QueryWrapper<>();
+    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+    ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
+    ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
+    DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String startDate = outputFormatter.format(startTime);
+    String endDate = outputFormatter.format(endTime);
+    queryWrapper.between("task_date", startDate, endDate);
+    List<Task> res= taskMapper.selectList(queryWrapper);
+
+    return res;
+  }
+
 }

@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * 视图对象基类
  *
- * @author haoxr
+ * @author YANG FUCHAO
  * @since 2022/10/22
  */
 @Data

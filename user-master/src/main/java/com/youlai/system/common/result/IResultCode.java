@@ -1,7 +1,7 @@
 package com.youlai.system.common.result;
 
 /**
- * @author haoxr
+ * @author YANG FUCHAO
  **/
 public interface IResultCode {
 

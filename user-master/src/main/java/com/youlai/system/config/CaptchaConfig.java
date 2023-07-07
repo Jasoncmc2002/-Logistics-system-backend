@@ -10,7 +10,7 @@ import java.awt.*;
 /**
  * EasyCaptcha 配置类
  * 
- * @author haoxr
+ * @author YANG FUCHAO
  * @since 2023/03/24
  */
 @ConfigurationProperties(prefix = "easy-captcha")

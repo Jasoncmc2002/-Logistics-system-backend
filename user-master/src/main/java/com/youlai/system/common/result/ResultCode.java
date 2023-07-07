@@ -8,8 +8,8 @@ import java.io.Serializable;
 /**
  * 响应码枚举
  *
- * @author haoxr
- * @since 2020-06-23
+ * @author YANG FUCHAO
+ * @since 2022-06-23
  **/
 @AllArgsConstructor
 @NoArgsConstructor

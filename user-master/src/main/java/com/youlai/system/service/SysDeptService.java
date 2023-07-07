@@ -12,8 +12,8 @@ import java.util.List;
 /**
  * 部门业务接口
  *
- * @author haoxr
- * @since 2021/8/22
+ * @author YANG FUCHAO
+ * @since 2022/8/22
  */
 public interface SysDeptService extends IService<SysDept> {
     /**

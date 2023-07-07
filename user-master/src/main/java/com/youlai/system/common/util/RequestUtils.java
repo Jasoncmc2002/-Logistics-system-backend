@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  * 请求工具类
  *
- * @author haoxr
+ * @author YANG FUCHAO
  */
 public class RequestUtils {
 

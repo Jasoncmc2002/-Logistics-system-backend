@@ -20,7 +20,7 @@ import java.io.IOException;
 /**
  * 验证码校验过滤器
  *
- * @author haoxr
+ * @author YANG FUCHAO
  * @since 2022/10/1
  */
 public class VerifyCodeFilter extends OncePerRequestFilter {

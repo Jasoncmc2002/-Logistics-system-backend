@@ -11,7 +11,7 @@ import java.awt.*;
 /**
  * 验证码生成器
  *
- * @author haoxr
+ * @author YANG FUCHAO
  * @since 2023/03/24
  */
 

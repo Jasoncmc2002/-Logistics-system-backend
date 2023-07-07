@@ -7,7 +7,7 @@ import lombok.Data;
 /**
  * 权限分页查询对象
  *
- * @author haoxr
+ * @author YANG FUCHAO
  * @since 2022/1/14 22:22
  */
 @Data

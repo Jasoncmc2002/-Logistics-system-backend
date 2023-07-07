@@ -22,8 +22,8 @@ import java.util.List;
 /**
  * 部门控制器
  *
- * @author haoxr
- * @since 2020/11/6
+ * @author YANG FUCHAO
+ * @since 2022/11/6
  */
 @Tag(name = "05.部门接口")
 @RestController

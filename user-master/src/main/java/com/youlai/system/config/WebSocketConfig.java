@@ -10,7 +10,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 /**
  * WebSocket 配置类
  *
- * @author haoxr
+ * @author YANG FUCHAO
  * @since 2.3.0
  */
 @Configuration

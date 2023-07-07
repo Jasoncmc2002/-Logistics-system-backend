@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * EasyCaptcha 业务类
  *
- * @author haoxr
+ * @author YANG FUCHAO
  * @since 2023/03/24
  */
 @Component

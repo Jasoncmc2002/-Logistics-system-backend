@@ -14,8 +14,8 @@ import java.util.Set;
 /**
  * 菜单业务接口
  * 
- * @author haoxr
- * @since 2020/11/06
+ * @author YANG FUCHAO
+ * @since 2022/11/06
  */
 public interface SysMenuService extends IService<SysMenu> {
 

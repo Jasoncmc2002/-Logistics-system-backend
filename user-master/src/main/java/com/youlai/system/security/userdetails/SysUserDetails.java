@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * Spring Security
  *
- * @author haoxr
+ * @author YANG FUCHAO
  */
 @Data
 public class SysUserDetails implements UserDetails {
