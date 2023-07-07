@@ -137,19 +137,23 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
 
 
   @Override
-  public List<Task> selectByDate(Map<String, Object> map) {
-
+  public PageInfo selectByDate(Map<String, Object> map) {
+    PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+            Integer.valueOf(String.valueOf(map.get("pageSize"))));
     QueryWrapper<Task> queryWrapper = new QueryWrapper<>();
-    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-    ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
-    ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
-    DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    String startDate = outputFormatter.format(startTime);
-    String endDate = outputFormatter.format(endTime);
-    queryWrapper.between("task_date", startDate, endDate);
-    List<Task> res= taskMapper.selectList(queryWrapper);
+    if( map.get("startLine")!=null&& map.get("startLine")!=""&& map.get("endLine")!=null&& map.get("endLine")!=""){
+      DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+      ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startLine"), inputFormatter);
+      ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endLine"), inputFormatter);
+      DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+      String startDate = outputFormatter.format(startTime);
+      String endDate = outputFormatter.format(endTime);
+      queryWrapper.between("task_date", startDate, endDate);
+    }
 
-    return res;
+    List<Task> records= taskMapper.selectList(queryWrapper);
+    PageInfo pageInfo = new PageInfo(records);
+    return pageInfo;
   }
 
 }

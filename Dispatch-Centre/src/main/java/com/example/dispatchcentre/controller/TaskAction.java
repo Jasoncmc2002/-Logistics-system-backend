@@ -102,8 +102,7 @@ public class TaskAction {
     public HttpResponseEntity selectByDate(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            List<Task> res=taskService.selectByDate(map);
-            httpResponseEntity.setData(res);
+            httpResponseEntity.setData(taskService.selectByDate(map));
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 
