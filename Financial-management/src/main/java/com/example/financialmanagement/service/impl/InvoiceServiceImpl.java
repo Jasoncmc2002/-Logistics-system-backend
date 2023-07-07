@@ -9,6 +9,10 @@ import com.example.financialmanagement.mapper.InvoiceMapper;
 import com.example.financialmanagement.service.InvoiceService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -193,12 +197,15 @@ public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> impl
     QueryWrapper<Invoice> queryWrapper = new QueryWrapper<>();
 
     String invoiceClass= String.valueOf(map.get("invoiceClass"));
-    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-    ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
-    ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
-    DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    String startDate = outputFormatter.format(startTime);
-    String endDate = outputFormatter.format(endTime);
+    ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+    // 格式化中国时区时间为指定格式的字符串
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+    String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+
+
     Long invoiceStartNumber= Long.valueOf(String.valueOf(map.get("invoiceStartNumber")));
     Long invoiceEndNumber=Long.valueOf(String.valueOf(map.get("invoiceEndNumber")));
     // 根据前端传来条件进行拼接查询条件

@@ -19,6 +19,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -75,30 +78,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
 
     QueryWrapper<Orders> queryWrapper = new QueryWrapper<>();
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    Date startTime =null;
-    Date endTime = null;
-    Date now=DateUtil.getCreateTime();
-    Date old=sdf.parse("1993-07-01 17:54:18");
-    if(!map.get("startTime").equals("")){
-      startTime =sdf.parse((String) map.get("startTime"));
-    }
-    if(!map.get("endTime").equals("")){
-      endTime =sdf.parse((String) map.get("endTime"));
-    }
+    ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+    // 格式化中国时区时间为指定格式的字符串
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+    String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+
+
     // 判断name属性是否为空，如果不为空则作为查询条件
     if (!map.get("customer_name").equals("")) {
       queryWrapper.like("customer_name", map.get("customer_name"));
     }
-    if (startTime!=null&& endTime!=null) {
-      queryWrapper.between("order_date", startTime, endTime);
-    }
-    else if (startTime==null&& endTime!=null) {
-      queryWrapper.between("order_date", old, endTime);
-    }
-    else if (startTime!=null&& endTime==null) {
-      queryWrapper.between("order_date", startTime, now);
-    }
+
+      queryWrapper.between("order_date", startDate, endDate);
+
     if (!map.get("order_type").equals("")) {
       queryWrapper.eq("order_type", map.get("order_type"));
     }
@@ -161,30 +156,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
 
     QueryWrapper<Orders> orderWrapper = new QueryWrapper<>();
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    Date startTime = null;
-    Date endTime = null;
-    Date now = DateUtil.getCreateTime();
-    Date old = sdf.parse("1993-07-01 17:54:18");
-    if (!map.get("startTime").equals("")) {
-      startTime = sdf.parse((String) map.get("startTime"));
-    }
-    if (!map.get("endTime").equals("")) {
-      endTime = sdf.parse((String) map.get("endTime"));
-    }
+    ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+    // 格式化中国时区时间为指定格式的字符串
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+    String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+
+
     // 判断name属性是否为空，如果不为空则作为查询条件
     if (!map.get("creater").equals("")) {
       orderWrapper.eq("creater", map.get("creater"));
     }
-    if (startTime != null && endTime != null) {
-      orderWrapper.between("order_date", startTime, endTime);
-    } else if (startTime == null && endTime != null) {
-      orderWrapper.between("order_date", old, endTime);
-    } else if (startTime != null && endTime == null) {
-      orderWrapper.between("order_date", startTime, now);
-    }
+
     /* 根据订单表查询结果获取对应的order_id列表*/
-    orderWrapper.between("order_date", startTime, endTime);
+    orderWrapper.between("order_date", startDate, endDate);
     List<Orders> orderList = orderMapper.selectList(orderWrapper);
 //    List<Integer> orderIdList = new ArrayList<>();
     /*    结果表*/
@@ -359,12 +346,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
   public List<Orders> getOrderByStationFin(Map<String, Object> map) throws ParseException {
 
     QueryWrapper<Orders> orderWrapper = new QueryWrapper<>();
-    DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-    ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
-    ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
-    DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    String startDate = outputFormatter.format(startTime);
-    String endDate = outputFormatter.format(endTime);
+    ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+    // 格式化中国时区时间为指定格式的字符串
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+    String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+
 
     orderWrapper.or().eq("order_type", "新订")
         .or().eq("order_type", "退货");
