@@ -1,6 +1,5 @@
 package com.example.warehousemanagementcentre.entity.vo;
 
-import com.github.pagehelper.PageInfo;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -13,15 +12,16 @@ import java.util.Date;
 @Data
 public class ResultInCentral {
 //    private PageInfo pageInfo;
+    private Long centralGoodId;
     //供应商
     private int supply;
     //购货日期
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date buyDate;
-//    //签收人
-//    private String signee;
-//    //分发人
-//    private String distributors;
+    //签收人
+    private String signee;
+    //分发人
+    private String distributors;
     //签收日期
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date receiptDate;
@@ -30,9 +30,9 @@ public class ResultInCentral {
 
     private String goodName;
 
-    private int goodClassId;
+    private String goodClass;
 
-    private int goodSubclassId;
+    private String goodSubclass;
 
     private String goodUnit;
 

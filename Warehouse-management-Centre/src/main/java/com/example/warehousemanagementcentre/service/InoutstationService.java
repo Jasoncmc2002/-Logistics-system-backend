@@ -2,6 +2,9 @@ package com.example.warehousemanagementcentre.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.warehousemanagementcentre.entity.Inoutstation;
+import com.github.pagehelper.PageInfo;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.example.warehousemanagementcentre.entity.Inoutstation;
  */
 public interface InoutstationService extends IService<Inoutstation> {
 
+    PageInfo selectBuyType(Map<String,Object> map);
 }
