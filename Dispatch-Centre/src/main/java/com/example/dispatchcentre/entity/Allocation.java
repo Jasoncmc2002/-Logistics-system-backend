@@ -30,7 +30,7 @@ public class Allocation implements Serializable {
     /**
      * 用户名
      */
-    private Long taskId;
+    private Long orderId;
 
     /**
      * 用户名

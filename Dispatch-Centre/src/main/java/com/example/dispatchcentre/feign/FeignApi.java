@@ -18,5 +18,9 @@ public interface FeignApi {
   @RequestMapping(value = "/customer/changeOrderStatusById")
   HttpResponseEntity  changeOrderStatusById(Map<String, Object> map);
 
+  @RequestMapping(value = "/distribute/good/getGoodByOrderId")
+  HttpResponseEntity  getGoodByOrderId(Integer id);
 
+  @RequestMapping(value = "/customer/getOrderByid")
+  HttpResponseEntity  getOrderByid(Long id);
 }

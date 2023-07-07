@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.dispatchcentre.beans.HttpResponseEntity;
 import com.example.dispatchcentre.common.utils.DateUtil;
 import com.example.dispatchcentre.entity.Allocation;
+import com.example.dispatchcentre.entity.Good;
+import com.example.dispatchcentre.entity.Orders;
 import com.example.dispatchcentre.entity.Task;
 import com.example.dispatchcentre.feign.FeignApi;
 import com.example.dispatchcentre.mapper.TaskMapper;
@@ -51,21 +53,27 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
 
     Date date = DateUtil.getCreateTime();
     task.setTaskDate(date);
-
+    HttpResponseEntity res=
+        feignApi.getOrderByid(Long.valueOf(String.valueOf(map.get("orderid"))));
+    String jsonString2 = JSON.toJSONString(res.getData());  // 将对象转换成json格式数据
+    Orders orders = JSON.parseObject(jsonString2,Orders.class);
+    task.setOrderId(orders.getId());
+    task.setCustomerId(Long.valueOf(orders.getCustomerId()));
+    task.setCustomerName(orders.getCustomerName());
+    if(orders.getOrderType()=="新订"){
+      task.setTaskType("送货");
+    }else if(orders.getOrderType()=="换货"){
+      task.setTaskType("换货");
+    }else if(orders.getOrderType()=="退货"){
+      task.setTaskType("退货");
+    }else if(orders.getOrderType()=="送货收款"){
+      task.setTaskType("送货收款");
+    }
+    task.setAddress(orders.getCustomerAddress());
+    task.setPrintNumber(0);
     int res1 = taskMapper.insert(task);//添加order;
     if(res1==1){
-    Long Id= task.getId();
-
-    Allocation allocation=new Allocation();
-    allocation.setTaskId(Id);
-    allocation.setOutStation("中心库房");
-    allocation.setInStation(task.getSubstation());
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    Date allocation_date =sdf.parse((String) map.get("allocation_date"));
-
-    allocation.setAllocationDate(allocation_date);
-      int res =allocationService.insert(allocation);
-      return res;
+      return res1;
     }
     return 0;
   }
@@ -157,6 +165,19 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     List<Task> res= taskMapper.selectList(queryWrapper);
 
     return res;
+  }
+
+  @Override
+  public PageInfo getGoodListByTaskId(Map<String, Object> map) {
+    PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+        Integer.valueOf(String.valueOf(map.get("pageSize"))));
+    Long orderId = Long.valueOf(String.valueOf(map.get("orderId")));
+    HttpResponseEntity goodhttp=feignApi.getGoodByOrderId(Math.toIntExact(orderId));
+    /*查询并统计结果*/
+    String jsonString2 = JSON.toJSONString(goodhttp.getData());  // 将对象转换成json格式数据
+    List<Good> goodsList = JSON.parseArray(jsonString2,Good.class);
+    PageInfo pageInfo = new PageInfo(goodsList);
+    return pageInfo;
   }
 
 }

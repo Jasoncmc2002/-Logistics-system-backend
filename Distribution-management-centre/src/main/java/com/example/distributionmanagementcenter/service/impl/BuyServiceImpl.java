@@ -126,8 +126,12 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
                 queryWrapper.ne("buy_type",2);
             }
         }
-        queryWrapper.between("date", startDate, endDate)
-                .eq("supply",supplyName);
+
+        queryWrapper.between("date", startDate, endDate);
+        if(!supplyName.isBlank()){
+            queryWrapper.eq("supply",supplyName);
+        }
+
         List<Buy> records= buyMapper.selectList(queryWrapper);
         return records;
     }
