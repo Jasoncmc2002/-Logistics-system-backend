@@ -131,4 +131,21 @@ public class TaskAction {
         }
         return httpResponseEntity;
     }
+
+    @RequestMapping(value = "/updateTaskById",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity updateTaskById(@RequestBody Task task) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+
+        try {
+            httpResponseEntity.setData(taskService.updatebyId(task));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+        } catch (Exception e) {
+            logger.info("updateTaskById 根据id，改变task的>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }

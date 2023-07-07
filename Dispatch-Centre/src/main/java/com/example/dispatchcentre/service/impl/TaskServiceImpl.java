@@ -79,8 +79,8 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
   }
 
   @Override
-  public int updatebyId(Task customer) {
-    int res=  taskMapper.updateById(customer);
+  public int updatebyId(Task task) {
+    int res=  taskMapper.updateById(task);
     return res;
   }
 

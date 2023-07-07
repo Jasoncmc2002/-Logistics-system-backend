@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
  */
 public interface TaskService extends IService<Task> {
   int insert(Map<String,Object > map) throws ParseException;
-  int updatebyId(Task customer);
+  int updatebyId(Task task);
   Task selectbyId(Long id);
   PageInfo selectAll(Map<String,Object> map);
   int  deletebyId(Long id);
