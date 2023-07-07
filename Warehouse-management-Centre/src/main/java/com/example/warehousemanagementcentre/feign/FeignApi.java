@@ -2,14 +2,12 @@ package com.example.warehousemanagementcentre.feign;
 
 import com.example.warehousemanagementcentre.beans.HttpResponseEntity;
 import com.example.warehousemanagementcentre.entity.Buy;
-import com.example.warehousemanagementcentre.entity.Good;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,7 +38,7 @@ public interface FeignApi {
 
   //得到所有的buy
   @RequestMapping(value = "/distribute/buy/getList1")
-  List<Buy> getListByConditions1(Map<String, Object> map);
+  HttpResponseEntity getListByConditions1(Map<String, Object> map);
 
   @RequestMapping(value = "/dispatch/changeTaskOrderType")
   HttpResponseEntity changeTaskOrderType(Map<String,Object> map);
@@ -59,4 +57,11 @@ public interface FeignApi {
 
   @RequestMapping(value = "/substation/selectTaskById",method = RequestMethod.POST)
   HttpResponseEntity selectTaskById(Map<String, Object> map);
+
+  //得到商品一二类别
+  @RequestMapping(value = "distribute/firstcategory/{id}",method = RequestMethod.POST)
+  HttpResponseEntity getById1(@PathVariable("id") String id);
+
+  @RequestMapping(value = "/distribute/secondarycategory/{id}",method = RequestMethod.POST)
+  HttpResponseEntity getById2(@PathVariable("id") String id);
 }

@@ -94,4 +94,6 @@ public class Inoutstation implements Serializable {
      */
     private String type;
 
+    private String signer;
+
 }
