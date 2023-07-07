@@ -93,4 +93,10 @@ public class Task implements Serializable{
      */
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    /**
+     * 用户名
+     */
+    private Date getDate;
 }

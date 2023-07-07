@@ -6,6 +6,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -88,5 +89,12 @@ public class Task implements Serializable {
     /**
      * 用户名
      */
-    private Date end_date;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date endDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    /**
+     * 用户名
+     */
+    private Date getDate;
 }

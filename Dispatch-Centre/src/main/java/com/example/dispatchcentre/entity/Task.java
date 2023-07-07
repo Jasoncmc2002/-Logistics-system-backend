@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -84,8 +85,13 @@ public class Task implements Serializable {
      * 用户名
      */
     private String creater;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date endDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     /**
      * 用户名
      */
-    private Date end_date;
+    private Date getDate;
 }
