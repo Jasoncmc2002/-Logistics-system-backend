@@ -1,4 +1,4 @@
-package com.example.financialmanagement.cors;
+package com.example.financialmanagement.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

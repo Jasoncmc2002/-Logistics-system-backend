@@ -4,38 +4,22 @@ import cn.hutool.json.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.domain.BFActivityFundInfo;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.financialmanagement.beans.HttpResponseEntity;
-import com.example.financialmanagement.common.Constans;
 import com.example.financialmanagement.entity.pay.AliPay;
-import com.example.financialmanagement.entity.pay.AlipayConfig;
-import com.example.financialmanagement.entity.vo.ResultSupply;
+import com.example.financialmanagement.config.AlipayConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import com.example.financialmanagement.service.impl.FinancialServiceImpl;
-import javax.annotation.Resource;
 
-import org.apache.catalina.connector.ResponseFacade;
-import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 // xjlugv6874@sandbox.com
 // 9428521.24 - 30 = 9428491.24 + 30 = 9428521.24
