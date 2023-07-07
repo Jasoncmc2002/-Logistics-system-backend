@@ -65,10 +65,6 @@ public class Receipt implements Serializable {
      */
     private String number;
 
-    /**
-     * 用户名
-     */
-    private Double goodPrice;
 
     /**
      * 用户名
@@ -89,4 +85,12 @@ public class Receipt implements Serializable {
      * 用户名
      */
     private String remark;
+
+    /**
+     * 总额
+     */
+    private Long goodSum;
+
+    private Long invoiceNumber;
+    private String postman;
 }

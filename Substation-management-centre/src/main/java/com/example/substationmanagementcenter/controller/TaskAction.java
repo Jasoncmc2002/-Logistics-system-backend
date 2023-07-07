@@ -2,7 +2,6 @@ package com.example.substationmanagementcenter.controller;
 
 import com.example.substationmanagementcenter.beans.HttpResponseEntity;
 import com.example.substationmanagementcenter.common.Constans;
-import com.example.substationmanagementcenter.entity.Task;
 import com.example.substationmanagementcenter.sevice.TaskService;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -70,12 +69,12 @@ public class TaskAction {
 
     }
 
-    @RequestMapping(value = "/updateTask",method = RequestMethod.POST, headers = "Accept"
+    @RequestMapping(value = "/updateTaskPostmanById",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
-    public HttpResponseEntity updateTask(@RequestBody Task params){
+    public HttpResponseEntity updateTaskPostmanById(@RequestBody Map<String, Object> map){
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            int res=taskService.updatebyId(params);
+            int res=taskService.updateTaskPostmanById(map);
             if(res==1)
             {
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);

@@ -20,7 +20,7 @@ public interface TaskService extends IService<Task> {
     PageInfo selectAll(Map<String,Object> map);
     PageInfo getTaskListByCriteria(Map<String,Object> map) throws ParseException;
 
-    int updatebyId(Task task);
+    int updateTaskPostmanById(Map<String, Object> map);
 
     PageInfo getTaskToDistribute(Map<String,Object> map) throws ParseException;
 
