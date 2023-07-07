@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 /**
  * 用户角色持久层
  *
- * @author haoxr
+ * @author YANG FUCHAO
  * @since 2022/1/15
  */
 @Mapper

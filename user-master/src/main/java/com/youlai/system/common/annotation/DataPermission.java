@@ -7,8 +7,8 @@ import java.lang.annotation.*;
  * <p>
  * https://gitee.com/baomidou/mybatis-plus/issues/I37I90
  *
- * @author <a href="mailto:2256222053@qq.com">zc</a>
- * @since 2021-12-10
+ * @author  YANG FUCHAO
+ * @since 2022-12-10
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

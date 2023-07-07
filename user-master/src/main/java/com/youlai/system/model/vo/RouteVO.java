@@ -9,8 +9,8 @@ import java.util.List;
 /**
  * 菜单路由视图对象
  *
- * @author haoxr
- * @since 2020/11/28
+ * @author YANG FUCHAO
+ * @since 2022/11/28
  */
 @Schema(description = "路由对象")
 @Data

@@ -7,7 +7,7 @@ import lombok.Data;
 /**
  * 验证码响应对象
  *
- * @author haoxr
+ * @author YANG FUCHAO
  * @since 2023/03/24
  */
 @Schema(description ="验证码响应对象")

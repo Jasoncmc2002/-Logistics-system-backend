@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.dispatchcentre.entity.Task;
 import com.github.pagehelper.PageInfo;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
 
@@ -25,4 +26,5 @@ public interface TaskService extends IService<Task> {
   PageInfo searchbykey(Map<String,Object> map) throws ParseException ;
   PageInfo selectOrder(Map<String, Object> map);
   int changeTaskOrderType(Map<String,Object > map);
+  List<Task> selectByDate(Map<String, Object> map);
 }

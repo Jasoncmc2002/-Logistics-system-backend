@@ -1,6 +1,6 @@
 /*
 * youlai_boot 权限系统数据库(MySQL8.x)
-* @author haoxr
+@author YANG FUCHAO
 */
 
 -- ----------------------------

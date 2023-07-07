@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * SpringSecurity 权限校验
  *
- * @author haoxr
+ * @author YANG FUCHAO
  * @since 2022/2/22
  */
 @Component("ss")

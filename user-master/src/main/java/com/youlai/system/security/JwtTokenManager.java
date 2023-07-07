@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 /**
  * JWT token manager
  *
- * @author haoxr
+ * @author YANG FUCHAO
  * @since 2022/10/22
  */
 @Component

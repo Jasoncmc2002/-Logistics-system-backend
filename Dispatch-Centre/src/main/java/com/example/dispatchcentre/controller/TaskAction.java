@@ -6,6 +6,7 @@ import com.example.dispatchcentre.common.Constans;
 import com.example.dispatchcentre.entity.Task;
 import com.example.dispatchcentre.service.TaskService;
 import com.github.pagehelper.PageInfo;
+import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,4 +96,23 @@ public class TaskAction {
         }
         return httpResponseEntity;
     }
+
+    @RequestMapping(value = "/selectByDate",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity selectByDate(@RequestBody Map<String,Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            List<Task> res=taskService.selectByDate(map);
+            httpResponseEntity.setData(res);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("changeTaskOrderType 根据id，改变task和order的>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
 }
