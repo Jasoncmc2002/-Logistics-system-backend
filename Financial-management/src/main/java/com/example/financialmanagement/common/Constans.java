@@ -82,6 +82,7 @@ public class Constans {
      */
     public static final String LOGOUT_NO_CODE="333";
     public static final String ADD_FAIL="添加客户失败";
+    public static final String INVOICE_FAIL="请先领用发票";
     public static final String UPDATE_FAIL="更新客户失败";
     public static final String SELECT_FAIL="搜索客户失败";
     public static final String DELETE_FAIL="删除客户失败,该客户订购过商品";

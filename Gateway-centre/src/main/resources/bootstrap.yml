@@ -24,6 +24,7 @@ spring:
           default:
             connectTimeout: 40000
             readTimeout: 600000
+
     gateway:
       globalcors:
         cors-configurations:
