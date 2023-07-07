@@ -1,8 +1,5 @@
 package com.example.substationmanagementcenter.entity.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.example.substationmanagementcenter.entity.Task;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -17,9 +14,12 @@ import java.util.Date;
 public class TaskOrder implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String recieveName;
-    private Double goodsum;
+
+    private String receiveName;
+    private Double goodSum;
     private Integer isInvoice;
+    private String mobilePhone;
+    private String customerAddress;
 
 //    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -67,6 +67,7 @@ public class TaskOrder implements Serializable {
     private String address;
 
     /**
+     *
      * 用户名
      */
     private String postman;

@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * <p>
  * 回执单 前端控制器
@@ -31,6 +33,30 @@ public class ReceiptAction {
 
     private final Logger logger = LoggerFactory.getLogger(TaskAction.class);
 
+    @RequestMapping(value = "/receiptEntry",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity receiptEntry(@RequestBody Map<String,Object> map){
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=receiptService.receiptEntry(map);
+            if(res==1)
+            {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.UPDATE_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("receiptEntry 回执单信息录入>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
     @GetMapping(value = "/")
     public ResponseEntity<Page<Receipt>> list(@RequestParam(required = false) Integer current, @RequestParam(required = false) Integer pageSize) {
         if (current == null) {
@@ -43,28 +69,7 @@ public class ReceiptAction {
         return new ResponseEntity<>(aPage, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Receipt> getById(@PathVariable("id") String id) {
-        return new ResponseEntity<>(receiptService.getById(id), HttpStatus.OK);
-    }
 
-    @PostMapping(value = "/create")
-    public ResponseEntity<Object> create(@RequestBody Receipt params) {
-        receiptService.save(params);
-        return new ResponseEntity<>("created successfully", HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/delete/{id}")
-    public ResponseEntity<Object> delete(@PathVariable("id") String id) {
-        receiptService.removeById(id);
-        return new ResponseEntity<>("deleted successfully", HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/update")
-    public ResponseEntity<Object> update(@RequestBody Receipt params) {
-        receiptService.updateById(params);
-        return new ResponseEntity<>("updated successfully", HttpStatus.OK);
-    }
 
     @RequestMapping(value = "/updateById",method = RequestMethod.GET, headers = "Accept"
             + "=application/json")

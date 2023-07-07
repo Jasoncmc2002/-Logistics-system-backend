@@ -3,6 +3,8 @@ package com.example.substationmanagementcenter.sevice;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.substationmanagementcenter.entity.Receipt;
 
+import java.util.Map;
+
 /**
  * <p>
  * 回执单 服务类
@@ -14,5 +16,7 @@ import com.example.substationmanagementcenter.entity.Receipt;
 public interface ReceiptService extends IService<Receipt> {
 
     int updatebyId(Receipt receipt);
+
+    int receiptEntry(Map<String,Object> map);
 
 }

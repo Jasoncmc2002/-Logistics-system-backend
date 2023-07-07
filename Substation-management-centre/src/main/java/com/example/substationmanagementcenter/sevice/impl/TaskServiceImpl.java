@@ -3,9 +3,12 @@ package com.example.substationmanagementcenter.sevice.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.substationmanagementcenter.beans.HttpResponseEntity;
+import com.example.substationmanagementcenter.entity.Customer;
 import com.example.substationmanagementcenter.entity.Orders;
+import com.example.substationmanagementcenter.entity.Postman;
 import com.example.substationmanagementcenter.entity.Task;
 import com.example.substationmanagementcenter.entity.vo.TaskOrder;
 import com.example.substationmanagementcenter.feign.FeignApi;
@@ -19,6 +22,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -55,26 +60,35 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
 
         //筛选task
         QueryWrapper<Task> queryWrapper = new QueryWrapper<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        if(map.get("startLine") != null){
-            Date startline =sdf.parse((String) map.get("startLine"));
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        if(!map.get("startLine").equals("") && map.get("startLine") != null){
+            ZonedDateTime dateTime = ZonedDateTime.parse((String) map.get("startline"), inputFormatter);
+            String date = outputFormatter.format(dateTime);
+            Date startline =simpleDateFormat.parse(date);
             System.out.println("start"+startline);
             queryWrapper.ge("deadline",startline);
         }
-        if(map.get("endLine") != null){
-            Date endline =sdf.parse((String) map.get("endLine"));
+        if(!map.get("endLine").equals("") && map.get("endLine") != null){
+            ZonedDateTime dateTime = ZonedDateTime.parse((String) map.get("endline"), inputFormatter);
+            String date = outputFormatter.format(dateTime);
+            Date endline =simpleDateFormat.parse(date);
             System.out.println("end!!!"+endline);
             queryWrapper.lt("deadline",endline);
         }
-        if(map.get("taskType") != null){
+        if(!map.get("taskType").equals("") && map.get("taskType") != null){
             System.out.println("taskType");
             queryWrapper.eq("task_type",map.get("taskType"));
         }
-        if(map.get("taskStatus") != null){
+        if(!map.get("taskStatus").equals("") && map.get("taskStatus") != null){
             queryWrapper.eq("task_status",map.get("taskStatus"));
         }
-        if(map.get("substation") != null){
+        if(!map.get("substation").equals("") && map.get("substation") != null){
             queryWrapper.eq("substation",map.get("substation"));
+        }
+        if(!map.get("postman").equals("") && map.get("postman") != null){
+            queryWrapper.eq("postman",map.get("postman"));
         }
         List<Task> res= taskMapper.selectList(queryWrapper);
         System.out.println("res!!1"+res);
@@ -87,11 +101,18 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
             //由task找对应的order
             Map map1 = new HashMap<>();
             map1.put("id",task.getOrderId());
+            System.out.println("111111"+task.getOrderId());
             HttpResponseEntity resOrder = feignApi.getOrderByid(map1);
             System.out.println("resOrder"+resOrder);
             String jsonString1 = JSON.toJSONString(resOrder.getData());  // 将对象转换成json格式数据
             Orders order = JSON.parseObject(jsonString1, Orders.class); // 这样就可以了
             System.out.println("order"+order);
+
+            //由task找对应的customer
+            HttpResponseEntity resCustomer = feignApi.selectByCustomerId(task.getCustomerId());
+            String jsonString3 = JSON.toJSONString(resCustomer.getData());  // 将对象转换成json格式数据
+            Customer customer = JSON.parseObject(jsonString3, Customer.class); // 这样就可以了
+            System.out.println("customer!!!"+customer);
 
 
             //列表内每一列的数据
@@ -101,12 +122,18 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
             taskOrder.setTaskType(task.getTaskType());
             taskOrder.setCustomerName(task.getCustomerName());
             taskOrder.setAddress(task.getAddress());
-            taskOrder.setRecieveName(order.getReceive_name());
+            taskOrder.setReceiveName(order.getReceiveName());
             taskOrder.setDeadline(task.getDeadline());
-            taskOrder.setGoodsum(order.getGoodSum());
+            taskOrder.setGoodSum(order.getGoodSum());
             taskOrder.setEndDate(task.getEndDate());
+            System.out.println("task.getTaskDate()!!"+task.getTaskDate());
+            taskOrder.setTaskDate(task.getTaskDate());
             taskOrder.setTaskStatus(task.getTaskStatus());
             taskOrder.setIsInvoice(order.getIsInvoice());
+            taskOrder.setSubstation(task.getSubstation());
+            taskOrder.setPostman(task.getPostman());
+            taskOrder.setMobilePhone(customer.getMobilephone());
+            taskOrder.setCustomerAddress(customer.getAddress());
             taskOrders.add(taskOrder);
         }
         PageInfo pageInfo = new PageInfo(taskOrders);
@@ -114,8 +141,20 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     }
 
     @Override
-    public int updatebyId(Task task) {
-        return taskMapper.updateById(task);
+    public int updateTaskPostmanById(Map<String, Object> map) {
+        UpdateWrapper<Task> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("id",map.get("id"));
+        if(!map.get("taskStatus").equals("已分配")){
+            System.out.println("!!!!!");
+            updateWrapper.set("task_status","已分配");
+        }
+//        String jsonString1 = JSON.toJSONString(map);  // 将对象转换成json格式数据
+//        JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
+//        Postman postman = JSON.parseObject(jsonObject.getString("postman"), Postman.class); // 这样就可以了
+
+        updateWrapper.set("postman",map.get("postman"));
+        Integer rows = taskMapper.update(null, updateWrapper);
+        return rows;
     }
 
     @Override

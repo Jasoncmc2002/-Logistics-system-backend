@@ -22,6 +22,7 @@ import java.util.Date;
 @TableName("orders")
 public class Orders implements Serializable {
 
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -113,7 +114,7 @@ public class Orders implements Serializable {
      */
     private String goodStatus;
 
-    private String receive_name;
+    private String receiveName;
     private Long orNumber;
     private String reason;
     private Date reDate;
