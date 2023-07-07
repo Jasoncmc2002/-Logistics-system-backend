@@ -73,7 +73,7 @@ public class AllocationAction {
         return httpResponseEntity;
     }
 
-    @RequestMapping(value = "/getAllocation",method = RequestMethod.GET, headers = "Accept"
+    @RequestMapping(value = "/getAllocation",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity getAllocation(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();

@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocation> implements
     AllocationService {
+  @Autowired
   private AllocationMapper allocationMapper;
   @Override
   public int insert(Allocation allocation) {
@@ -68,9 +70,10 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
     ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
     // 格式化中国时区时间为指定格式的字符串
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+    String startDate = LocalDateTime.parse(String.valueOf(map.get("startLine")),
+        DateTimeFormatter.ISO_DATE_TIME).atZone(
         ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
-    String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+    String endDate = LocalDateTime.parse(String.valueOf(map.get("endLine")), DateTimeFormatter.ISO_DATE_TIME).atZone(
         ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
 
     queryWrapper.between("allocation_date", startDate, endDate);
