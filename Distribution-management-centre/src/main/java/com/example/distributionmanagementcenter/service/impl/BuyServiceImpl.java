@@ -229,5 +229,4 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
         }
         return result;
     }
-
 }
