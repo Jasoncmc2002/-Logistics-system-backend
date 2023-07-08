@@ -14,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -155,10 +158,16 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         Map<String,String> list =  (Map<String,String>)map.get("list");
        Date date= new Date();
         if(map.get("time")!=null&&map.get("time")!=""){
-            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-            ZonedDateTime time = ZonedDateTime.parse((String) map.get("time"), inputFormatter);
-            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String dateString = outputFormatter.format(time);
+//            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+//            ZonedDateTime time = ZonedDateTime.parse((String) map.get("time"), inputFormatter);
+//            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//            String dateString = outputFormatter.format(time);
+            ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+            // 格式化中国时区时间为指定格式的字符串
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String dateString = LocalDateTime.parse(String.valueOf(map.get("time")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                    ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+
             date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateString);
 
         }
@@ -207,10 +216,11 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         Map<String,String> list =  (Map<String,String>)map.get("list");
         Date date= new Date();
         if(map.get("time")!=null&&map.get("time")!=""){
-            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-            ZonedDateTime time = ZonedDateTime.parse((String) map.get("time"), inputFormatter);
-            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String dateString = outputFormatter.format(time);
+            ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+            // 格式化中国时区时间为指定格式的字符串
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String dateString = LocalDateTime.parse(String.valueOf(map.get("time")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                    ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
             date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateString);
 
         }

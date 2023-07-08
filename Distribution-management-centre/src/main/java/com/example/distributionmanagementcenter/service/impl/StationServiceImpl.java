@@ -23,6 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -62,12 +65,20 @@ private FeignApi feignApi;
 //        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //        Date startTime =sdf.parse((String) map.get("startTime"));
 //        Date endTime = sdf.parse((String) map.get("endTime"));
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-        ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
-        ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String startDate = outputFormatter.format(startTime);
-        String endDate = outputFormatter.format(endTime);
+
+//        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+//        ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
+//        ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
+//        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        String startDate = outputFormatter.format(startTime);
+//        String endDate = outputFormatter.format(endTime);
+        ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+        // 格式化中国时区时间为指定格式的字符串
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+        String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
         QueryWrapper<StationInOut> queryWrapper = new QueryWrapper<>();
         queryWrapper.between("date", startDate, endDate);
         List<StationInOut> records= stationInOutMapper.selectList(queryWrapper);
@@ -87,12 +98,19 @@ private FeignApi feignApi;
 //        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //        Date startTime =sdf.parse((String) map.get("startTime"));
 //        Date endTime = sdf.parse((String) map.get("endTime"));
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-        ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
-        ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String startDate = outputFormatter.format(startTime);
-        String endDate = outputFormatter.format(endTime);
+//        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+//        ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
+//        ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
+//        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        String startDate = outputFormatter.format(startTime);
+//        String endDate = outputFormatter.format(endTime);
+        ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+        // 格式化中国时区时间为指定格式的字符串
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+        String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
         QueryWrapper<Buy> queryWrapper = new QueryWrapper<>();
         queryWrapper.between("date", startDate, endDate)
                 .eq("good_id",goodId)
@@ -159,7 +177,6 @@ private FeignApi feignApi;
 
         List<Task> list=(List<Task>) httpResponseEntity1.getData();
         List<Long> idList = new ArrayList<Long>();
-        System.out.println(list);
         //指定时间内的所有任务单
         for(Object object:list){
             String jsonObject= JSON.toJSONString(object);
@@ -167,7 +184,6 @@ private FeignApi feignApi;
             idList.add(Long.valueOf(task.getOrderId()));
         }
       List<Analyze> result =  new ArrayList<Analyze>();
-//        List<Long> idList2 = new ArrayList<Long>();
         for(Long id :idList){
 //            //任务单对应的所有商品记录
 //           List<Good> goodList= goodService.getGoodByOrderId(id);
@@ -193,9 +209,8 @@ private FeignApi feignApi;
                }
            }
         }
-
+        Collections.sort(result);
         PageInfo pageInfo = new PageInfo(result);
-//        pageInfo.setPageSize(Integer.valueOf(String.valueOf(map.get("pageSize"))));
         return pageInfo;
     }
 }

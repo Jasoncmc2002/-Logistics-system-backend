@@ -15,9 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * <p>
@@ -52,6 +54,42 @@ public class GoodServiceImpl extends ServiceImpl<GoodMapper, Good> implements Go
         queryWrapper.eq("key_id",id);
         List<Good> records= goodMapper.selectList(queryWrapper);
         return records;
+    }
+
+    @Override
+    public PageInfo getRanking(Map<String, Object> map) throws ParseException {
+        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+                Integer.valueOf(String.valueOf(map.get("pageSize"))));
+        QueryWrapper<Good> queryWrapper = new QueryWrapper<>();
+        if(map.get("startTime")!=null&&map.get("endTime")!=null&&map.get("startTime")!=""&&map.get("endTime")!=""){
+
+            ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+            // 格式化中国时区时间为指定格式的字符串
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                    ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+            String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                    ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+            queryWrapper.between("good_date", startDate, endDate);
+        }
+        List<Good> records = goodMapper.selectList(queryWrapper);
+        List<Good> records1 = new ArrayList<Good>();
+        for(Good good :records){
+            int flag=0;
+            for(Good good1:records1){
+                if(good1.getGoodId()==good.getGoodId()){
+                    good1.setGoodNumber(good1.getGoodNumber()+good.getGoodNumber());
+                    flag=1;
+                }
+            }
+            if(flag==0){
+                records1.add(good);
+            }
+        }
+//        records1.sort(Comparator.naturalOrder());
+        Collections.sort(records1);
+        PageInfo pageInfo = new PageInfo(records1);
+        return pageInfo;
     }
 
     @Override

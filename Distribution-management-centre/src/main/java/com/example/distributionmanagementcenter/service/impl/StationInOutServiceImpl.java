@@ -12,6 +12,10 @@ import com.example.distributionmanagementcenter.mapper.StationMapper;
 import com.example.distributionmanagementcenter.service.StationInOutService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,12 +78,19 @@ public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, Sta
         }
 
        if(map.get("startTime")!=null&&map.get("endTime")!=null&&map.get("startTime")!=""&&map.get("endTime")!=""){
-           DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-           ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
-           ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
-           DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-           String startDate = outputFormatter.format(startTime);
-           String endDate = outputFormatter.format(endTime);
+//           DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+//           ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
+//           ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
+//           DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//           String startDate = outputFormatter.format(startTime);
+//           String endDate = outputFormatter.format(endTime);
+           ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+           // 格式化中国时区时间为指定格式的字符串
+           DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+           String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                   ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+           String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                   ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
            queryWrapper.between("date", startDate, endDate);
        }
 
@@ -125,13 +136,19 @@ public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, Sta
 //        Date startTime =sdf.parse((String) map.get("startTime"));
 //        Date endTime = sdf.parse((String) map.get("endTime"));
 
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-        ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
-        ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String startDate = outputFormatter.format(startTime);
-        String endDate = outputFormatter.format(endTime);
-
+//        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+//        ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
+//        ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
+//        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        String startDate = outputFormatter.format(startTime);
+//        String endDate = outputFormatter.format(endTime);
+        ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+        // 格式化中国时区时间为指定格式的字符串
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+        String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
         QueryWrapper<StationInOut> queryWrapper = new QueryWrapper<>();
         queryWrapper.between("date", startDate, endDate)
                 .eq("type",outType)

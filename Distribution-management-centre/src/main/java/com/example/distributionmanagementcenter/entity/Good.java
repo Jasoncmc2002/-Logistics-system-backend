@@ -20,7 +20,7 @@ import java.io.Serializable;
  */
 @Data
 //订单记录
-public class Good implements Serializable {
+public class Good implements Serializable, Comparable<Good>{
 
     private static final long serialVersionUID = 1L;
 
@@ -63,5 +63,12 @@ public class Good implements Serializable {
     private Byte isChange;
 
     private String remark;
+
+    //排序
+    @Override
+    public int compareTo(Good good) {
+        return  good.getGoodNumber() - this.getGoodNumber() > 0 ? 1 : ((this.getGoodNumber()== good.getGoodNumber()) ? 0 :-1);   //降序：返回值为1 或-1 升序改变变量位置即可
+    }
+
 
 }

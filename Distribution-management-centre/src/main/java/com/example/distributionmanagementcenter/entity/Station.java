@@ -17,7 +17,7 @@ import java.util.List;
  * @since 2023-06-19
  */
 @Data
-public class Station implements Serializable {
+public class Station implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
@@ -37,6 +37,5 @@ public class Station implements Serializable {
 
     @TableField(exist = false)
     private List<CentralStation> centralStationList;
-
 
 }
