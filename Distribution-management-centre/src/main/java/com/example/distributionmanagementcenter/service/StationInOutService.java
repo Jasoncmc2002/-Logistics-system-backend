@@ -19,4 +19,6 @@ import java.util.Map;
 public interface StationInOutService extends IService<StationInOut> {
     PageInfo getListByConditions(Map<String, Object> map) throws ParseException;
     List<StationInOut> getListByConditions1(Map<String, Object> map) throws ParseException;
+
+    List<StationInOut> getListByTaskId(Long id) throws ParseException;
 }

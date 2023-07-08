@@ -21,4 +21,6 @@ public interface StationService extends IService<Station> {
 
     PageInfo getList(Map<String, Object> map) throws ParseException;
 
+    PageInfo stationAnalyze(Map<String, Object> map) throws ParseException;
+
 }

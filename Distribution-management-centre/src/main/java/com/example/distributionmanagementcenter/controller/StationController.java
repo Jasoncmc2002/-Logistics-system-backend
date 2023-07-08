@@ -1,7 +1,11 @@
 package com.example.distributionmanagementcenter.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.dispatchcentre.entity.Task;
 import com.example.distributionmanagementcenter.entity.*;
+import com.example.distributionmanagementcenter.feign.FeignApi;
 import com.example.distributionmanagementcenter.service.CentralstationService;
 import com.example.distributionmanagementcenter.service.StationService;
 import com.github.pagehelper.PageInfo;
@@ -9,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,15 +81,18 @@ public class StationController {
     public HttpResponseEntity<Station> create(@RequestBody Station params) {
         HttpResponseEntity<Station> httpResponseEntity = new HttpResponseEntity<Station>();
         try {
-            boolean flag=stationService.save(params);
-            if(flag)
-            {
+
+            int flag=0;
+            List<Station> stationList =stationService.list();
+            for(Station station:stationList){
+                if(params.getName().equals(station.getName())){
+                    flag=1;
+                }
+            }
+            if(flag==0){
+                stationService.save(params);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
             }
 
         } catch (Exception e) {
@@ -105,10 +114,6 @@ public class StationController {
             {
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
             }
 
         } catch (Exception e) {
@@ -124,16 +129,18 @@ public class StationController {
 
         HttpResponseEntity<Station> httpResponseEntity = new HttpResponseEntity<Station>();
         try {
-            boolean flag=stationService.updateById(params);
-            if(flag)
-            {
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
+                int flag=0;
+                 List<Station> stationList =stationService.list();
+                 for(Station station:stationList){
+                     if(params.getName().equals(station.getName())){
+                         flag=1;
+                     }
+                 }
+                 if(flag==0){
+                     stationService.updateById(params);
+                     httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                     httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+                 }
 
         } catch (Exception e) {
             logger.info("update 更新货物>>>>>>>>>>>" + e.getLocalizedMessage());
@@ -244,4 +251,21 @@ public class StationController {
 //        }
 //        return httpResponseEntity;
 //    }
+
+        @RequestMapping(value = "/stationAnalyze",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity stationAnalyze(@RequestBody Map<String, Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            httpResponseEntity.setData(stationService.stationAnalyze(map));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("分站配送情况分析>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }

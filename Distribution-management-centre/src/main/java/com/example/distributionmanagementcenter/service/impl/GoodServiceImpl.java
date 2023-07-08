@@ -38,7 +38,7 @@ public class GoodServiceImpl extends ServiceImpl<GoodMapper, Good> implements Go
     public PageInfo getListByOrderId(Map<String, Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
                 Integer.valueOf(String.valueOf(map.get("pageSize"))));
-        Integer keyId=Integer.valueOf(String.valueOf(map.get("keyId")));
+       Long keyId=Long.valueOf(String.valueOf(map.get("keyId")));
         QueryWrapper<Good> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("key_id",keyId);
         List<Good> records= goodMapper.selectList(queryWrapper);
@@ -47,7 +47,7 @@ public class GoodServiceImpl extends ServiceImpl<GoodMapper, Good> implements Go
     }
 //功能同上
     @Override
-    public List<Good> getGoodByOrderId(Integer id) {
+    public List<Good> getGoodByOrderId(Long id) {
         QueryWrapper<Good> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("key_id",id);
         List<Good> records= goodMapper.selectList(queryWrapper);

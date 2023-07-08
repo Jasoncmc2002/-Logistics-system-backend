@@ -143,7 +143,7 @@ public class GoodController {
         return httpResponseEntity;
     }
     @PostMapping(value = "/getGoodByOrderId")
-    public HttpResponseEntity getGoodByOrderId(@RequestBody Integer id) {
+    public HttpResponseEntity getGoodByOrderId(@RequestBody Long id) {
 
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {

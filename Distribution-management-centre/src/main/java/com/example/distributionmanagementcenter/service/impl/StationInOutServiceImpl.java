@@ -140,4 +140,13 @@ public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, Sta
         List<StationInOut> records= stationInOutMapper.selectList(queryWrapper);
         return records;
     }
+
+    @Override
+    public List<StationInOut> getListByTaskId(Long id) throws ParseException {
+        QueryWrapper<StationInOut> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("task_id",id);
+        List<StationInOut> records= stationInOutMapper.selectList(queryWrapper);
+        return records;
+    }
+
 }
