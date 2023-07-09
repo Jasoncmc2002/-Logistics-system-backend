@@ -37,24 +37,41 @@ public class AllocationAction {
     @Autowired
     private AllocationService allocationService;
 
-    @RequestMapping(value = "/addAllocation",method = RequestMethod.POST, headers = "Accept"
+    @RequestMapping(value = "/addTaskDispatch",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
-    public HttpResponseEntity addAllocation(@RequestBody Allocation allocation) {
+    public HttpResponseEntity addTaskDispatch(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-           int res=allocationService.insert(allocation);
+           int res=allocationService.insertTaskDispatch(map);
            if (res==1) {
                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
            }
         } catch (Exception e) {
-            logger.info("addAllocation 添加调度单>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("addTaskDispatch 添加任务调度单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
         return httpResponseEntity;
     }
 
+    @RequestMapping(value = "/addSationDispatch",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity insertSationDispatch(@RequestBody Allocation allocation) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=allocationService.insertSationDispatch(allocation);
+            if (res==1) {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }
+        } catch (Exception e) {
+            logger.info("addSationDispatch 添加库房调度单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
     @RequestMapping(value = "/updateAllocationbyId",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity updateAllocationbyId(@RequestBody Map<String,Object> map) {

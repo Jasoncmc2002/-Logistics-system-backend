@@ -18,12 +18,12 @@ import org.springframework.stereotype.Service;
  * @since 2023-06-25
  */
 public interface TaskService extends IService<Task> {
-  int insert(Map<String,Object > map) throws ParseException;
+  Long insert(Map<String,Object > map) throws ParseException;
   int updatebyId(Task task);
   Task selectbyId(Long id);
   PageInfo selectAll(Map<String,Object> map);
   int  deletebyId(Long id);
-  PageInfo searchbykey(Map<String,Object> map) throws ParseException ;
+  PageInfo searchbykey(Map<String,Object> map) ;
   PageInfo selectOrder(Map<String, Object> map);
   int changeTaskOrderType(Map<String,Object > map);
   List<Task> selectByDate(Map<String, Object> map);

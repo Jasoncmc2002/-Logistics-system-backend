@@ -46,20 +46,29 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
   private FeignApi feignApi;
   private AllocationServiceImpl allocationService=new AllocationServiceImpl();
   @Override
-  public int insert(Map<String,Object > map)throws ParseException {
-    String jsonString1 = JSON.toJSONString(map);  // 将对象转换成json格式数据
-    JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
-    Task task = JSON.parseObject(jsonObject.getString("Task"), Task.class); // 这样就可以了
-
+  public Long insert(Map<String,Object > map) throws ParseException {
+//    String jsonString1 = JSON.toJSONString(map);  // 将对象转换成json格式数据
+//    JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
+//    Task task = JSON.parseObject(jsonObject.getString("Task"), Task.class); // 这样就可以了
+    Task task =new Task();
     Date date = DateUtil.getCreateTime();
     task.setTaskDate(date);
-    HttpResponseEntity res=
-        feignApi.getOrderByid(Long.valueOf(String.valueOf(map.get("orderid"))));
+    HttpResponseEntity res= feignApi.getOrderByid(Long.valueOf(String.valueOf(map.get("orderId"))));
     String jsonString2 = JSON.toJSONString(res.getData());  // 将对象转换成json格式数据
     Orders orders = JSON.parseObject(jsonString2,Orders.class);
     task.setOrderId(orders.getId());
     task.setCustomerId(Long.valueOf(orders.getCustomerId()));
     task.setCustomerName(orders.getCustomerName());
+    task.setCreater(map.get("creator").toString());
+
+    ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+    // 格式化中国时区时间为指定格式的字符串
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String deadline = LocalDateTime.parse(String.valueOf(map.get("deadline")),
+        DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+    Date deaddate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(deadline);
+    task.setDeadline(deaddate);
     if(orders.getOrderType()=="新订"){
       task.setTaskType("送货");
     }else if(orders.getOrderType()=="换货"){
@@ -69,13 +78,15 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     }else if(orders.getOrderType()=="送货收款"){
       task.setTaskType("送货收款");
     }
+    task.setTaskStatus("已调度");
+    task.setSubstation(map.get("substation").toString());
     task.setAddress(orders.getCustomerAddress());
     task.setPrintNumber(0);
     int res1 = taskMapper.insert(task);//添加order;
     if(res1==1){
-      return res1;
+      return task.getId();
     }
-    return 0;
+    return 0L;
   }
 
   @Override
@@ -103,7 +114,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
 
 /*  根据分站，状态，类型查询*/
   @Override
-  public PageInfo searchbykey(Map<String, Object> map) throws ParseException  {
+  public PageInfo searchbykey(Map<String, Object> map) {
     PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
     QueryWrapper<Task> queryWrapper = new QueryWrapper<>();

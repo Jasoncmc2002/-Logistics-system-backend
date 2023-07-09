@@ -32,6 +32,7 @@ public class Allocation implements Serializable {
      */
     private Long orderId;
 
+    private Long taskId;
     /**
      * 用户名
      */

@@ -42,9 +42,10 @@ public class TaskAction {
     public HttpResponseEntity addUser(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            int res=taskService.insert(map);
-            if(res==1)
+            Long res=taskService.insert(map);
+            if(res!=0L)
             {
+                httpResponseEntity.setData(res);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else
@@ -63,14 +64,13 @@ public class TaskAction {
 
     @RequestMapping(value = "/getTasksByCriteria",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
-    public HttpResponseEntity getOrdersByCriteria(@RequestBody Map<String,Object> map) {
+    public HttpResponseEntity getTasksByCriteria(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
             PageInfo res=taskService.searchbykey(map);
             httpResponseEntity.setData(res);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-
         } catch (Exception e) {
             logger.info("getTasksByCriteria 搜索订单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);

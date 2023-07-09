@@ -9,6 +9,7 @@ import com.example.dispatchcentre.mapper.AllocationMapper;
 import com.example.dispatchcentre.service.AllocationService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -34,8 +35,23 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
     AllocationService {
   @Autowired
   private AllocationMapper allocationMapper;
+  @Autowired
+  private TaskServiceImpl taskService;
   @Override
-  public int insert(Allocation allocation) {
+  public int insertTaskDispatch(Map<String,Object> map) throws ParseException {
+    Long taskID= taskService.insert(map);
+   Allocation allocation = new Allocation();
+   allocation.setTaskId(taskID);
+   allocation.setOrderId(Long.valueOf(String.valueOf(map.get("orderId"))));
+   allocation.setInStation(map.get("inStation").toString());
+   allocation.setOutStation(map.get("outStation").toString());
+   allocation.setAlloType(Byte.valueOf(String.valueOf(map.get("alloType"))));
+   int res=allocationMapper.insert(allocation);
+    return res;
+  }
+
+  @Override
+  public int insertSationDispatch(Allocation allocation) {
     int res=allocationMapper.insert(allocation);
     return res;
   }
