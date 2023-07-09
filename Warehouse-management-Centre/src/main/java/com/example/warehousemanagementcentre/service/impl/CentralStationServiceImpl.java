@@ -9,6 +9,7 @@ import com.example.warehousemanagementcentre.beans.HttpResponseEntity;
 import com.example.warehousemanagementcentre.entity.*;
 import com.example.warehousemanagementcentre.entity.vo.ResultInCentral;
 import com.example.warehousemanagementcentre.feign.FeignApi;
+import com.example.warehousemanagementcentre.mapper.AllocationMapper;
 import com.example.warehousemanagementcentre.mapper.CentralStationMapper;
 import com.example.warehousemanagementcentre.mapper.InoutstationMapper;
 import com.example.warehousemanagementcentre.service.CentralstationService;
@@ -19,7 +20,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -39,6 +42,9 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
 
     @Autowired
     private InoutstationMapper inoutstationMapper;
+
+    @Autowired
+    private AllocationMapper allocationMapper;
 
 
     @Autowired
@@ -111,7 +117,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         Inoutstation inoutstation = new Inoutstation();
         inoutstation.setStationClass(1);
         inoutstation.setAlloId(buy.getId());
-        inoutstation.setStationId(Long.valueOf("1"));//调货id设为进货单buy的id
+        inoutstation.setStationName("中心库房");//调货id设为进货单buy的id
         inoutstation.setTaskId(Long.valueOf("0"));//进货没有task，设为0
         inoutstation.setGoodId(good.getId());//从找到的good获取id
 //        inoutstation.setGoodClass(good.getGoodClass());//从找到的good获取class
@@ -213,7 +219,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
             Inoutstation inoutstation = new Inoutstation();
             inoutstation.setStationClass(1);
             inoutstation.setAlloId(Long.valueOf(String.valueOf(map.get("alloId"))));
-            inoutstation.setStationId(Long.valueOf(String.valueOf(map.get("stationId"))));
+//            inoutstation.setStationName(Long.valueOf(String.valueOf(map.get("stationId"))));
             inoutstation.setTaskId(Long.valueOf(String.valueOf(map.get("taskId"))));
             inoutstation.setGoodId(Long.valueOf(centralStation.getId()));
             inoutstation.setGoodPrice(centralStation.getGoodPrice());
@@ -268,6 +274,11 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
 
     @Override
     public int takeGoods(Map<String, Object> map) {
+        ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+        // 格式化中国时区时间为指定格式的字符串
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
         //得到分站库房入库单，知道它要从分站出去，也就是领货（按单领，而不是按货领）
         Map map2 =new HashMap<String,Object>();
         map2.put("id",map.get("taskId"));
@@ -449,9 +460,9 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                 resultInCentral.setSupply(centralStation.getSupplyId());
                 //buy-购货日期
                 resultInCentral.setBuyDate(buy.getDate());
-                Date date = new Date();
-                date.setTime(System.currentTimeMillis());
-                resultInCentral.setReceiptDate(date);
+//                Date date = new Date();
+//                date.setTime(System.currentTimeMillis());
+//                resultInCentral.setReceiptDate(date);
                 resultInCentral.setGoodName(centralStation.getGoodName());
 
                 HttpResponseEntity resFirst = feignApi.getById1(String.valueOf(centralStation.getGoodClassId()));
@@ -508,7 +519,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         Inoutstation inoutstation = new Inoutstation();
         inoutstation.setStationClass(1);
         inoutstation.setAlloId(Long.valueOf(0));
-        inoutstation.setStationId(Long.valueOf(1));
+        inoutstation.setStationName("中心库房");
         inoutstation.setTaskId(Long.valueOf(0));
         inoutstation.setGoodId(Long.valueOf(centralStation.getId()));
         inoutstation.setGoodPrice(centralStation.getGoodPrice());
@@ -518,10 +529,11 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         inoutstation.setSigner(String.valueOf(map.get("signer")));
         inoutstation.setNumber(Long.valueOf(String.valueOf(map.get("number"))));
 
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-        ZonedDateTime dateTime = ZonedDateTime.parse((String) map.get("date"), inputFormatter);
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String date = outputFormatter.format(dateTime);
+        ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+        // 格式化中国时区时间为指定格式的字符串
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String date = LocalDateTime.parse(String.valueOf(map.get("date")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             inoutstation.setDate(simpleDateFormat.parse(date));
@@ -538,15 +550,25 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
 
     @Override
     public int outCentral(Map<String, Object> map) {
-        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
-                Integer.valueOf(String.valueOf(map.get("pageSize"))));
+//        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+//                Integer.valueOf(String.valueOf(map.get("pageSize"))));
+        ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+        // 格式化中国时区时间为指定格式的字符串
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         //通过传入出库货物表信息
-        String jsonString1 = JSON.toJSONString(map.get("goodList"));  // 将对象转换成json格式数据
+        String jsonString1 = JSON.toJSONString(map.get("goods"));  // 将对象转换成json格式数据
         System.out.println(jsonString1);
         JSONArray jsonArray2 = JSON.parseArray(jsonString1); // 在转回去
         List<Good> goods = JSON.parseArray(String.valueOf(jsonArray2), Good.class);
+        System.out.println("goods###"+goods);
 //        Good good = goods.get(goods.size()-1);
+
+        QueryWrapper<Allocation> allocationQueryWrapper = new QueryWrapper<>();
+        allocationQueryWrapper.eq("id", map.get("alloId"));
+        List<Allocation> allocations = allocationMapper.selectList(allocationQueryWrapper);
+        Allocation allocation = allocations.get(0);
 
         //goodlist依次入库
         int res = 0;
@@ -567,15 +589,14 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                 res = centralStationMapper.updateById(centralStation);
                 System.out.println("res"+res);
 
-                //得到对应的调拨表
 
 
                 //出库加出库表
                 Inoutstation inoutstation = new Inoutstation();
                 inoutstation.setStationClass(1);
-                inoutstation.setAlloId(Long.valueOf((String) map.get("alloId")));
-                inoutstation.setStationId(Long.valueOf(1));
-                inoutstation.setTaskId(Long.valueOf(0));
+                inoutstation.setAlloId(Long.valueOf(String.valueOf(map.get("alloId"))));
+                inoutstation.setStationName(allocation.getInStation());
+                inoutstation.setTaskId(allocation.getTaskId());
                 inoutstation.setGoodId(Long.valueOf(centralStation.getId()));
                 inoutstation.setGoodPrice(centralStation.getGoodPrice());
                 inoutstation.setGoodName(centralStation.getGoodName());
@@ -583,11 +604,22 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                 inoutstation.setGoodFactory(good.getGoodFactory());
                 System.out.println("good.getGoodNumber()!!"+good.getGoodNumber());
                 inoutstation.setNumber(Long.valueOf(good.getGoodNumber()));
-                Date date = new Date();
-                date.setTime(System.currentTimeMillis());
+
+                //设置时间
+                String dateTime = LocalDateTime.parse(String.valueOf(map.get("date")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+                Date date = null;
+                try {
+                    date = simpleDateFormat.parse(dateTime);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
                 inoutstation.setDate(date);
+                //设置状态
                 inoutstation.setType("调拨入库");
-                inoutstation.setRemark(good.getRemark());
+                inoutstation.setSigner(String.valueOf(map.get("signer")));
+                inoutstation.setDistributor(String.valueOf(map.get("distributor")));
+                inoutstation.setRemark(String.valueOf(map.get("remark")));
                 res = inoutstationMapper.insert(inoutstation);
 
 
@@ -607,6 +639,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                 map2.put("allo_type","2");
                 HttpResponseEntity res1 = feignApi.updateAllocationbyId(map2);
 
+//                if(res && res1.getData() && res2.getData())
 
             }else {
                 //库存不够
@@ -614,6 +647,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
             }
 
         }
+
 
         return res;
     }

@@ -16,5 +16,5 @@ import java.util.Map;
  */
 public interface InoutstationService extends IService<Inoutstation> {
 
-    PageInfo selectBuyType(Map<String,Object> map);
+    PageInfo selectByType(Map<String,Object> map);
 }

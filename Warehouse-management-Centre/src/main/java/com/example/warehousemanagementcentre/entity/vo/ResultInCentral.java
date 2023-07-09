@@ -23,8 +23,8 @@ public class ResultInCentral {
     //分发人
     private String distributors;
     //签收日期
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date receiptDate;
+//    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//    private Date receiptDate;
 
     private String remark;
 
