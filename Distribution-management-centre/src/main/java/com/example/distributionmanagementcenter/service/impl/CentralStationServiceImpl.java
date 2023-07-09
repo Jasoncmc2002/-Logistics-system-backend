@@ -129,6 +129,23 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
     }
 
     @Override
+    public CentralStation checkById(Map<String, Object> map) throws ParseException {
+        CentralStation centralStation=centralStationMapper.selectById(Integer.valueOf(String.valueOf(map.get("id"))));
+
+        Long num =Long.valueOf(String.valueOf(map.get("goodNumber")));
+        if(num <=centralStation.getWaitAllo()){
+          centralStation.setWaitAllo(centralStation.getWaitAllo()- num);
+          centralStation.setDoneAllo(centralStation.getDoneAllo()+ num);
+          centralStation.setVacancy(0L);
+        }
+        else{
+            centralStation.setVacancy(num-centralStation.getWaitAllo());
+        }
+
+        return centralStation;
+    }
+
+    @Override
     public PageInfo getList(Map<String, Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
                 Integer.valueOf(String.valueOf(map.get("pageSize"))));

@@ -78,8 +78,8 @@ public class StationController {
     }
 
     @PostMapping(value = "/create")
-    public HttpResponseEntity<Station> create(@RequestBody Station params) {
-        HttpResponseEntity<Station> httpResponseEntity = new HttpResponseEntity<Station>();
+    public HttpResponseEntity create(@RequestBody Station params) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
 
             int flag=0;
@@ -91,10 +91,11 @@ public class StationController {
             }
             if(flag==0){
                 stationService.save(params);
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }
+                httpResponseEntity.setData("创建成功！");
 
+            }
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
             logger.info("create 新建站>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
@@ -109,12 +110,10 @@ public class StationController {
 
         HttpResponseEntity<Station> httpResponseEntity = new HttpResponseEntity<Station>();
         try {
-            boolean flag=stationService.removeById(id);
-            if(flag)
-            {
+            stationService.removeById(id);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }
+
 
         } catch (Exception e) {
             logger.info("delete 删除站>>>>>>>>>>>" + e.getLocalizedMessage());
@@ -125,23 +124,23 @@ public class StationController {
     }
 
     @PostMapping(value = "/update")
-    public HttpResponseEntity<Station> update(@RequestBody Station params) {
+    public HttpResponseEntity update(@RequestBody Station params) {
 
-        HttpResponseEntity<Station> httpResponseEntity = new HttpResponseEntity<Station>();
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
                 int flag=0;
                  List<Station> stationList =stationService.list();
                  for(Station station:stationList){
-                     if(params.getName().equals(station.getName())){
+                     if(params.getName().equals(station.getName())&&params.getId()!=station.getId()){
                          flag=1;
                      }
                  }
                  if(flag==0){
                      stationService.updateById(params);
-                     httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                     httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+                     httpResponseEntity.setData("更新成功");
                  }
-
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
             logger.info("update 更新货物>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);

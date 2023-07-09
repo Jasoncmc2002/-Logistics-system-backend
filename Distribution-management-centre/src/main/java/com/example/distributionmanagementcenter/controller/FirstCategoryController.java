@@ -69,15 +69,10 @@ public class FirstCategoryController {
             }
             if(flag==0){
                 firstCategoryService.save(params);
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+                httpResponseEntity.setData("新增成功");
             }
-            else
-            {
-                httpResponseEntity.setData("插入值重复！");
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 
         } catch (Exception e) {
             logger.info("create 新建种类>>>>>>>>>>>" + e.getLocalizedMessage());
@@ -113,22 +108,25 @@ public class FirstCategoryController {
 
 
     @PostMapping(value = "/update")
-    public HttpResponseEntity<FirstCategory> update(@RequestBody FirstCategory params) {
+    public HttpResponseEntity update(@RequestBody FirstCategory params) {
 
-        HttpResponseEntity<FirstCategory> httpResponseEntity = new HttpResponseEntity<FirstCategory>();
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try{
-            boolean flag= firstCategoryService.updateById(params);
-            if(flag)
-            {
-
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            int flag=0;
+            List<FirstCategory> firstCategoryList = firstCategoryService.list();
+            for(FirstCategory firstCategory : firstCategoryList){
+                if(firstCategory.getFName().equals(params.getFName())&&firstCategory.getId()!=params.getId()){
+                    flag=1;
+                    break;
+                }
+            }
+            if(flag==0){
+                firstCategoryService.updateById(params);
+                httpResponseEntity.setData("修改成功");
             }
 
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
             logger.info("update 更新种类>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
