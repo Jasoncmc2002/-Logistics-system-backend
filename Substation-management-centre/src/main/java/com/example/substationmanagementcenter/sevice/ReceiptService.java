@@ -2,7 +2,9 @@ package com.example.substationmanagementcenter.sevice;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.substationmanagementcenter.entity.Receipt;
+import com.github.pagehelper.PageInfo;
 
+import java.text.ParseException;
 import java.util.Map;
 
 /**
@@ -18,5 +20,7 @@ public interface ReceiptService extends IService<Receipt> {
     int updatebyId(Receipt receipt);
 
     int receiptEntry(Map<String,Object> map);
+
+    PageInfo getList(Map<String, Object> map) throws ParseException;
 
 }

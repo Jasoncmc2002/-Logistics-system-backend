@@ -95,5 +95,22 @@ public class ReceiptAction {
         return httpResponseEntity;
     }
 
+    @RequestMapping(value = "/getReceiptList",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity getReceiptList(@RequestBody Map<String, Object> map){
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+                httpResponseEntity.setData(receiptService.getList(map));
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("updateTask 修改回执单信息>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
 
 }
