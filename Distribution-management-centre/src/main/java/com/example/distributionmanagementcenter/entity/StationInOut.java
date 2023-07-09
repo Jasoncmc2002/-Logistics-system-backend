@@ -32,7 +32,7 @@ public class StationInOut implements Serializable {
     private String stationClassName;
 
     private Long alloId;
-    @TableField(exist = false)
+
     private Long stationId;
 
     private String stationName;

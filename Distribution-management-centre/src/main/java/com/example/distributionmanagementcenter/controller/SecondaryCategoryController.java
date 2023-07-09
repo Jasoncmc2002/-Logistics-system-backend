@@ -73,16 +73,10 @@ public class SecondaryCategoryController {
             }
             if(flag==0){
                 secondaryCategoryService.save(params);
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+                httpResponseEntity.setData("插入成功！");
             }
-            else
-            {
-                httpResponseEntity.setData("插入值重复！");
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
-
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
             logger.info("create 新建种类>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
@@ -122,17 +116,24 @@ public class SecondaryCategoryController {
 
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try{
-            boolean flag= secondaryCategoryService.updateById(params);
-            if(flag)
-            {
-
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            int flag=0;
+            List<SecondaryCategory> secondaryCategoryList = secondaryCategoryService.list();
+            for(SecondaryCategory secondaryCategory : secondaryCategoryList){
+                if(secondaryCategory.getSName().equals(params.getSName())&&secondaryCategory.getId()!=params.getId()){
+                    if(secondaryCategory.getFId()==params.getFId()){
+                        flag=1;
+                        break;
+                    }
+                }
             }
+            if(flag==0){
+                 secondaryCategoryService.updateById(params);
+                httpResponseEntity.setData("插入成功！");
+            }
+
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
 
         } catch (Exception e) {
             logger.info("update 更新种类>>>>>>>>>>>" + e.getLocalizedMessage());
