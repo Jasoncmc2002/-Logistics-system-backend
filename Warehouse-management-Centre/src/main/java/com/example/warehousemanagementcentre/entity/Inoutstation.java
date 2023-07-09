@@ -2,7 +2,6 @@ package com.example.warehousemanagementcentre.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -41,7 +40,7 @@ public class Inoutstation implements Serializable {
     /**
      * 用户名
      */
-    private Long stationId;
+    private String stationName;
 
     /**
      * 用户名
@@ -95,5 +94,7 @@ public class Inoutstation implements Serializable {
     private String type;
 
     private String signer;
+
+    private String distributor;
 
 }

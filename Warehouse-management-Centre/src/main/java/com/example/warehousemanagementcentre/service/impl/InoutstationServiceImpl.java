@@ -28,12 +28,16 @@ public class InoutstationServiceImpl extends ServiceImpl<InoutstationMapper, Ino
     @Autowired
     private InoutstationMapper inoutstationMapper;
     @Override
-    public PageInfo selectBuyType(Map<String, Object> map) {
+    public PageInfo selectByType(Map<String, Object> map) {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
                 Integer.valueOf(String.valueOf(map.get("pageSize"))));
         //中心库存中对应的数据
         QueryWrapper<Inoutstation> inoutstationQueryWrapper = new QueryWrapper<>();
-        inoutstationQueryWrapper.eq("type", map.get("type"));
+        if(!map.get("type").equals("")){
+            inoutstationQueryWrapper.eq("type", map.get("type"));
+        }
+
+
         List<Inoutstation> inoutstations = inoutstationMapper.selectList(inoutstationQueryWrapper);
         PageInfo pageInfo = new PageInfo(inoutstations);
         return pageInfo;
