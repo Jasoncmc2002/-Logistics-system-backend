@@ -65,8 +65,7 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
     PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
     QueryWrapper<Allocation> queryWrapper = new QueryWrapper<>();
-
-    String invoiceClass= String.valueOf(map.get("invoiceClass"));
+    int type=Integer.valueOf(String.valueOf(map.get("alloType")));
     ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
     // 格式化中国时区时间为指定格式的字符串
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -77,6 +76,7 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
         ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
 
     queryWrapper.between("allocation_date", startDate, endDate);
+    queryWrapper.eq("allo_type",type);
     List<Allocation> res= allocationMapper.selectList(queryWrapper);
 //    System.out.println(res);
     PageInfo pageInfo = new PageInfo(res);

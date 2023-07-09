@@ -49,13 +49,14 @@ spring:
     sentinel:
       transport:
         # ??sentinel??????
-#        dashboard: http://62.234.23.101:9100
-        dashboard: localhost:8080
+        port: 8719
+        clientIp: 62.234.23.101
+        dashboard: http://62.234.23.101:9100
       datasource:
-        ds1:
+        ds:
           nacos:
             server-addr: 62.234.23.101:8848
-            dataId: financialRules
+            dataId: sentinelRules
             groupId: DEFAULT_GROUP
             data-type: json
             rule-type: flow
@@ -97,7 +98,11 @@ pagehelper:
   params: count=countSql
 
 
-
+management:
+  endpoint:
+    web:
+      exposure:
+        include: '*'
 #feign:
 #  sentinel:
 #    enabled: true

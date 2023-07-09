@@ -33,7 +33,7 @@ public class FinancialAction {
     @Autowired
     private FinancialServiceImpl financialService;
 
-    @SentinelResource(value = "SettlementSupply", blockHandler = "flowBlockHandler")
+    @SentinelResource(value = "two")
     @RequestMapping(value = "/SettlementSupply",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity SettlementSupply(@RequestBody Map<String,Object> map) {
@@ -58,7 +58,7 @@ public class FinancialAction {
         }
         return httpResponseEntity;
     }
-    @SentinelResource(value = "SettlementStation", blockHandler = "flowBlockHandler")
+    @SentinelResource(value = "two")
     @RequestMapping(value = "/SettlementStation",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity SettlementStation(@RequestBody Map<String,Object> map) {
@@ -83,9 +83,5 @@ public class FinancialAction {
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
         return httpResponseEntity;
-    }
-    public String flowBlockHandler(BlockException e){
-        System.out.println("flow 流控了");
-        return "flow 流控了！";
     }
 }

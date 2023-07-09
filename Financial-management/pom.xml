@@ -170,16 +170,40 @@
       <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.alibaba.csp</groupId>
-      <artifactId>sentinel-datasource-nacos</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.alibaba.csp</groupId>
-      <artifactId>sentinel-transport-simple-http</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
     <dependency>
       <groupId>com.alibaba.csp</groupId>
       <artifactId>sentinel-core</artifactId>
+      <version>1.8.6</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.alibaba.nacos</groupId>
+      <artifactId>nacos-client</artifactId>
+      <version>2.2.3</version>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba.csp</groupId>
+      <artifactId>sentinel-transport-simple-http</artifactId>
+      <version>1.8.6</version>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba.csp</groupId>
+      <artifactId>sentinel-transport-simple-http</artifactId>
+      <version>1.8.6</version>
+    </dependency>
+    <!--    sentinel注解支持包    -->
+    <dependency>
+      <groupId>com.alibaba.csp</groupId>
+      <artifactId>sentinel-annotation-aspectj</artifactId>
+      <version>1.8.6</version>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba.csp</groupId>
+      <artifactId>sentinel-datasource-nacos</artifactId>
+      <version>1.8.6</version>
     </dependency>
     <!--商品识别-->
     <!-- https://mvnrepository.com/artifact/com.aliyun/goodstech20191230 -->
