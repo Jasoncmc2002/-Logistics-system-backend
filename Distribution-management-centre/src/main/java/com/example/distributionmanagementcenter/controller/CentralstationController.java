@@ -185,21 +185,14 @@ public class CentralstationController {
         return httpResponseEntity;
     }
     //缺货检查
-    @RequestMapping(value = "/check/{id}",method = RequestMethod.POST, headers = "Accept"
+    @RequestMapping(value = "/check",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
-    public HttpResponseEntity checkVacancyById(@PathVariable("id")int id) {
+    public HttpResponseEntity checkVacancyById(@RequestBody Map<String, Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try{
-            CentralStation centralStation=centralstationService.getById(id);
-            HashMap<String,Object> responseContent=new HashMap<String,Object>();
-            if(centralStation.getWaitAllo()<=centralStation.getWarn()){
+            CentralStation centralStation=centralstationService.checkById(map);
 
-                responseContent.put("LackNum",centralStation.getWarn()-centralStation.getWaitAllo());
-            }
-            else{
-                responseContent.put("LackNum",0);
-            }
-            httpResponseEntity.setData(responseContent);
+            httpResponseEntity.setData(centralStation);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         }catch(Exception e){
