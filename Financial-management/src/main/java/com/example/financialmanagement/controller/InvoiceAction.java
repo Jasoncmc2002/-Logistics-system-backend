@@ -1,5 +1,6 @@
 package com.example.financialmanagement.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.financialmanagement.beans.HttpResponseEntity;
 import com.example.financialmanagement.common.Constans;
@@ -90,6 +91,7 @@ public class InvoiceAction {
         return httpResponseEntity;
     }
 
+//    @SentinelResource(value = "two")
     @RequestMapping(value = "/selectInvoice",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity selectInvoice(@RequestBody Map<String,Object> map) {
@@ -116,6 +118,7 @@ public class InvoiceAction {
         return httpResponseEntity;
     }
 
+    @SentinelResource(value = "ten")
     @RequestMapping(value = "/selectUseInvoice",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity selectUseInvoice(@RequestBody Map<String,Object> map) {
