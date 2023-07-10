@@ -86,24 +86,9 @@ public class ReceiptServiceImpl extends ServiceImpl<ReceiptMapper, Receipt> impl
     }
 
     @Override
-    public PageInfo getList(Map<String, Object> map) throws ParseException {
-        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
-                Integer.valueOf(String.valueOf(map.get("pageSize"))));
+    public List<Receipt> getList() throws ParseException {
         List<Receipt> records= receiptMapper.selectList(null);
-//        List<Receipt> records1 = new ArrayList<Receipt>();
-//        for(Receipt good :records){
-//            int flag=0;
-//            for(Receipt good1:records1){
-//                if(good1.getCustomerSatis()==good.getCustomerSatis()){
-//                    good1.setNumber(good1.getNumber()+1);
-//                    flag=1;
-//                }
-//            }
-//            if(flag==0){
-//                records1.add(good);
-//            }
-//        }
-        PageInfo pageInfo = new PageInfo(records);
-        return pageInfo;
+
+        return records;
     }
 }

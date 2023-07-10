@@ -1,5 +1,6 @@
 package com.example.distributionmanagementcenter.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -8,11 +9,14 @@ import com.example.distributionmanagementcenter.feign.FeignApi;
 import com.example.distributionmanagementcenter.service.CentralstationService;
 import com.example.distributionmanagementcenter.service.StationService;
 import com.github.pagehelper.PageInfo;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +39,8 @@ public class StationController {
     @Autowired
     private CentralstationService centralstationService;
 
+    @Autowired
+    private FeignApi feignApi;
 
     @PostMapping(value = "/{id}")
     public HttpResponseEntity<Station> getById(@PathVariable("id") String id) {
@@ -265,5 +271,19 @@ public class StationController {
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
         return httpResponseEntity;
+    }
+
+    @RequestMapping(value = "/exportExcel",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public void exportExcel(HttpServletResponse response) throws IOException {
+        String fileName = "Receipt.xlsx";
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+        HttpResponseEntity httpResponseEntity1 = feignApi.getReceiptList();
+
+        List<Receipt> list=(List<Receipt>) httpResponseEntity1.getData();
+        EasyExcel.write(response.getOutputStream(), Receipt.class).sheet("ReceiptList")
+                .doWrite(list);
     }
 }
