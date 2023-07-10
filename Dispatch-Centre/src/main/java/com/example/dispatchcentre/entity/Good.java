@@ -1,6 +1,7 @@
 package com.example.dispatchcentre.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
@@ -25,7 +26,8 @@ public class Good implements Serializable {
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-
+    @TableField(value = "good_id")
+    private Long goodId;
     /**
      * 用户名
      */

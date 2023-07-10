@@ -4,6 +4,8 @@ import com.example.dispatchcentre.beans.HttpResponseEntity;
 import java.util.Map;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -23,5 +25,9 @@ public interface FeignApi {
 
   @RequestMapping(value = "/customer/getOrderByid")
   HttpResponseEntity  getOrderByid(Long id);
+
+
+  @PostMapping(value = "/{id}")
+   HttpResponseEntity getById(@PathVariable("id") String id);
 
 }

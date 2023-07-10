@@ -21,7 +21,7 @@ public interface AllocationService extends IService<Allocation> {
   int insertTaskDispatch(Map<String,Object> map) throws ParseException;
   int insertSationDispatch(Allocation allocation) ;
   int updatebyId(Map<String, Object> map);
-  Allocation selectbyId(Long id);
+  Allocation selectbyId(Map<String,Object> map);
   PageInfo selectAll(Map<String,Object> map);
   PageInfo searchbykey(Map<String,Object> map);
   PageInfo getGoodListByAlloId(Map<String, Object> map);

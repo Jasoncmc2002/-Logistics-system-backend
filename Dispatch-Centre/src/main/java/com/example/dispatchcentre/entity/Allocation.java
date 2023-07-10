@@ -36,12 +36,21 @@ public class Allocation implements Serializable {
     /**
      * 用户名
      */
-    private String outStation;
+    private Long outStationId;
 
     /**
      * 用户名
      */
-    private String inStation;
+    private Long inStationId;
+    /**
+     * 用户名
+     */
+    private String outStationName;
+
+    /**
+     * 用户名
+     */
+    private String inStationName;
 
     /**
      * 用户名

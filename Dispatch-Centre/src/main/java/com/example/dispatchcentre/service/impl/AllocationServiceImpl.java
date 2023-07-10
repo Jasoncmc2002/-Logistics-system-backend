@@ -8,6 +8,7 @@ import com.example.dispatchcentre.beans.HttpResponseEntity;
 import com.example.dispatchcentre.entity.Allocation;
 import com.example.dispatchcentre.entity.Good;
 import com.example.dispatchcentre.entity.Orders;
+import com.example.dispatchcentre.entity.Station;
 import com.example.dispatchcentre.entity.Task;
 import com.example.dispatchcentre.feign.FeignApi;
 import com.example.dispatchcentre.mapper.AllocationMapper;
@@ -50,11 +51,19 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
    Allocation allocation = new Allocation();
    allocation.setTaskId(taskID);
    allocation.setOrderId(Long.valueOf(String.valueOf(map.get("orderId"))));
-   allocation.setInStation(map.get("inStation").toString());
-   allocation.setOutStation(map.get("outStation").toString());
+   allocation.setInStationId(Long.valueOf(map.get("inStationId").toString()));
+   allocation.setOutStationId(Long.valueOf(map.get("outStationId").toString()));
    allocation.setAlloType(Byte.valueOf(String.valueOf(map.get("alloType"))));
-   int res=allocationMapper.insert(allocation);
-    return res;
+    HttpResponseEntity res= feignApi.getById(String.valueOf(map.get("inStationId")));
+    String jsonString2 = JSON.toJSONString(res.getData());  // 将对象转换成json格式数据
+    Station stationin = JSON.parseObject(jsonString2, Station.class);
+    allocation.setInStationName(stationin.getName());
+    HttpResponseEntity res2= feignApi.getById(String.valueOf(map.get("outStationId")));
+    String jsonString3 = JSON.toJSONString(res2.getData());  // 将对象转换成json格式数据
+    Station stationout = JSON.parseObject(jsonString3, Station.class);
+    allocation.setInStationName(stationout.getName());
+   int res3=allocationMapper.insert(allocation);
+    return res3;
   }
 
   @Override
@@ -74,9 +83,16 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
   }
 
   @Override
-  public Allocation selectbyId(Long id) {
+  public Allocation selectbyId(Map<String,Object> map) {
+    QueryWrapper<Allocation> queryWrapper = new QueryWrapper<>();
 
-    return allocationMapper.selectById(id);
+    int type=Integer.valueOf(String.valueOf(map.get("alloType")));
+    Long id=Long.valueOf(String.valueOf(map.get("id")));
+    System.out.println(map);
+    queryWrapper.eq("allo_type",type);
+    queryWrapper.eq("id",id);
+    Allocation allocation=allocationMapper.selectOne(queryWrapper);
+    return allocation;
   }
 
   @Override
@@ -114,6 +130,7 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
     QueryWrapper<Allocation> queryWrapper = new QueryWrapper<>();
     int type=Integer.valueOf(String.valueOf(map.get("alloType")));
     Long id=Long.valueOf(String.valueOf(map.get("id")));
+    System.out.println(map);
     queryWrapper.eq("allo_type",type);
     queryWrapper.eq("id",id);
     Allocation allocation=allocationMapper.selectOne(queryWrapper);

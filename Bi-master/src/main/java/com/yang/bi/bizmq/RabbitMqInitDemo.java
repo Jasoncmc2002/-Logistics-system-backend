@@ -3,6 +3,7 @@ package com.yang.bi.bizmq;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import com.yang.bi.constant.BiMqConstant;
 
 /**
  * @author YANG FUCHAO
@@ -14,9 +15,9 @@ public class RabbitMqInitDemo {
         try {
             ConnectionFactory factory = new ConnectionFactory();
             // 设置 rabbitmq 对应的信息
-            factory.setHost("localhost");
-            factory.setUsername("guest");
-            factory.setPassword("guest");
+            factory.setHost(BiMqConstant.BI_MQ_HOST);
+            factory.setUsername(BiMqConstant.BI_MQ_USERNAME);
+            factory.setPassword(BiMqConstant.BI_MQ_PASSWORD);
 
             Connection connection = factory.newConnection();
             Channel channel = connection.createChannel();

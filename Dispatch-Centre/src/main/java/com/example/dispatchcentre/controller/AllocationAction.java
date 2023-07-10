@@ -126,10 +126,10 @@ public class AllocationAction {
 
     @RequestMapping(value = "/getByAlloId",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
-    public HttpResponseEntity getByAlloId(@RequestBody Long id) {
+    public HttpResponseEntity getByAlloId(@RequestBody Map<String,Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            Allocation res=allocationService.selectbyId(id);
+            Allocation res=allocationService.selectbyId(map);
             httpResponseEntity.setData(res);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);

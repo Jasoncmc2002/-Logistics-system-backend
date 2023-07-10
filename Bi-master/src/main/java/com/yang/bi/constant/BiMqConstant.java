@@ -26,15 +26,15 @@ public interface BiMqConstant {
     /**
      * MQ ip地址
      */
-    String BI_MQ_HOST = "localhost";
+    String BI_MQ_HOST = "62.234.23.101";
     /**
      * MQ 用户名
      */
-    String BI_MQ_USERNAME = "guest";
+    String BI_MQ_USERNAME = "root";
     /**
      * MQ 密码
      */
-    String BI_MQ_PASSWORD = "guest";
+    String BI_MQ_PASSWORD = "Neu123";
 
 
 
