@@ -282,7 +282,7 @@ public class CentralStationController {
                 httpResponseEntity.setMessage(Constans.RETURN_FAILED_MESSAGE);
             }
         } catch (Exception e) {
-            logger.info("search 搜索购货单信息>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("search 中心出库>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }

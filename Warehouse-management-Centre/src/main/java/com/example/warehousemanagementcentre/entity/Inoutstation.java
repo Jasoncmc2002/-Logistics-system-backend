@@ -37,6 +37,8 @@ public class Inoutstation implements Serializable {
      */
     private Long alloId;
 
+    private Long stationId;
+
     /**
      * 用户名
      */
