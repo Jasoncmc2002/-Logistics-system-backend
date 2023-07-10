@@ -280,9 +280,9 @@ public class StationController {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName, "UTF-8"));
 
-        HttpResponseEntity httpResponseEntity1 = feignApi.getReceiptList();
+        HttpResponseEntity<List<Receipt>> httpResponseEntity1 = feignApi.getReceiptList();
 
-        List<Receipt> list=(List<Receipt>) httpResponseEntity1.getData();
+      List<Receipt> list= httpResponseEntity1.getData();
         EasyExcel.write(response.getOutputStream(), Receipt.class).sheet("ReceiptList")
                 .doWrite(list);
     }

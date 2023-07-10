@@ -17,7 +17,7 @@ public class Receipt implements Serializable {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-
+    @ExcelProperty(value = "回复类型")
     private Integer replyClass;
     @ExcelProperty(value = "用户名")
     private String customerName;

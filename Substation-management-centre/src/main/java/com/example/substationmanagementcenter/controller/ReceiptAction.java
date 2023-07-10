@@ -5,6 +5,7 @@ import com.example.substationmanagementcenter.beans.HttpResponseEntity;
 import com.example.substationmanagementcenter.common.Constans;
 import com.example.substationmanagementcenter.entity.Receipt;
 import com.example.substationmanagementcenter.sevice.ReceiptService;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -125,10 +127,12 @@ public class ReceiptAction {
 
     @RequestMapping(value = "/getReceiptList",method = RequestMethod.POST, headers = "Accept"
             + "=application/json")
-    public HttpResponseEntity getReceiptList(@RequestBody Map<String, Object> map){
+    public HttpResponseEntity getReceiptList(){
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-                httpResponseEntity.setData(receiptService.getList());
+              PageInfo pageInfo = new PageInfo(receiptService.getList());
+
+                httpResponseEntity.setData(pageInfo);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 
@@ -139,6 +143,21 @@ public class ReceiptAction {
         }
         return httpResponseEntity;
     }
+    @RequestMapping(value = "/getReceiptList1",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity<List<Receipt>> getReceiptList1(){
+        HttpResponseEntity<List<Receipt>> httpResponseEntity = new HttpResponseEntity<List<Receipt>>();
+        try {
 
+            httpResponseEntity.setData(receiptService.getList());
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 
+        } catch (Exception e) {
+            logger.info("updateTask 修改回执单信息>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }

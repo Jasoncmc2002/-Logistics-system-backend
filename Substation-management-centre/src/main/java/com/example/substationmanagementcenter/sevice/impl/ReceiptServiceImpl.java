@@ -88,7 +88,6 @@ public class ReceiptServiceImpl extends ServiceImpl<ReceiptMapper, Receipt> impl
     @Override
     public List<Receipt> getList() throws ParseException {
         List<Receipt> records= receiptMapper.selectList(null);
-
         return records;
     }
 }
