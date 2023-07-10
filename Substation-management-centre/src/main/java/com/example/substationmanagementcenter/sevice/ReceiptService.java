@@ -5,6 +5,7 @@ import com.example.substationmanagementcenter.entity.Receipt;
 import com.github.pagehelper.PageInfo;
 
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +22,6 @@ public interface ReceiptService extends IService<Receipt> {
 
     int receiptEntry(Map<String,Object> map);
 
-    PageInfo getList(Map<String, Object> map) throws ParseException;
+    List<Receipt> getList() throws ParseException;
 
 }

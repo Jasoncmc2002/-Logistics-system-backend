@@ -128,7 +128,7 @@ public class ReceiptAction {
     public HttpResponseEntity getReceiptList(@RequestBody Map<String, Object> map){
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-                httpResponseEntity.setData(receiptService.getList(map));
+                httpResponseEntity.setData(receiptService.getList());
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 
