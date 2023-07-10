@@ -186,6 +186,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
     public int outCentral(Map<String, Object> map) {
 //        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
 //                Integer.valueOf(String.valueOf(map.get("pageSize"))));
+        System.out.println("map!"+map);
         ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
         // 格式化中国时区时间为指定格式的字符串
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -209,7 +210,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         for(Good good:goods){
             //中心库存中对应的数据
             QueryWrapper<CentralStation> centralStationQueryWrapper = new QueryWrapper<>();
-            centralStationQueryWrapper.eq("good_name", good.getGoodName());
+            centralStationQueryWrapper.eq("id", good.getGoodId());
             List<CentralStation> centralStations = centralStationMapper.selectList(centralStationQueryWrapper);
             CentralStation centralStation = centralStations.get(0);
             if(centralStation == null){
@@ -232,7 +233,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                     inoutstation.setStationClass(1);
                     inoutstation.setAlloId(Long.valueOf(String.valueOf(map.get("alloId"))));
                     inoutstation.setStationId(Long.valueOf(1));
-                    inoutstation.setStationName(allocation.getInStation());
+                    inoutstation.setStationName(allocation.getInStationName());
                     inoutstation.setTaskId(allocation.getTaskId());
                     inoutstation.setGoodId(Long.valueOf(centralStation.getId()));
                     inoutstation.setGoodPrice(centralStation.getGoodPrice());
@@ -420,7 +421,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
     }
 
 
-    //得到要进行入库的goodlist-->遍历good，通过name得到对应的Central-->形成分站入单("调拨出库“)-->改任务单订单和调拨单状态
+    //得到要进行入库的goodlist-->遍历good，通过good_id得到对应的Central-->形成分站入单("调拨出库“)-->改任务单订单和调拨单状态
     @Override
     public int toInSubstation(Map<String, Object> map) {
 //        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
@@ -458,7 +459,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
 
             //得到对应商品信息
             QueryWrapper<CentralStation> centralStationQueryWrapper =new QueryWrapper<>();
-            centralStationQueryWrapper.eq("good_name",good.getGoodName());
+            centralStationQueryWrapper.eq("id",good.getGoodId());
             System.out.println("good.getGoodName()"+good.getGoodName());
             List<CentralStation> centralStations = centralStationMapper.selectList(centralStationQueryWrapper);
             CentralStation centralStation = centralStations.get(0);
@@ -531,7 +532,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
     }
 
 
-    //传入goods转为list-->遍历list得到每个的central-->
+    //传入goods转为list-->遍历list的good_id得到每个的central-->分站出库表（”已领货“）-->改任务单和订单状态
     @Override
     public int takeGoods(Map<String, Object> map) {
         ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
@@ -576,7 +577,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
 
             //得到对应商品信息
             QueryWrapper<CentralStation> centralStationQueryWrapper =new QueryWrapper<>();
-            centralStationQueryWrapper.eq("good_name",good.getGoodName());
+            centralStationQueryWrapper.eq("id",good.getGoodId());
             System.out.println("good.getGoodName()"+good.getGoodName());
             List<CentralStation> centralStations = centralStationMapper.selectList(centralStationQueryWrapper);
             CentralStation centralStation = centralStations.get(0);
@@ -607,7 +608,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
             }
             inoutstation.setDate(date);
 //        inoutstation.setType("购货入库");
-            inoutstation.setType("调拨出库");
+            inoutstation.setType("分站已领货出库");
             inoutstation.setRemark(String.valueOf(map.get("remark")));
             inoutstation.setSigner(String.valueOf(map.get("signer")));
             inoutstation.setDistributor(String.valueOf(map.get("distributor")));
@@ -637,6 +638,14 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
 //        JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
 //        Good good = JSON.parseObject(String.valueOf(jsonObject), Good.class);
 
+
+        //得到对应商品信息,能否退货
+        QueryWrapper<CentralStation> centralStationQueryWrapper =new QueryWrapper<>();
+        centralStationQueryWrapper.eq("id",map.get("goodId"));
+        List<CentralStation> centralStations = centralStationMapper.selectList(centralStationQueryWrapper);
+        CentralStation centralStation = centralStations.get(0);
+        System.out.println(centralStation);
+
         //传入要退货的good_id得到分站出库表的对应inoutstation
         Map map1 = new HashMap<>();
         map1.put("goodId", map.get("goodId"));
@@ -646,7 +655,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
 
         int res = 0;
         //判断有无货物
-        if (res1.getData() == null) {
+        if (centralStation == null) {
             res = 3;
 
         } else {

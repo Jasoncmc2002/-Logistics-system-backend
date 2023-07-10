@@ -19,7 +19,6 @@ import java.util.Date;
 @Data
 @TableName("good_allocation")
 public class Allocation implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     /**
@@ -34,16 +33,24 @@ public class Allocation implements Serializable {
     private Long orderId;
 
     private Long taskId;
+    /**
+     * 用户名
+     */
+    private Long outStationId;
 
     /**
      * 用户名
      */
-    private String outStation;
+    private Long inStationId;
+    /**
+     * 用户名
+     */
+    private String outStationName;
 
     /**
      * 用户名
      */
-    private String inStation;
+    private String inStationName;
 
     /**
      * 用户名
@@ -58,6 +65,8 @@ public class Allocation implements Serializable {
     private String distributors;
 
     private String signer;
+
+
 
 
 }
