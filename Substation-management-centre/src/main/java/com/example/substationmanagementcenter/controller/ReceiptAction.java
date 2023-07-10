@@ -57,6 +57,34 @@ public class ReceiptAction {
         return httpResponseEntity;
     }
 
+
+//    @RequestMapping(value = "/getReceiptByTaskId",method = RequestMethod.POST, headers = "Accept"
+//            + "=application/json")
+//    public HttpResponseEntity getReceiptByTaskId(@RequestBody Map<String,Object> map){
+//        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+//        try {
+//            int res=receiptService.receiptEntry(map);
+//            if(res==1)
+//            {
+//                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+//                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+//            }else
+//            {
+//                httpResponseEntity.setCode(Constans.EXIST_CODE);
+//                httpResponseEntity.setMessage(Constans.UPDATE_FAIL);
+//            }
+//
+//        } catch (Exception e) {
+//            logger.info("receiptEntry 回执单信息录入>>>>>>>>>>>" + e.getLocalizedMessage());
+//            httpResponseEntity.setCode(Constans.EXIST_CODE);
+//            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+//        }
+//        return httpResponseEntity;
+//    }
+
+
+
+
     @GetMapping(value = "/")
     public ResponseEntity<Page<Receipt>> list(@RequestParam(required = false) Integer current, @RequestParam(required = false) Integer pageSize) {
         if (current == null) {

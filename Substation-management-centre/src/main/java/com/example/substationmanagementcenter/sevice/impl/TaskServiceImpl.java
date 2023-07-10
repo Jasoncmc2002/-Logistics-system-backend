@@ -22,6 +22,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -61,33 +64,35 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         //筛选task
         QueryWrapper<Task> queryWrapper = new QueryWrapper<>();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        if(!map.get("startLine").equals("") && map.get("startLine") != null){
-            ZonedDateTime dateTime = ZonedDateTime.parse((String) map.get("startline"), inputFormatter);
-            String date = outputFormatter.format(dateTime);
-            Date startline =simpleDateFormat.parse(date);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+        if(map.get("startLine") != null && !map.get("startLine").equals("")){
+
+            // 格式化中国时区时间为指定格式的字符串
+            String date = LocalDateTime.parse(String.valueOf(map.get("startline")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                    ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+            Date startline = simpleDateFormat.parse(date);
             System.out.println("start"+startline);
             queryWrapper.ge("deadline",startline);
         }
-        if(!map.get("endLine").equals("") && map.get("endLine") != null){
-            ZonedDateTime dateTime = ZonedDateTime.parse((String) map.get("endline"), inputFormatter);
-            String date = outputFormatter.format(dateTime);
-            Date endline =simpleDateFormat.parse(date);
+        if(map.get("endLine") != null && !map.get("endLine").equals("")){
+            String date = LocalDateTime.parse(String.valueOf(map.get("endline")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                    ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+            Date endline = simpleDateFormat.parse(date);
             System.out.println("end!!!"+endline);
             queryWrapper.lt("deadline",endline);
         }
-        if(!map.get("taskType").equals("") && map.get("taskType") != null){
+        if(map.get("taskType") != null && !map.get("taskType").equals("")){
             System.out.println("taskType");
             queryWrapper.eq("task_type",map.get("taskType"));
         }
-        if(!map.get("taskStatus").equals("") && map.get("taskStatus") != null){
+        if(map.get("taskStatus") != null && !map.get("taskStatus").equals("")){
             queryWrapper.eq("task_status",map.get("taskStatus"));
         }
-        if(!map.get("substation").equals("") && map.get("substation") != null){
+        if(map.get("substation") != null && !map.get("substation").equals("")){
             queryWrapper.eq("substation",map.get("substation"));
         }
-        if(!map.get("postman").equals("") && map.get("postman") != null){
+        if(map.get("postman") != null && !map.get("postman").equals("")){
             queryWrapper.eq("postman",map.get("postman"));
         }
         List<Task> res= taskMapper.selectList(queryWrapper);
