@@ -24,4 +24,5 @@ public interface AllocationService extends IService<Allocation> {
   Allocation selectbyId(Long id);
   PageInfo selectAll(Map<String,Object> map);
   PageInfo searchbykey(Map<String,Object> map);
+  PageInfo getGoodListByAlloId(Map<String, Object> map);
 }

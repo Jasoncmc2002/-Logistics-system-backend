@@ -18,7 +18,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 public class BIApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(BIApplication.class, args);
     }

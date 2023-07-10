@@ -88,10 +88,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
 
     // 判断name属性是否为空，如果不为空则作为查询条件
-    if (!map.get("customer_name").equals("")) {
+    if (!map.get("customerName").equals("")) {
       queryWrapper.like("customer_name", map.get("customer_name"));
     }
-
+    if (!map.get("id").equals("")) {
+      queryWrapper.like("id", map.get("id"));
+    }
+    if (!map.get("receiveName").equals("")) {
+      queryWrapper.like("receive_name", map.get("receiveName"));
+    }
       queryWrapper.between("order_date", startDate, endDate);
 
     if (!map.get("order_type").equals("")) {

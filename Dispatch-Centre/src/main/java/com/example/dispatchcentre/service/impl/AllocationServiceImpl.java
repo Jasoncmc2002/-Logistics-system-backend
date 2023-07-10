@@ -1,10 +1,15 @@
 package com.example.dispatchcentre.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.dispatchcentre.beans.HttpResponseEntity;
 import com.example.dispatchcentre.entity.Allocation;
+import com.example.dispatchcentre.entity.Good;
+import com.example.dispatchcentre.entity.Orders;
 import com.example.dispatchcentre.entity.Task;
+import com.example.dispatchcentre.feign.FeignApi;
 import com.example.dispatchcentre.mapper.AllocationMapper;
 import com.example.dispatchcentre.service.AllocationService;
 import com.github.pagehelper.PageHelper;
@@ -37,6 +42,8 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
   private AllocationMapper allocationMapper;
   @Autowired
   private TaskServiceImpl taskService;
+  @Autowired
+  private FeignApi feignApi;
   @Override
   public int insertTaskDispatch(Map<String,Object> map) throws ParseException {
     Long taskID= taskService.insert(map);
@@ -68,7 +75,8 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
 
   @Override
   public Allocation selectbyId(Long id) {
-    return null;
+
+    return allocationMapper.selectById(id);
   }
 
   @Override
@@ -96,6 +104,23 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
     List<Allocation> res= allocationMapper.selectList(queryWrapper);
 //    System.out.println(res);
     PageInfo pageInfo = new PageInfo(res);
+    return pageInfo;
+  }
+
+  @Override
+  public PageInfo getGoodListByAlloId(Map<String, Object> map) {
+    PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+        Integer.valueOf(String.valueOf(map.get("pageSize"))));
+    QueryWrapper<Allocation> queryWrapper = new QueryWrapper<>();
+    int type=Integer.valueOf(String.valueOf(map.get("alloType")));
+    Long id=Long.valueOf(String.valueOf(map.get("id")));
+    queryWrapper.eq("allo_type",type);
+    queryWrapper.eq("id",id);
+    Allocation allocation=allocationMapper.selectOne(queryWrapper);
+    HttpResponseEntity res= feignApi.getGoodByOrderId(allocation.getOrderId());
+    String jsonString2 = JSON.toJSONString(res.getData());  // 将对象转换成json格式数据
+    List<Good> goodList = JSON.parseArray(jsonString2,Good.class);
+    PageInfo pageInfo = new PageInfo(goodList);
     return pageInfo;
   }
 }

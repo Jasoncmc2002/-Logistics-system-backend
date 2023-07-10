@@ -106,4 +106,38 @@ public class AllocationAction {
         }
         return httpResponseEntity;
     }
+
+    @RequestMapping(value = "/getGoodListByAlloId",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity getGoodListByAlloId(@RequestBody Map<String,Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            PageInfo res=allocationService.getGoodListByAlloId(map);
+            httpResponseEntity.setData(res);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+        } catch (Exception e) {
+            logger.info("getGoodListByAlloId good得到调度单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+    @RequestMapping(value = "/getByAlloId",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity getByAlloId(@RequestBody Long id) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            Allocation res=allocationService.selectbyId(id);
+            httpResponseEntity.setData(res);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+        } catch (Exception e) {
+            logger.info("getGoodListByAlloId good得到调度单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }

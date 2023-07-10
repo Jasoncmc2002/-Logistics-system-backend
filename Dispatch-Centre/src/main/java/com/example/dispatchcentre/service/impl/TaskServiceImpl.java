@@ -186,7 +186,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
     Long orderId = Long.valueOf(String.valueOf(map.get("orderId")));
-    HttpResponseEntity goodhttp=feignApi.getGoodByOrderId(Math.toIntExact(orderId));
+    HttpResponseEntity goodhttp=feignApi.getGoodByOrderId(orderId);
     /*查询并统计结果*/
     String jsonString2 = JSON.toJSONString(goodhttp.getData());  // 将对象转换成json格式数据
     List<Good> goodsList = JSON.parseArray(jsonString2,Good.class);
