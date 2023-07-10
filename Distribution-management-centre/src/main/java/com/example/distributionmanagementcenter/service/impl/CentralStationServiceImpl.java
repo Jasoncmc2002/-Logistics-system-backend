@@ -117,12 +117,15 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                 centralStation.setIsChangeName("否");
             }
             //缺货检查
-            if(centralStation.getWaitAllo()<centralStation.getWarn()){
-               centralStation.setVacancy(centralStation.getWarn()-centralStation.getWaitAllo());
+            if(centralStation.getWaitAllo()!=null&&centralStation.getWarn()!=null){
+                if(centralStation.getWaitAllo()<centralStation.getWarn()){
+                    centralStation.setVacancy(centralStation.getWarn()-centralStation.getWaitAllo());
+                }
+                else{
+                    centralStation.setVacancy(0L);
+                }
             }
-            else{
-                centralStation.setVacancy(0L);
-            }
+
         }
         PageInfo pageInfo = new PageInfo(records);
         return pageInfo;
