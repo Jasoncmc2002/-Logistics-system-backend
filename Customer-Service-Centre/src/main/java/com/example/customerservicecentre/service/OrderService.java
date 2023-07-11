@@ -24,7 +24,7 @@ public interface OrderService extends IService<Orders> {
   PageInfo getOrdersByCriteria(Map<String, Object> map) throws ParseException;
   PageInfo getAllOrder(Map<String, Object> map);
   PageInfo selectOrderbyCustomer(Map<String, Object> map);
-  int updatebyId(Orders orders);
+  int updatebyId(Orders orders) throws ParseException;
   PageInfo getWorkByid(Map<String, Object> map) throws ParseException;
   Orders getOrderByid(Map<String, Object> map);
   /*  退订*/

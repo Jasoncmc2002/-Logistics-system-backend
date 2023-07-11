@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -130,10 +131,24 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     if (!map.get("orderType").equals("")) {
       queryWrapper.eq("order_type", map.get("orderType"));
     }
+    queryWrapper.eq("order_status", "已分配");
+    //good_status=="",则为自动调度，good_status=”缺货“，则为手动调度
+    queryWrapper.eq("good_status", map.get("goodStatus"));
     List<Orders> res=orderMapper.selectList(queryWrapper);
+    Random r=new Random();
     for (Orders orders:res ) {
       if(orders.getCustomerId()==null){
-
+        Long id= Long.valueOf(r.nextInt(4)+1);
+        if (id==1L){
+          orders.setSubstationId(id);
+          orders.setSubstation("长沙分站");
+        }else if (id==2L){
+          orders.setSubstationId(id);
+          orders.setSubstation("沈阳分站");
+        }else if (id==3L){
+          orders.setSubstationId(id);
+          orders.setSubstation("广东分站");
+        }
       }
       Long id = Long.valueOf(orders.getCustomerId());
       Customer customer= customerService.selectbyId(id);
@@ -143,6 +158,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     PageInfo<Orders> pageInfo = new PageInfo<Orders>(res);
     return pageInfo;
   }
+
 
   @Override
   public PageInfo getAllOrder(Map<String, Object> map) {
@@ -181,7 +197,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
   }
 
   @Override
-  public int updatebyId(Orders orders) {
+  public int updatebyId(Orders orders) throws ParseException {
+    ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+    // 格式化中国时区时间为指定格式的字符串
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String startDate =
+        LocalDateTime.parse(String.valueOf(orders.getDeliveryDateFront()), DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+    Date dedate= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startDate);
+    orders.setDeliveryDate(dedate);
     int res =orderMapper.updateById(orders);
     return res;
   }

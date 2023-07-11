@@ -48,9 +48,6 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
   private AllocationServiceImpl allocationService=new AllocationServiceImpl();
   @Override
   public Long insert(Map<String,Object > map) throws ParseException {
-//    String jsonString1 = JSON.toJSONString(map);  // 将对象转换成json格式数据
-//    JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
-//    Task task = JSON.parseObject(jsonObject.getString("Task"), Task.class); // 这样就可以了
     Task task =new Task();
     Date date = DateUtil.getCreateTime();
     task.setTaskDate(date);
@@ -202,7 +199,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     Long taskId = Long.valueOf(String.valueOf(map.get("taskId")));
     Task task = taskMapper.selectById(taskId);
     Delivery delivery=new Delivery();
-    if(task.getTaskStatus()=="已分配") {
+    if(task.getTaskStatus().equals("已分配")) {
 
       HttpResponseEntity goodhttp = feignApi.getGoodByOrderId(task.getOrderId());
       /*查询并统计结果*/
@@ -211,6 +208,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
       PageInfo pageInfo = new PageInfo(goodsList);
       delivery.setTask(task);
       delivery.setPageInfo(pageInfo);
+      System.out.println(pageInfo);
       return delivery;
     }
     return null;

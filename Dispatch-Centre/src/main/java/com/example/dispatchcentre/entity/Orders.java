@@ -44,7 +44,7 @@ public class Orders implements Serializable {
      * 用户名
      */
     private String remark;
-
+    private Long substationId;
     /**
      * 用户名
      */
