@@ -89,9 +89,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
     // 判断name属性是否为空，如果不为空则作为查询条件
     if (!map.get("customerName").equals("")) {
-      queryWrapper.like("customer_name", map.get("customer_name"));
+      queryWrapper.like("customer_name", map.get("customerName"));
     }
-    if (!map.get("id").equals("")) {
+    if (!map.get("id").equals("")&&!map.get("id").equals(0L)) {
       queryWrapper.like("id", map.get("id"));
     }
     if (!map.get("receiveName").equals("")) {
@@ -99,8 +99,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     }
       queryWrapper.between("order_date", startDate, endDate);
 
-    if (!map.get("order_type").equals("")) {
-      queryWrapper.eq("order_type", map.get("order_type"));
+    if (!map.get("orderType").equals("")) {
+      queryWrapper.eq("order_type", map.get("orderType"));
     }
     List<Orders> res= orderMapper.selectList(queryWrapper);
     for (Orders orders:res ) {
@@ -112,6 +112,37 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     PageInfo pageInfo = new PageInfo(res);
     return pageInfo;
 }
+
+  @Override
+  public PageInfo getOrderDis(Map<String, Object> map) {
+    System.out.println(map);
+    PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+        Integer.valueOf(String.valueOf(map.get("pageSize"))));
+    QueryWrapper<Orders> queryWrapper = new QueryWrapper<>();
+    ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+    // 格式化中国时区时间为指定格式的字符串
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+    String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+    queryWrapper.between("order_date", startDate, endDate);
+    if (!map.get("orderType").equals("")) {
+      queryWrapper.eq("order_type", map.get("orderType"));
+    }
+    List<Orders> res=orderMapper.selectList(queryWrapper);
+    for (Orders orders:res ) {
+      if(orders.getCustomerId()==null){
+
+      }
+      Long id = Long.valueOf(orders.getCustomerId());
+      Customer customer= customerService.selectbyId(id);
+      orders.setCustomerName(customer.getName());
+    }
+    //sada
+    PageInfo<Orders> pageInfo = new PageInfo<Orders>(res);
+    return pageInfo;
+  }
 
   @Override
   public PageInfo getAllOrder(Map<String, Object> map) {

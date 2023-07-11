@@ -51,7 +51,7 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
    Allocation allocation = new Allocation();
    allocation.setTaskId(taskID);
    allocation.setOrderId(Long.valueOf(String.valueOf(map.get("orderId"))));
-   allocation.setInStationId(Long.valueOf(map.get("inStationId").toString()));
+   allocation.setInStationId(1L);
    allocation.setOutStationId(Long.valueOf(map.get("outStationId").toString()));
    allocation.setAlloType(Byte.valueOf(String.valueOf(map.get("alloType"))));
     HttpResponseEntity res= feignApi.getById(String.valueOf(map.get("inStationId")));

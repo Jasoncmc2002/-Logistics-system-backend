@@ -148,4 +148,22 @@ public class TaskAction {
         }
         return httpResponseEntity;
     }
+
+
+    @RequestMapping(value = "/getDelivery",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity getDelivery(@RequestBody Map<String,Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+
+        try {
+            httpResponseEntity.setData(taskService.getDelivery(map));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+        } catch (Exception e) {
+            logger.info("getDelivery 领货>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }

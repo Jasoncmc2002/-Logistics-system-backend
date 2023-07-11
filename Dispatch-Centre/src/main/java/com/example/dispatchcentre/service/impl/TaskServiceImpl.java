@@ -11,6 +11,7 @@ import com.example.dispatchcentre.entity.Allocation;
 import com.example.dispatchcentre.entity.Good;
 import com.example.dispatchcentre.entity.Orders;
 import com.example.dispatchcentre.entity.Task;
+import com.example.dispatchcentre.entity.vo.Delivery;
 import com.example.dispatchcentre.feign.FeignApi;
 import com.example.dispatchcentre.mapper.TaskMapper;
 import com.example.dispatchcentre.service.TaskService;
@@ -194,4 +195,24 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     return pageInfo;
   }
 
+  @Override
+  public Delivery getDelivery(Map<String, Object> map) {
+    PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+        Integer.valueOf(String.valueOf(map.get("pageSize"))));
+    Long taskId = Long.valueOf(String.valueOf(map.get("taskId")));
+    Task task = taskMapper.selectById(taskId);
+    Delivery delivery=new Delivery();
+    if(task.getTaskStatus()=="已分配") {
+
+      HttpResponseEntity goodhttp = feignApi.getGoodByOrderId(task.getOrderId());
+      /*查询并统计结果*/
+      String jsonString2 = JSON.toJSONString(goodhttp.getData());  // 将对象转换成json格式数据
+      List<Good> goodsList = JSON.parseArray(jsonString2, Good.class);
+      PageInfo pageInfo = new PageInfo(goodsList);
+      delivery.setTask(task);
+      delivery.setPageInfo(pageInfo);
+      return delivery;
+    }
+    return null;
+  }
 }

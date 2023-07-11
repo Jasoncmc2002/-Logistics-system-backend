@@ -34,4 +34,6 @@ public interface OrderService extends IService<Orders> {
   int checkReturn(Orders orders);
   int addReturn(Map<String,Object > map);
   List<Orders> getOrderByStationFin(Map<String, Object> map) throws ParseException;
+  PageInfo getOrderDis(Map<String, Object> map);
+
 }

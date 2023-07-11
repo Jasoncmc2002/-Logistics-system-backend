@@ -282,4 +282,66 @@ public class OrderAction {
         }
         return httpResponseEntity;
     }
+
+    @RequestMapping(value = "/getOrderDis",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity getOrderDis(@RequestBody Map<String, Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+           PageInfo res=OrdersService.getOrderDis(map);
+            if(res!=null)
+            {
+                httpResponseEntity.setData(res);
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("getOrderDis 调度中心查询>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+    @RequestMapping(value = "/updateOrder",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity updateOrder(@RequestBody Orders order) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=OrdersService.updatebyId(order);
+            if(res!=0)
+            {
+                httpResponseEntity.setData(res);
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("getOrderDis 调度中心查询>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 }
