@@ -941,17 +941,16 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        //得到要进行分站入库的good列表
-        List<Good> goods = new ArrayList<>();
-        String jsonString2 = JSON.toJSONString(map.get("goods"));
-        JSONArray jsonArray2 = JSON.parseArray(jsonString2);
-        goods = JSON.parseArray(String.valueOf(jsonArray2),Good.class);
-        System.out.println("goodList"+goods);
+//        //得到要进行分站入库的good列表
+//        List<Good> goods = new ArrayList<>();
+//        String jsonString2 = JSON.toJSONString(map.get("goods"));
+//        JSONArray jsonArray2 = JSON.parseArray(jsonString2);
+//        goods = JSON.parseArray(String.valueOf(jsonArray2),Good.class);
+//        System.out.println("goodList"+goods);
 
         int res = 0;
         int res1 = 0;
 
-        for (Good good:goods){
             QueryWrapper<Inoutstation> inoutstationQueryWrapper =new QueryWrapper<>();
             inoutstationQueryWrapper.eq("id",map.get("inoutStationId"));
             List<Inoutstation> inoutstations = inoutstationMapper.selectList(inoutstationQueryWrapper);
@@ -960,15 +959,17 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
 
             //得到对应商品信息,能否退货
             QueryWrapper<CentralStation> centralStationQueryWrapper =new QueryWrapper<>();
-            centralStationQueryWrapper.eq("id",good.getGoodId());
+            centralStationQueryWrapper.eq("id",inoutstation.getId());
             List<CentralStation> centralStations = centralStationMapper.selectList(centralStationQueryWrapper);
             CentralStation centralStation = centralStations.get(0);
             System.out.println("centralStation"+centralStation);
 
             if(inoutstation.getType() != null &&inoutstation.getType().equals("中心退货")){
-                centralStation.setWithdrawal(centralStation.getWithdrawal()- good.getGoodNumber());
+                centralStation.setWithdrawal(centralStation.getWithdrawal()- inoutstation.getNumber());
                 centralStation.setStock(centralStation.getWaitAllo()+centralStation.getWithdrawal()+centralStation.getDoneAllo());
                 res = centralStationMapper.updateById(centralStation);
+                inoutstation.setType("中心退货(已完成)");
+                inoutstationMapper.updateById(inoutstation);
 
 
                 inoutstation.setId(null);
@@ -983,13 +984,12 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                 }
                 inoutstation.setDate(date);
                 inoutstation.setType("中心已退回供应商");
-                inoutstation.setRemark(good.getRemark());
+                inoutstation.setRemark(String.valueOf(map.get("remark")));
                 inoutstation.setSigner(String.valueOf(map.get("signer")));
                 inoutstation.setDistributor(String.valueOf(map.get("distributor")));
                 res1 = inoutstationMapper.insert(inoutstation);
             }
 
-        }
 
 
         return res;
