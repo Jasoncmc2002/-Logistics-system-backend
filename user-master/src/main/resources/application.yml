@@ -1,5 +1,3 @@
 spring:
-  application:
-    name: user-application
   profiles:
     active: dev

@@ -2,6 +2,8 @@
 #  port : 8083
 
 spring:
+  application:
+    name: user-application
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     url: jdbc:mysql://62.234.23.101:3306/logistics?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
