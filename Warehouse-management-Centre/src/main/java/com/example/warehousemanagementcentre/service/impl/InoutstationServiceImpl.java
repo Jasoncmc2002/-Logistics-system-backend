@@ -56,13 +56,18 @@ public class InoutstationServiceImpl extends ServiceImpl<InoutstationMapper, Ino
         ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
         // 格式化中国时区时间为指定格式的字符串
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String startDate = LocalDateTime.parse(String.valueOf(map.get("startLine")),
+        String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")),
             DateTimeFormatter.ISO_DATE_TIME).atZone(
             ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
-        String endDate = LocalDateTime.parse(String.valueOf(map.get("endLine")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+        String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
             ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
 
         inoutstationQueryWrapper.between("date", startDate, endDate);
+
+        if(!map.get("id").equals(0)) {
+            Long id = Long.valueOf(String.valueOf(map.get("id")));
+            inoutstationQueryWrapper.eq("id", id);
+        }
         List<Inoutstation> inoutstations = inoutstationMapper.selectList(inoutstationQueryWrapper);
         PageInfo pageInfo = new PageInfo(inoutstations);
         return pageInfo;

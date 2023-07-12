@@ -149,7 +149,7 @@ public class TaskAction {
         return httpResponseEntity;
     }
 
-
+  /*  领货的商品*/
     @RequestMapping(value = "/getDelivery",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity getDelivery(@RequestBody Map<String,Object> map) {

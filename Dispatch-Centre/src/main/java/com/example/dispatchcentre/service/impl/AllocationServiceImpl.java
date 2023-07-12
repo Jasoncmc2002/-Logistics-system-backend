@@ -185,10 +185,22 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
     QueryWrapper<Allocation> queryWrapper = new QueryWrapper<>();
     int type=Integer.valueOf(String.valueOf(map.get("alloType")));
-    Long id=Long.valueOf(String.valueOf(map.get("id")));
+
     System.out.println(map);
     queryWrapper.eq("allo_type",type);
-    queryWrapper.eq("id",id);
+    if(!map.get("id").equals(0)) {
+      Long id = Long.valueOf(String.valueOf(map.get("id")));
+      queryWrapper.eq("id", id);
+    }
+    ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+    // 格式化中国时区时间为指定格式的字符串
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String startDate = LocalDateTime.parse(String.valueOf(map.get("startLine")),
+        DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+    String endDate = LocalDateTime.parse(String.valueOf(map.get("endLine")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+    queryWrapper.between("allocation_date", startDate, endDate);
     Allocation allocation=allocationMapper.selectOne(queryWrapper);
     HttpResponseEntity res= feignApi.getGoodByOrderId(allocation.getOrderId());
     String jsonString2 = JSON.toJSONString(res.getData());  // 将对象转换成json格式数据

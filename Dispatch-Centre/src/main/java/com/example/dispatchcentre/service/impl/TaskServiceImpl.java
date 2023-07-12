@@ -219,9 +219,16 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
   public PageInfo getGoodByTaskId(Map<String, Object> map) {
     PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
-    Long id=Long.valueOf(String.valueOf(map.get("id")));
+
     System.out.println(map);
-    Task task=taskMapper.selectById(id);
+    QueryWrapper<Task> queryWrapper=new QueryWrapper<>();
+    if(!map.get("id").equals(0)) {
+      Long id = Long.valueOf(String.valueOf(map.get("id")));
+      queryWrapper.eq("id", id);
+    }
+    queryWrapper.eq("task_status", "已完成");
+    queryWrapper.eq("task_type","退货");
+    Task task=taskMapper.selectOne(queryWrapper);
     HttpResponseEntity res= feignApi.getGoodByOrderId(task.getOrderId());
     String jsonString2 = JSON.toJSONString(res.getData());  // 将对象转换成json格式数据
     List<Good> goodList = JSON.parseArray(jsonString2,Good.class);
