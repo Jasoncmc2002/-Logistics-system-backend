@@ -1,5 +1,6 @@
 package com.example.distributionmanagementcenter.entity;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -19,32 +20,37 @@ public class Receipt implements Serializable {
     private Long id;
     @ExcelProperty(value = "回复类型")
     private Integer replyClass;
-    @ExcelProperty(value = "用户名")
+//    @ExcelProperty(value = "用户名")
+    @ExcelIgnore
     private String customerName;
-    @ExcelProperty(value = "电话号码")
+    @ExcelIgnore
     private String mobilephone;
-    @ExcelProperty(value = "分站名")
+//    @ExcelProperty(value = "分站名")
+      @ExcelIgnore
     private String substation;
-    @ExcelProperty(value = "任务类型")
+//    @ExcelProperty(value = "任务类型")
+    @ExcelIgnore
     private String taskType;
-    @ExcelProperty(value = "地址")
+//    @ExcelProperty(value = "地址")
+@ExcelIgnore
     private String address;
-    @ExcelProperty(value = "商品名称")
+//    @ExcelProperty(value = "商品名称")
+@ExcelIgnore
     private String goodName;
     @ExcelProperty(value = "购买数量")
     private String number;
     @ExcelProperty(value = "商品价格")
     private Double price;
-    @ExcelProperty(value = "订单状态")
+    @ExcelIgnore
     private String taskStatus;
     @ExcelProperty(value = "客户满意度")
     private String customerSatis;
-    @ExcelProperty(value = "备注")
+    @ExcelIgnore
     private String remark;
-    @ExcelProperty(value = "商品数量")
+    @ExcelIgnore
     private Long goodSum;
-    @ExcelProperty(value = "发票单号")
+    @ExcelIgnore
     private Long invoiceNumber;
-    @ExcelProperty(value = "投递员")
+    @ExcelIgnore
     private String postman;
 }

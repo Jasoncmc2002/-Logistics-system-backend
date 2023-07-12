@@ -50,6 +50,7 @@ public class Orders implements Serializable {
      */
     private String remark;
 
+    private Long substationId;
     /**
      * 用户名
      */
@@ -66,6 +67,10 @@ public class Orders implements Serializable {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date deliveryDate;
+
+    @TableField(exist = false)
+    @JsonFormat(pattern = "EEE MMM dd HH:mm:ss zzz yyyy",timezone = "GMT+8")
+    private Date deliveryDateFront;
 
     /**
      * 用户名

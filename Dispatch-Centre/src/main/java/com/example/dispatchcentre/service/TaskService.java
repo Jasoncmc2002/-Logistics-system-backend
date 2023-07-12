@@ -2,6 +2,7 @@ package com.example.dispatchcentre.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.dispatchcentre.entity.Task;
+import com.example.dispatchcentre.entity.vo.Delivery;
 import com.github.pagehelper.PageInfo;
 import java.text.ParseException;
 import java.util.List;
@@ -29,6 +30,6 @@ public interface TaskService extends IService<Task> {
   List<Task> selectByDate(Map<String, Object> map);
 
   PageInfo getGoodListByTaskId(Map<String, Object> map);
-
+  Delivery getDelivery(Map<String, Object> map);
 
 }

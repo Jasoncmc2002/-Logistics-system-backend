@@ -285,6 +285,7 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
      */
     @Override
     public BiResponse genChartByAiAsyncMq(MultipartFile multipartFile, GenChartByAiRequest genChartByAiRequest, HttpServletRequest request) {
+
         String chartName = genChartByAiRequest.getChartName();
         String goal = genChartByAiRequest.getGoal();
         String chartType = genChartByAiRequest.getChartType();

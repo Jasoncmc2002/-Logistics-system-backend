@@ -1,10 +1,12 @@
 package com.example.dispatchcentre.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.dispatchcentre.beans.HttpResponseEntity;
+import com.example.dispatchcentre.common.utils.DateUtil;
 import com.example.dispatchcentre.entity.Allocation;
 import com.example.dispatchcentre.entity.Good;
 import com.example.dispatchcentre.entity.Orders;
@@ -23,6 +25,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +54,7 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
    Allocation allocation = new Allocation();
    allocation.setTaskId(taskID);
    allocation.setOrderId(Long.valueOf(String.valueOf(map.get("orderId"))));
-   allocation.setInStationId(Long.valueOf(map.get("inStationId").toString()));
+   allocation.setInStationId(1L);
    allocation.setOutStationId(Long.valueOf(map.get("outStationId").toString()));
    allocation.setAlloType(Byte.valueOf(String.valueOf(map.get("alloType"))));
     HttpResponseEntity res= feignApi.getById(String.valueOf(map.get("inStationId")));
@@ -65,6 +68,52 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
    int res3=allocationMapper.insert(allocation);
     return res3;
   }
+  @Override
+  public int insertTaskDispatchlist(Map<String,Object> map) throws ParseException {
+    String jsonString1 = JSON.toJSONString(map);  // 将对象转换成json格式数据
+    JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
+    List<Orders> order = JSON.parseArray(jsonObject.getString("Orders"), Orders.class); // 这样就可以了
+    ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+    // 格式化中国时区时间为指定格式的字符串
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    for (Orders order1:order) {
+      Map<String,Object> newMap=new HashMap<>();
+      newMap.put("creator",map.get("creator"));
+      newMap.put("orderId",order1.getId());
+      newMap.put("deadline",map.get("deadline"));
+      Long taskID = taskService.insert(newMap);
+      Allocation allocation = new Allocation();
+      allocation.setTaskId(taskID);
+      allocation.setOrderId(order1.getId());
+      allocation.setInStationId(order1.getSubstationId());
+      allocation.setOutStationId(1L);
+
+      String deadline = LocalDateTime.parse(String.valueOf(map.get("allocationDate")),
+          DateTimeFormatter.ISO_DATE_TIME).atZone(
+          ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+      Date allodate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(deadline);
+      allocation.setAllocationDate(allodate);
+
+      Date date = DateUtil.getCreateTime();
+      allocation.setCreatDate(date);//创建时间
+      allocation.setAlloType((byte) 1);//未完成中心出库
+      HttpResponseEntity res = feignApi.getById(String.valueOf(order1.getSubstationId()));
+      String jsonString2 = JSON.toJSONString(res.getData());  // 将对象转换成json格式数据
+      Station stationin = JSON.parseObject(jsonString2, Station.class);
+      allocation.setInStationName(stationin.getName());
+//      HttpResponseEntity res2 = feignApi.getById(String.valueOf(map.get("outStationId")));
+//      String jsonString3 = JSON.toJSONString(res2.getData());  // 将对象转换成json格式数据
+//      Station stationout = JSON.parseObject(jsonString3, Station.class);
+      allocation.setOutStationName("中心库房");
+      int res3 = allocationMapper.insert(allocation);
+      if (res3 == 0) {
+        return res3;
+      }
+    }
+    return 1;
+  }
+
 
   @Override
   public int insertSationDispatch(Allocation allocation) {

@@ -65,6 +65,7 @@ public class Allocation implements Serializable {
     private String distributors;
 
     private String signer;
+    private Date creatDate;
 
 
 }
