@@ -72,6 +72,25 @@ public class AllocationAction {
         }
         return httpResponseEntity;
     }
+
+    @RequestMapping(value = "/insertTaskDispatchlist",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity insertTaskDispatchlist(@RequestBody Map<String,Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=allocationService.insertTaskDispatchlist(map);
+            if (res==1) {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }
+        } catch (Exception e) {
+            logger.info("addSationDispatch 添加库房调度单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
     @RequestMapping(value = "/updateAllocationbyId",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity updateAllocationbyId(@RequestBody Map<String,Object> map) {

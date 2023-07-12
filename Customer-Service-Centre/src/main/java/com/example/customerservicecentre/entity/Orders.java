@@ -68,9 +68,9 @@ public class Orders implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date deliveryDate;
 
-    @TableField(exist = false)
-    @JsonFormat(pattern = "EEE MMM dd HH:mm:ss zzz yyyy",timezone = "GMT+8")
-    private Date deliveryDateFront;
+//    @TableField(exist = false)
+//    @JsonFormat(pattern = "",timezone = "GMT+8")
+//    private Date deliveryDateFront;
 
     /**
      * 用户名

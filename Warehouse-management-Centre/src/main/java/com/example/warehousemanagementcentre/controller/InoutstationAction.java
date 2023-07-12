@@ -47,5 +47,41 @@ public class InoutstationAction {
         return httpResponseEntity;
     }
 
+    @RequestMapping(value = "/getOut",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity getOut(@RequestBody Map<String,Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            PageInfo res = inoutstationService.getOut(map);
+            httpResponseEntity.setData(res);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+        } catch (Exception e) {
+            logger.info("search 按类型搜索出入库单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 
+
+    //退货到供应商
+    @RequestMapping(value = "/changeOutType",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity changeOutType(@RequestBody Long id) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res = inoutstationService.changeOutType(id);
+            if(res==1){
+                httpResponseEntity.setData(res);
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }
+        } catch (Exception e) {
+            logger.info("changeOutType 按类型搜索出入库单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }

@@ -127,10 +127,10 @@ public class OrderAction {
 
     @RequestMapping(value = "/getOrderByid",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
-    public HttpResponseEntity getOrderByid(@RequestBody Map<String, Object> map) {
+    public HttpResponseEntity getOrderByid(@RequestBody Long id) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            Orders res=OrdersService.getOrderByid(map);
+            Orders res=OrdersService.getOrderByid(id);
             httpResponseEntity.setData(res);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
@@ -333,6 +333,30 @@ public class OrderAction {
         return httpResponseEntity;
     }
 
+    @RequestMapping(value = "/getlack",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity getlack(@RequestBody Map<String, Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            PageInfo res=OrdersService.getlack(map);
+            if(res!=null)
+            {
+                httpResponseEntity.setData(res);
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("getlack 手动调度的订单状态修改>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 
 
 

@@ -166,4 +166,33 @@ public class TaskAction {
         }
         return httpResponseEntity;
     }
+
+
+    @RequestMapping(value = "/getGoodByTaskId",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity getGoodByTaskId(@RequestBody Map<String,Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+
+        try {
+            httpResponseEntity.setData(taskService.getGoodByTaskId(map));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+        } catch (Exception e) {
+            logger.info("getGoodByTaskId 退货登记>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
+
+
+
+
+
+
+
+
+
+
 }

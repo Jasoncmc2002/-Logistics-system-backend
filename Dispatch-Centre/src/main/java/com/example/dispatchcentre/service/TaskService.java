@@ -31,5 +31,5 @@ public interface TaskService extends IService<Task> {
 
   PageInfo getGoodListByTaskId(Map<String, Object> map);
   Delivery getDelivery(Map<String, Object> map);
-
+  PageInfo getGoodByTaskId(Map<String, Object> map);
 }

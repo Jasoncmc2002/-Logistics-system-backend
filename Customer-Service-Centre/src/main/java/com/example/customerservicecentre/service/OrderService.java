@@ -26,7 +26,7 @@ public interface OrderService extends IService<Orders> {
   PageInfo selectOrderbyCustomer(Map<String, Object> map);
   int updatebyId(Orders orders) throws ParseException;
   PageInfo getWorkByid(Map<String, Object> map) throws ParseException;
-  Orders getOrderByid(Map<String, Object> map);
+  Orders getOrderByid(Long id);
   /*  退订*/
   int checkUnsub(Orders orders);
   int addUnsub(Map<String,Object > map);
@@ -35,5 +35,6 @@ public interface OrderService extends IService<Orders> {
   int addReturn(Map<String,Object > map);
   List<Orders> getOrderByStationFin(Map<String, Object> map) throws ParseException;
   PageInfo getOrderDis(Map<String, Object> map);
+  PageInfo getlack(Map<String, Object> map) throws ParseException;
 
 }

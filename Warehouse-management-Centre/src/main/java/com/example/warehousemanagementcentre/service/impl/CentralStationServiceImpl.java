@@ -226,8 +226,6 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                     res = centralStationMapper.updateById(centralStation);
                     System.out.println("res"+res);
 
-
-
                     //出库加出库表
                     Inoutstation inoutstation = new Inoutstation();
                     inoutstation.setStationClass(1);
@@ -290,7 +288,6 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
 
         return res;
     }
-
 
 
     @Override
@@ -602,7 +599,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
             inoutstation.setStationName(String.valueOf(map.get("stationName")));
             inoutstation.setStationId(Long.valueOf(String.valueOf(map.get("stationId"))));
             inoutstation.setTaskId(Long.valueOf(String.valueOf(map.get("taskId"))));
-            inoutstation.setGoodId(Long.valueOf(centralStation.getId()));
+            inoutstation.setGoodId(good.getGoodId());
             inoutstation.setGoodPrice(centralStation.getGoodPrice());
             inoutstation.setGoodName(centralStation.getGoodName());
             inoutstation.setGoodUnit(centralStation.getGoodUnit());
@@ -621,8 +618,8 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
             inoutstation.setDate(date);
 //        inoutstation.setType("购货入库");
             inoutstation.setType("分站已领货出库");
-            inoutstation.setRemark(String.valueOf(map.get("remark")));
-            inoutstation.setSigner(String.valueOf(map.get("signer")));
+//            inoutstation.setRemark(String.valueOf(map.get("remark")));
+//            inoutstation.setSigner(String.valueOf(map.get("signer")));
             inoutstation.setDistributor(String.valueOf(map.get("distributor")));
             System.out.println(inoutstation);
             res3 = inoutstationMapper.insert(inoutstation);
@@ -831,8 +828,6 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
 
         return res;
     }
-
-
 
 
     @Override

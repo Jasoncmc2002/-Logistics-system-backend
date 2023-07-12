@@ -8,6 +8,10 @@ import com.example.warehousemanagementcentre.mapper.InoutstationMapper;
 import com.example.warehousemanagementcentre.service.InoutstationService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +45,35 @@ public class InoutstationServiceImpl extends ServiceImpl<InoutstationMapper, Ino
         List<Inoutstation> inoutstations = inoutstationMapper.selectList(inoutstationQueryWrapper);
         PageInfo pageInfo = new PageInfo(inoutstations);
         return pageInfo;
+    }
+
+    @Override
+    public PageInfo getOut(Map<String, Object> map) {
+        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+            Integer.valueOf(String.valueOf(map.get("pageSize"))));
+        //中心库存中对应的数据
+        QueryWrapper<Inoutstation> inoutstationQueryWrapper = new QueryWrapper<>();
+        ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+        // 格式化中国时区时间为指定格式的字符串
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String startDate = LocalDateTime.parse(String.valueOf(map.get("startLine")),
+            DateTimeFormatter.ISO_DATE_TIME).atZone(
+            ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+        String endDate = LocalDateTime.parse(String.valueOf(map.get("endLine")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+            ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+
+        inoutstationQueryWrapper.between("date", startDate, endDate);
+        List<Inoutstation> inoutstations = inoutstationMapper.selectList(inoutstationQueryWrapper);
+        PageInfo pageInfo = new PageInfo(inoutstations);
+        return pageInfo;
+    }
+
+    @Override
+    public int changeOutType(Long id) {
+        //中心库存中对应的数据
+        Inoutstation inoutstation=new Inoutstation();
+        inoutstation.setId(id);
+        inoutstation.setType("中心退货完成");
+        return  inoutstationMapper.updateById(inoutstation);
     }
 }

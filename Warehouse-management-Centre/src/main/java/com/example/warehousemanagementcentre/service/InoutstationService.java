@@ -17,4 +17,6 @@ import java.util.Map;
 public interface InoutstationService extends IService<Inoutstation> {
 
     PageInfo selectByType(Map<String,Object> map);
+    PageInfo getOut(Map<String,Object> map);
+     int changeOutType(Long id);
 }

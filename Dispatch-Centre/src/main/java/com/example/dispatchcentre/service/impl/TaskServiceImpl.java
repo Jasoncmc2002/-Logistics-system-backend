@@ -58,7 +58,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     task.setCustomerId(Long.valueOf(orders.getCustomerId()));
     task.setCustomerName(orders.getCustomerName());
     task.setCreater(map.get("creator").toString());
-
+    task.setSubstationId(Long.valueOf(String.valueOf(map.get("substationId"))));
     ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
     // 格式化中国时区时间为指定格式的字符串
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -212,5 +212,20 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
       return delivery;
     }
     return null;
+  }
+/*
+  退货登记*/
+  @Override
+  public PageInfo getGoodByTaskId(Map<String, Object> map) {
+    PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+        Integer.valueOf(String.valueOf(map.get("pageSize"))));
+    Long id=Long.valueOf(String.valueOf(map.get("id")));
+    System.out.println(map);
+    Task task=taskMapper.selectById(id);
+    HttpResponseEntity res= feignApi.getGoodByOrderId(task.getOrderId());
+    String jsonString2 = JSON.toJSONString(res.getData());  // 将对象转换成json格式数据
+    List<Good> goodList = JSON.parseArray(jsonString2,Good.class);
+    PageInfo pageInfo = new PageInfo(goodList);
+    return pageInfo;
   }
 }

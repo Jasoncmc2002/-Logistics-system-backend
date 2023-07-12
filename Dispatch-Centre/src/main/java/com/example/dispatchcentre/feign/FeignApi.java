@@ -27,7 +27,7 @@ public interface FeignApi {
   HttpResponseEntity  getOrderByid(Long id);
 
 
-  @PostMapping(value = "/{id}")
+  @PostMapping(value = "/distribute/station/{id}")
    HttpResponseEntity getById(@PathVariable("id") String id);
 
 }

@@ -74,6 +74,10 @@ public class Task implements Serializable {
     /**
      * 用户名
      */
+    private Long substationId;
+    /**
+     * 用户名
+     */
     private String substation;
 
     /**

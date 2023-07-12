@@ -65,11 +65,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
     int res = orderMapper.insert(order);//添加order;
     Long orderId= order.getId();
-    System.out.println(goods);
+    System.out.println("goodslist"+goods);
     for(Good good:goods){
       good.setKeyId(Math.toIntExact(orderId));
       HttpResponseEntity ss= feignApi.addGoods(good);
-      System.out.println(ss);
+      System.out.println("good添加"+ss);
     }
     return res;
   }
@@ -114,6 +114,40 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     return pageInfo;
 }
 
+
+  public PageInfo getlack(Map<String, Object> map) throws ParseException {
+    PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+        Integer.valueOf(String.valueOf(map.get("pageSize"))));
+
+    QueryWrapper<Orders> queryWrapper = new QueryWrapper<>();
+    ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+    // 格式化中国时区时间为指定格式的字符串
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+    String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+
+
+    queryWrapper.between("order_date", startDate, endDate);
+
+//    if (!map.get("orderType").equals("")) {
+//      queryWrapper.eq("order_type", map.get("orderType"));
+//    }
+
+    queryWrapper.eq("order_type", "缺货");
+
+    List<Orders> res= orderMapper.selectList(queryWrapper);
+    for (Orders orders:res ) {
+      Long id = Long.valueOf(orders.getCustomerId());
+      Customer customer= customerService.selectbyId(id);
+      orders.setCustomerName(customer.getName());
+    }
+//    System.out.println(res);
+    PageInfo pageInfo = new PageInfo(res);
+    return pageInfo;
+  }
+
   @Override
   public PageInfo getOrderDis(Map<String, Object> map) {
     System.out.println(map);
@@ -131,14 +165,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     if (!map.get("orderType").equals("")) {
       queryWrapper.eq("order_type", map.get("orderType"));
     }
-    queryWrapper.eq("order_status", "已分配");
+    queryWrapper.eq("order_status", "可分配");
     //good_status=="",则为自动调度，good_status=”缺货“，则为手动调度
     queryWrapper.eq("good_status", map.get("goodStatus"));
     List<Orders> res=orderMapper.selectList(queryWrapper);
     Random r=new Random();
     for (Orders orders:res ) {
-      if(orders.getCustomerId()==null){
-        Long id= Long.valueOf(r.nextInt(4)+1);
+      if(orders.getSubstationId()==null){
+        Long id= Long.valueOf(r.nextInt(3)+1);
         if (id==1L){
           orders.setSubstationId(id);
           orders.setSubstation("长沙分站");
@@ -198,14 +232,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
   @Override
   public int updatebyId(Orders orders) throws ParseException {
-    ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
-    // 格式化中国时区时间为指定格式的字符串
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    String startDate =
-        LocalDateTime.parse(String.valueOf(orders.getDeliveryDateFront()), DateTimeFormatter.ISO_DATE_TIME).atZone(
-        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
-    Date dedate= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startDate);
-    orders.setDeliveryDate(dedate);
+//    ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+//    // 格式化中国时区时间为指定格式的字符串
+//    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//    String startDate =
+//        LocalDateTime.parse(String.valueOf(orders.getDeliveryDateFront()), DateTimeFormatter.ISO_DATE_TIME).atZone(
+//        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+//    Date dedate= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(startDate);
+//    orders.setDeliveryDate(dedate);
+    System.out.println("update+order"+orders);
     int res =orderMapper.updateById(orders);
     return res;
   }
@@ -313,8 +348,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
   }
 
   @Override
-  public Orders getOrderByid(Map<String, Object> map) {
-    return orderMapper.selectById(Long.valueOf(String.valueOf(map.get("id"))));
+  public Orders getOrderByid(Long id) {
+    return orderMapper.selectById(id);
   }
 
   @Override

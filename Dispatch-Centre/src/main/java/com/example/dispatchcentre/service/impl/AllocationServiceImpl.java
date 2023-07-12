@@ -81,7 +81,9 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
       Map<String,Object> newMap=new HashMap<>();
       newMap.put("creator",map.get("creator"));
       newMap.put("orderId",order1.getId());
+      newMap.put("substation",order1.getSubstation());
       newMap.put("deadline",map.get("deadline"));
+      newMap.put("substationId",order1.getSubstationId());
       Long taskID = taskService.insert(newMap);
       Allocation allocation = new Allocation();
       allocation.setTaskId(taskID);
@@ -106,6 +108,11 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
 //      String jsonString3 = JSON.toJSONString(res2.getData());  // 将对象转换成json格式数据
 //      Station stationout = JSON.parseObject(jsonString3, Station.class);
       allocation.setOutStationName("中心库房");
+      Map<String,Object> orderMap=new HashMap<>();
+      orderMap.put("id",order1.getId());
+      orderMap.put("orderStatus","已调度");
+      HttpResponseEntity res7= feignApi.changeOrderStatusById(orderMap);
+      System.out.println(res7);
       int res3 = allocationMapper.insert(allocation);
       if (res3 == 0) {
         return res3;
