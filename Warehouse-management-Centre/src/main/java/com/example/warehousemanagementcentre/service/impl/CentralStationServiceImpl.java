@@ -232,8 +232,8 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                     Inoutstation inoutstation = new Inoutstation();
                     inoutstation.setStationClass(1);
                     inoutstation.setAlloId(Long.valueOf(String.valueOf(map.get("alloId"))));
-                    inoutstation.setStationId(Long.valueOf(1));
-                    inoutstation.setStationName(allocation.getInStationName());
+                    inoutstation.setStationId(allocation.getOutStationId());
+                    inoutstation.setStationName(allocation.getOutStationName());
                     inoutstation.setTaskId(allocation.getTaskId());
                     inoutstation.setGoodId(Long.valueOf(centralStation.getId()));
                     inoutstation.setGoodPrice(centralStation.getGoodPrice());
@@ -435,11 +435,19 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         //得到要进行分站入库的good列表
         List<Good> goods = new ArrayList<>();
         String jsonString2 = JSON.toJSONString(map.get("goods"));
+
         JSONArray jsonArray2 = JSON.parseArray(jsonString2);
         goods = JSON.parseArray(String.valueOf(jsonArray2),Good.class);
         System.out.println("goodList"+goods);
 
-        int res3 = 0;
+        QueryWrapper<Allocation> allocationQueryWrapper = new QueryWrapper<>();
+        allocationQueryWrapper.eq("id", map.get("alloId"));
+        List<Allocation> allocations = allocationMapper.selectList(allocationQueryWrapper);
+        Allocation allocation = allocations.get(0);
+        System.out.println("allo!!!"+allocation);
+
+
+        int res = 0;
         //按列表依次入库
         for (Good good:goods){
 //            //通过传入的goodId列表获取对应good
@@ -468,10 +476,14 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
             //入分站库加入库表
             Inoutstation inoutstation = new Inoutstation();
             inoutstation.setStationClass(2);
-            inoutstation.setAlloId(Long.valueOf(String.valueOf(map.get("alloId"))));
-            inoutstation.setStationName(String.valueOf(map.get("stationName")));
-            inoutstation.setStationId(Long.valueOf(String.valueOf(map.get("stationId"))));
-            inoutstation.setTaskId(Long.valueOf(String.valueOf(map.get("taskId"))));
+//            inoutstation.setAlloId(Long.valueOf(String.valueOf(map.get("alloId"))));
+//            inoutstation.setStationName(String.valueOf(map.get("stationName")));
+//            inoutstation.setStationId(Long.valueOf(String.valueOf(map.get("stationId"))));
+//            inoutstation.setTaskId(Long.valueOf(String.valueOf(map.get("taskId"))));
+            inoutstation.setAlloId(allocation.getId());
+            inoutstation.setStationName(allocation.getInStationName());
+            inoutstation.setStationId(allocation.getInStationId());
+            inoutstation.setTaskId(allocation.getTaskId());
             inoutstation.setGoodId(Long.valueOf(centralStation.getId()));
             inoutstation.setGoodPrice(centralStation.getGoodPrice());
             inoutstation.setGoodName(centralStation.getGoodName());
@@ -494,7 +506,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
             inoutstation.setSigner(String.valueOf(map.get("signer")));
             inoutstation.setDistributor(String.valueOf(map.get("distributor")));
             System.out.println(inoutstation);
-            res3 = inoutstationMapper.insert(inoutstation);
+            res = inoutstationMapper.insert(inoutstation);
 
         }
 
@@ -514,11 +526,11 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
 
         //修改任务单状态
         Map map1 =new HashMap<String,Object>();
-        map1.put("id",map.get("taskId"));
-        System.out.println(map.get("taskId"));
+        map1.put("id",allocation.getTaskId());
         map1.put("task_status","可分配");
         map1.put("order_status","配送站到货");
-        HttpResponseEntity res= feignApi.changeTaskOrderType(map1);
+        HttpResponseEntity res3= feignApi.changeTaskOrderType(map1);
+        System.out.println("res3"+res3.getData());
 
         //修改配送单状态
         Map map2 =new HashMap<String,Object>();
@@ -527,7 +539,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         map2.put("allo_type","3");
         HttpResponseEntity res1 = feignApi.updateAllocationbyId(map2);
 
-        int res2= (int) res.getData();  // 将对象转换成json格式数据
+        int res2= (int) res1.getData();  // 将对象转换成json格式数据
         return res2;
     }
 
@@ -632,136 +644,356 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         return res1;
     }
 
+    //先查task得到goodlist,
     @Override
     public int returnGoodsToSub(Map<String, Object> map) {
-//        String jsonString1 = JSON.toJSONString(map.get("Good"));  // 将对象转换成json格式数据
-//        JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
-//        Good good = JSON.parseObject(String.valueOf(jsonObject), Good.class);
+        ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+        // 格式化中国时区时间为指定格式的字符串
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-
-        //得到对应商品信息,能否退货
-        QueryWrapper<CentralStation> centralStationQueryWrapper =new QueryWrapper<>();
-        centralStationQueryWrapper.eq("id",map.get("goodId"));
-        List<CentralStation> centralStations = centralStationMapper.selectList(centralStationQueryWrapper);
-        CentralStation centralStation = centralStations.get(0);
-        System.out.println(centralStation);
-
-        //传入要退货的good_id得到分站出库表的对应inoutstation
-        Map map1 = new HashMap<>();
-        map1.put("goodId", map.get("goodId"));
-        map1.put("pageNum", 1);
-        map1.put("pageSize", 2);
-        HttpResponseEntity res1 = feignApi.getGood(map1);
+        //得到要进行分站入库的good列表
+        List<Good> goods = new ArrayList<>();
+        String jsonString2 = JSON.toJSONString(map.get("goods"));
+        JSONArray jsonArray2 = JSON.parseArray(jsonString2);
+        goods = JSON.parseArray(String.valueOf(jsonArray2),Good.class);
+        System.out.println("goodList"+goods);
 
         int res = 0;
-        //判断有无货物
-        if (centralStation == null) {
-            res = 3;
+        for(Good good:goods){
+            //得到对应商品信息,能否退货
+            QueryWrapper<CentralStation> centralStationQueryWrapper =new QueryWrapper<>();
+            centralStationQueryWrapper.eq("id",good.getGoodId());
+            List<CentralStation> centralStations = centralStationMapper.selectList(centralStationQueryWrapper);
+            CentralStation centralStation = centralStations.get(0);
+            System.out.println("centralStation"+centralStation);
 
-        } else {
-            String jsonString2 = JSON.toJSONString(res1.getData());  // 将对象转换成json格式数据
-            JSONArray jsonArray2 = JSON.parseArray(jsonString2); // 在转回去
-            List<Good> goods = JSON.parseArray(String.valueOf(jsonArray2), Good.class);
-
-            Good good = goods.get(0);
-            System.out.println("?????" + good);
-
-
-
-            //判断该商品是否允许退货
-            System.out.println(good.getIsChange());
-            if (good.getIsChange() == 1) {
-                System.out.println("!!!!!");
-                QueryWrapper<Inoutstation> inoutstationQueryWrapper = new QueryWrapper<>();
-                inoutstationQueryWrapper.eq("good_id", good.getId());
-                List<Inoutstation> inoutstations = inoutstationMapper.selectList(inoutstationQueryWrapper);
-                Inoutstation inoutstation = inoutstations.get(inoutstations.size()-1);
-
-                //不得大于原分站出库货单
-                if(inoutstation.getNumber() >= Integer.valueOf(String.valueOf(map.get("number"))) && inoutstation.getType().equals("分站领货出库")){
-
-                    System.out.println(inoutstations);
-                    System.out.println("Inoutstation!!!" + inoutstation);
+//            //传入要退货的good_id得到分站出库表的对应inoutstation
+//            Map map1 = new HashMap<>();
+//            map1.put("goodId", map.get("goodId"));
+//            map1.put("pageNum", 1);
+//            map1.put("pageSize", 2);
+//            HttpResponseEntity res1 = feignApi.getGood(map1);
 
 
-                    //生成分站出库单，商品等待从分站出库
-                    inoutstation.setType("退货出库");
-                    inoutstation.setNumber(Long.valueOf(String.valueOf(map.get("number"))));
-                    inoutstation.setId(null);
-                    res = inoutstationMapper.insert(inoutstation);
+            //判断有无货物
+            if (centralStation == null) {
+                res = 3;
+
+            } else {
+//                String jsonString2 = JSON.toJSONString(res1.getData());  // 将对象转换成json格式数据
+//                JSONArray jsonArray2 = JSON.parseArray(jsonString2); // 在转回去
+//                List<Good> goods = JSON.parseArray(String.valueOf(jsonArray2), Good.class);
+//
+//                Good good = goods.get(0);
+//                System.out.println("?????" + good);
+
+                //判断该商品是否允许退货
+                System.out.println(centralStation.getIsReturn());
+                if (centralStation.getIsReturn() == 1) {
+                    System.out.println("!!!!!");
+                    //不得大于中心库房已出库数目
+                    if(centralStation.getDoneAllo() >= good.getGoodNumber()){
+
+                        System.out.println(centralStation);
+                        System.out.println("centralStation!!!" + centralStation);
+
+
+                        //入分站库加入库表
+                        Inoutstation inoutstation = new Inoutstation();
+                        inoutstation.setStationClass(2);
+                        inoutstation.setAlloId(Long.valueOf(0));
+                        inoutstation.setStationName(String.valueOf(map.get("stationName")));
+                        inoutstation.setStationId(Long.valueOf(String.valueOf(map.get("stationId"))));
+                        inoutstation.setTaskId(Long.valueOf(String.valueOf(map.get("taskId"))));
+                        inoutstation.setGoodId(Long.valueOf(centralStation.getId()));
+                        inoutstation.setGoodPrice(centralStation.getGoodPrice());
+                        inoutstation.setGoodName(centralStation.getGoodName());
+                        inoutstation.setGoodUnit(centralStation.getGoodUnit());
+                        inoutstation.setGoodFactory(good.getGoodFactory());
+                        inoutstation.setNumber(good.getGoodNumber());
+                        //设置时间
+                        String dateTime = LocalDateTime.parse(String.valueOf(map.get("date")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                                ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+                        Date date = null;
+                        try {
+                            date = simpleDateFormat.parse(dateTime);
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }
+                        inoutstation.setDate(date);
+                        inoutstation.setType("退货出库");
+                        inoutstation.setRemark(good.getRemark());
+                        inoutstation.setSigner(String.valueOf(map.get("signer")));
+                        inoutstation.setDistributor(String.valueOf(map.get("distributor")));
+                        System.out.println("inoutstation!"+inoutstation);
+                        res = inoutstationMapper.insert(inoutstation);
+                    }
+                }else {
+                    //不允许退货
+                    res = 2;
+                    break;
                 }
-
-
-            }else {
-                //不允许退货
-                res = 2;
             }
         }
+
+
+
         return res;
     }
+
+    @Override
+    public int returnGoodsOutSub(Map<String, Object> map) {
+        ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+        // 格式化中国时区时间为指定格式的字符串
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        //得到要进行分站入库的good列表
+        List<Good> goods = new ArrayList<>();
+        String jsonString2 = JSON.toJSONString(map.get("goods"));
+        JSONArray jsonArray2 = JSON.parseArray(jsonString2);
+        goods = JSON.parseArray(String.valueOf(jsonArray2),Good.class);
+        System.out.println("goodList"+goods);
+
+        QueryWrapper<Allocation> allocationQueryWrapper = new QueryWrapper<>();
+        allocationQueryWrapper.eq("id", map.get("alloId"));
+        List<Allocation> allocations = allocationMapper.selectList(allocationQueryWrapper);
+        Allocation allocation = allocations.get(0);
+
+//        //传入要退货的good_id得到分站出库表的对应inoutstation
+//        Map map1 = new HashMap<>();
+//        map1.put("goodId",map.get("goodId"));
+//        map1.put("pageNum",1);
+//        map1.put("pageSize",2);
+//        HttpResponseEntity res1= feignApi.getGood(map1);
+//        System.out.println(res1);
+//        System.out.println("res1.getData()"+res1.getData());
+
+        int res = 0;
+        for(Good good:goods){
+            //得到对应商品信息,能否退货
+            QueryWrapper<CentralStation> centralStationQueryWrapper =new QueryWrapper<>();
+            centralStationQueryWrapper.eq("id",good.getGoodId());
+            List<CentralStation> centralStations = centralStationMapper.selectList(centralStationQueryWrapper);
+            CentralStation centralStation = centralStations.get(0);
+            System.out.println("centralStation"+centralStation);
+
+            if(centralStation == null){
+                res = 3;
+
+            }else {
+
+                if(centralStation.getIsReturn() == 1){
+                    //入分站库加入库表
+                    Inoutstation inoutstation = new Inoutstation();
+                    inoutstation.setStationClass(2);
+                    inoutstation.setAlloId(allocation.getId());
+                    inoutstation.setStationName(allocation.getOutStationName());
+                    inoutstation.setStationId(allocation.getOutStationId());
+                    inoutstation.setTaskId(allocation.getTaskId());
+                    inoutstation.setGoodId(Long.valueOf(centralStation.getId()));
+                    inoutstation.setGoodPrice(centralStation.getGoodPrice());
+                    inoutstation.setGoodName(centralStation.getGoodName());
+                    inoutstation.setGoodUnit(centralStation.getGoodUnit());
+                    inoutstation.setGoodFactory(good.getGoodFactory());
+                    inoutstation.setNumber(good.getGoodNumber());
+                    //设置时间
+                    String dateTime = LocalDateTime.parse(String.valueOf(map.get("date")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                            ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+                    Date date = null;
+                    try {
+                        date = simpleDateFormat.parse(dateTime);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    inoutstation.setDate(date);
+                    inoutstation.setType("退货入库");
+                    inoutstation.setRemark(good.getRemark());
+                    inoutstation.setSigner(String.valueOf(map.get("signer")));
+                    inoutstation.setDistributor(String.valueOf(map.get("distributor")));
+                    System.out.println("inoutstation!"+inoutstation);
+                    res = inoutstationMapper.insert(inoutstation);
+
+                }else {
+                    res = 2;
+                }
+            }
+        }
+        //修改配送单状态
+        Map map2 =new HashMap<String,Object>();
+        map2.put("id",map.get("alloId"));
+        System.out.println(map.get("alloId"));
+        map2.put("allo_type","5");
+        HttpResponseEntity res1 = feignApi.updateAllocationbyId(map2);
+
+        int res2= (int) res1.getData();  // 将对象转换成json格式数据
+
+        return res;
+    }
+
+
+
 
     @Override
     public int returnGoodsToCenter(Map<String, Object> map) {
-        //传入要退货的good_id得到分站出库表的对应inoutstation
-        Map map1 = new HashMap<>();
-        map1.put("goodId",map.get("goodId"));
-        map1.put("pageNum",1);
-        map1.put("pageSize",2);
-        HttpResponseEntity res1= feignApi.getGood(map1);
-        System.out.println(res1);
-        System.out.println("res1.getData()"+res1.getData());
+        ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+        // 格式化中国时区时间为指定格式的字符串
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-//        //传入要退货的good_id得到出入库表的对应商品，可知是否可以退货
-//        HttpResponseEntity goodRes = feignApi.getGoodById(String.valueOf(map.get("goodId")));
-//        String jsonString1 = JSON.toJSONString(goodRes.getData());  // 将对象转换成json格式数据
-//        Good good = JSON.parseObject(jsonString1, Good.class);
+        //得到要进行分站入库的good列表
+        List<Good> goods = new ArrayList<>();
+        String jsonString2 = JSON.toJSONString(map.get("goods"));
+        JSONArray jsonArray2 = JSON.parseArray(jsonString2);
+        goods = JSON.parseArray(String.valueOf(jsonArray2),Good.class);
+        System.out.println("goodList"+goods);
+
+        QueryWrapper<Allocation> allocationQueryWrapper = new QueryWrapper<>();
+        allocationQueryWrapper.eq("id", map.get("alloId"));
+        List<Allocation> allocations = allocationMapper.selectList(allocationQueryWrapper);
+        Allocation allocation = allocations.get(0);
+
+//        //传入要退货的good_id得到分站出库表的对应inoutstation
+//        Map map1 = new HashMap<>();
+//        map1.put("goodId",map.get("goodId"));
+//        map1.put("pageNum",1);
+//        map1.put("pageSize",2);
+//        HttpResponseEntity res1= feignApi.getGood(map1);
+//        System.out.println(res1);
+//        System.out.println("res1.getData()"+res1.getData());
 
         int res = 0;
-        if(res1.getData() == null){
-            res = 3;
+        for(Good good:goods){
+            //得到对应商品信息,能否退货
+            QueryWrapper<CentralStation> centralStationQueryWrapper =new QueryWrapper<>();
+            centralStationQueryWrapper.eq("id",good.getGoodId());
+            List<CentralStation> centralStations = centralStationMapper.selectList(centralStationQueryWrapper);
+            CentralStation centralStation = centralStations.get(0);
+            System.out.println("centralStation"+centralStation);
 
-        }else {
-            String jsonString2 = JSON.toJSONString(res1.getData());  // 将对象转换成json格式数据
-            System.out.println(jsonString2);
-            JSONArray jsonArray2 = JSON.parseArray(jsonString2); // 在转回去
-            List<Good> goods = JSON.parseArray(String.valueOf(jsonArray2), Good.class);
+            //仓库里有没有这种商品
+            if(centralStation == null){
+                //没有
+                res = 3;
+            }else {
+                if(centralStation.getIsReturn() == 1){
+                    //入分站库加入库表
+                    Inoutstation inoutstation = new Inoutstation();
+                    inoutstation.setStationClass(1);
+                    inoutstation.setAlloId(allocation.getId());
+                    inoutstation.setStationName(allocation.getInStationName());
+                    inoutstation.setStationId(allocation.getInStationId());
+                    inoutstation.setTaskId(allocation.getTaskId());
+                    inoutstation.setGoodId(Long.valueOf(centralStation.getId()));
+                    inoutstation.setGoodPrice(centralStation.getGoodPrice());
+                    inoutstation.setGoodName(centralStation.getGoodName());
+                    inoutstation.setGoodUnit(centralStation.getGoodUnit());
+                    inoutstation.setGoodFactory(good.getGoodFactory());
+                    inoutstation.setNumber(good.getGoodNumber());
+                    //设置时间
+                    String dateTime = LocalDateTime.parse(String.valueOf(map.get("date")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                            ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+                    Date date = null;
+                    try {
+                        date = simpleDateFormat.parse(dateTime);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    inoutstation.setDate(date);
+                    inoutstation.setType("中心退货入库完成");
+                    inoutstation.setRemark(good.getRemark());
+                    inoutstation.setSigner(String.valueOf(map.get("signer")));
+                    inoutstation.setDistributor(String.valueOf(map.get("distributor")));
+                    System.out.println("inoutstation!"+inoutstation);
+                    res = inoutstationMapper.insert(inoutstation);
 
-            Good good = goods.get(0);
+                    //入库改库存
+                    centralStation.setWithdrawal(centralStation.getWithdrawal()+good.getGoodNumber());
+                    centralStation.setDoneAllo(centralStation.getDoneAllo()-good.getGoodNumber());
+                    centralStation.setStock(centralStation.getWaitAllo()+centralStation.getWithdrawal()+centralStation.getDoneAllo());
+                    int res1 = centralStationMapper.updateById(centralStation);
+                    System.out.println(res1);
 
-            if(good.getIsChange() == 1){
-                //判断该商品是否允许退货
-                QueryWrapper<Inoutstation> inoutstationQueryWrapper = new QueryWrapper<>();
-                inoutstationQueryWrapper.eq("good_id",good.getId());
-//            Inoutstation inoutstation = (Inoutstation) inoutstationMapper.selectList(inoutstationQueryWrapper);
-                List<Inoutstation> inoutstations = inoutstationMapper.selectList(inoutstationQueryWrapper);
-                Inoutstation inoutstation = inoutstations.get(inoutstations.size()-1);
-                System.out.println(inoutstations);
-                System.out.println("Inoutstation!!!"+inoutstation);
-                //改对应inoutstation的出入库状态，改为入库（退回分站库房）
-                inoutstation.setType("退货入库");
-                Long number = Long.valueOf(String.valueOf(map.get("number")));
-                inoutstation.setNumber(number);
+                }else {
+                    res = 2;
+                }
+            }
+        }
+
+        //修改配送单状态
+        Map map2 =new HashMap<String,Object>();
+        map2.put("id",map.get("alloId"));
+        System.out.println(map.get("alloId"));
+        map2.put("allo_type","6");
+        HttpResponseEntity res4 = feignApi.updateAllocationbyId(map2);
+
+        int res2= (int) res4.getData();  // 将对象转换成json格式数据
+
+        return res;
+    }
 
 
-                //根据good修改中心库房库存
-                CentralStation centralStation = centralStationMapper.selectById(inoutstation.getGoodId());
-                centralStation.setGoodName(inoutstation.getGoodName());
-                centralStation.setWithdrawal(Long.valueOf(centralStation.getWithdrawal()+inoutstation.getNumber()));
-                centralStation.setDoneAllo(Long.valueOf(centralStation.getDoneAllo()-inoutstation.getNumber()));
-                int res2 = centralStationMapper.updateById(centralStation);
+    @Override
+    public int centralStationReturn(Map<String, Object> map) {
+        ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+        // 格式化中国时区时间为指定格式的字符串
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        //得到要进行分站入库的good列表
+        List<Good> goods = new ArrayList<>();
+        String jsonString2 = JSON.toJSONString(map.get("goods"));
+        JSONArray jsonArray2 = JSON.parseArray(jsonString2);
+        goods = JSON.parseArray(String.valueOf(jsonArray2),Good.class);
+        System.out.println("goodList"+goods);
+
+        int res = 0;
+        int res1 = 0;
+
+        for (Good good:goods){
+            QueryWrapper<Inoutstation> inoutstationQueryWrapper =new QueryWrapper<>();
+            inoutstationQueryWrapper.eq("id",map.get("inoutStationId"));
+            List<Inoutstation> inoutstations = inoutstationMapper.selectList(inoutstationQueryWrapper);
+            Inoutstation inoutstation = inoutstations.get(0);
+            System.out.println("inoutstation!!1"+inoutstation);
+
+            //得到对应商品信息,能否退货
+            QueryWrapper<CentralStation> centralStationQueryWrapper =new QueryWrapper<>();
+            centralStationQueryWrapper.eq("id",good.getGoodId());
+            List<CentralStation> centralStations = centralStationMapper.selectList(centralStationQueryWrapper);
+            CentralStation centralStation = centralStations.get(0);
+            System.out.println("centralStation"+centralStation);
+
+            if(inoutstation.getType() != null &&inoutstation.getType().equals("中心退货")){
+                centralStation.setWithdrawal(centralStation.getWithdrawal()- good.getGoodNumber());
+                centralStation.setStock(centralStation.getWaitAllo()+centralStation.getWithdrawal()+centralStation.getDoneAllo());
+                res = centralStationMapper.updateById(centralStation);
 
 
                 inoutstation.setId(null);
-                res = inoutstationMapper.insert(inoutstation);
-            }else {
-                res = 2;
+                //设置时间
+                String dateTime = LocalDateTime.parse(String.valueOf(map.get("date")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+                Date date = null;
+                try {
+                    date = simpleDateFormat.parse(dateTime);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                inoutstation.setDate(date);
+                inoutstation.setType("中心已退回供应商");
+                inoutstation.setRemark(good.getRemark());
+                inoutstation.setSigner(String.valueOf(map.get("signer")));
+                inoutstation.setDistributor(String.valueOf(map.get("distributor")));
+                res1 = inoutstationMapper.insert(inoutstation);
             }
+
         }
 
 
         return res;
     }
-
 
 
 

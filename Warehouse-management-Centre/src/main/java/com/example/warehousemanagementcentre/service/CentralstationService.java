@@ -24,6 +24,18 @@ public interface CentralstationService extends IService<CentralStation> {
 
     int toOutStation(Map<String,Object> map);
 
+
+
+
+
+
+
+    PageInfo searchInCentral(Map<String,Object> map);
+
+    int inCentral(Map<String,Object> map);
+
+    int outCentral(Map<String,Object> map);
+
     int toInSubstation(Map<String,Object> map);
 
     int takeGoods(Map<String, Object> map);
@@ -32,12 +44,9 @@ public interface CentralstationService extends IService<CentralStation> {
 
     int returnGoodsToCenter(Map<String,Object> map);
 
+    int returnGoodsOutSub(Map<String,Object> map);
 
-
-    PageInfo searchInCentral(Map<String,Object> map);
-    int inCentral(Map<String,Object> map);
-
-    int outCentral(Map<String,Object> map);
+    int centralStationReturn(Map<String,Object>map);
 
 
 }
