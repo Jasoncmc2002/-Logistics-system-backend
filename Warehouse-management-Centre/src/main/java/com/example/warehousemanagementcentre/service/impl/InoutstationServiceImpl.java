@@ -68,6 +68,7 @@ public class InoutstationServiceImpl extends ServiceImpl<InoutstationMapper, Ino
             Long id = Long.valueOf(String.valueOf(map.get("id")));
             inoutstationQueryWrapper.eq("id", id);
         }
+        inoutstationQueryWrapper.eq("type", "中心退货");
         List<Inoutstation> inoutstations = inoutstationMapper.selectList(inoutstationQueryWrapper);
         PageInfo pageInfo = new PageInfo(inoutstations);
         return pageInfo;

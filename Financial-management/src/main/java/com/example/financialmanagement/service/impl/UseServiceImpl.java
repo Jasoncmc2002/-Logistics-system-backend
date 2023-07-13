@@ -36,13 +36,38 @@ import org.springframework.stereotype.Service;
 public class UseServiceImpl extends ServiceImpl<UseMapper, Use> implements UseService {
   @Autowired
   private UseMapper useMapper;
-
+  @Autowired
+  private InvoiceServiceImpl invoiceService;
   @Override
   public int addUseInvoice(Use use) {
     int res=useMapper.insert(use);
     return res;
   }
 
+
+/*  回执单的发票*/
+  @Override
+  public Long addReceiptInvoice(Use use) {
+
+    Use inUse= getNewNumber();
+    use.setType("领用");
+    use.setBatch(inUse.getBatch());
+    Date  now= DateUtil.getCreateTime();
+    use.setDate(now);
+    Long number=inUse.getNumber();
+    while (invoiceService.checkUse(number)){
+      number++;
+      if(number>5000){
+        return 5000L;//5000条数据自动退出
+      }
+    }
+    use.setNumber(number);
+    int res=useMapper.insert(use);
+    if(res==1)
+      return  number;
+    return 5000L;
+  }
+/*  发票状态修改*/
   @Override
   public int changeUseByid(Use use) {
     int res=useMapper.updateById(use);
@@ -77,10 +102,10 @@ public class UseServiceImpl extends ServiceImpl<UseMapper, Use> implements UseSe
   }
 
   @Override
-  public Long getNewNumber() {
+  public Use getNewNumber() {
     QueryWrapper<Use> queryWrapper = new QueryWrapper<>();
     queryWrapper.orderByDesc("date").last("limit 1");
-    return this.getOne(queryWrapper).getNumber();
+    return this.getOne(queryWrapper);
   }
 
 }

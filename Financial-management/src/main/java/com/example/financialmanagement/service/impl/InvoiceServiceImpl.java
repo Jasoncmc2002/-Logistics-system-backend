@@ -80,7 +80,8 @@ public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> impl
      }
     return "NO";
   }
- private boolean checkIn(Invoice invoice){
+
+  private boolean checkIn(Invoice invoice){
     Long start=invoice.getStartNumber();
     Long end=invoice.getEndNumber();
     Integer batch=invoice.getBatch();
@@ -156,9 +157,9 @@ public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> impl
 
   @Override
   public Long getUseNumber() {
-
-    Long number= useServiceImpl.getNewNumber();
-    System.out.println("last"+number);
+    Use inUse= useServiceImpl.getNewNumber();
+    System.out.println("last"+inUse.getNumber());
+    Long number=inUse.getNumber();
     while (checkUse(number)){
       number++;
       if(number>5000){

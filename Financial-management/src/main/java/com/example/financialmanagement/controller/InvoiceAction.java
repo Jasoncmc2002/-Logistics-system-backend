@@ -169,4 +169,29 @@ public class InvoiceAction {
         }
         return httpResponseEntity;
     }
+
+    @RequestMapping(value = "/addReceiptInvoice",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity addReceiptInvoice(@RequestBody Use use) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            Long res=useService.addReceiptInvoice(use);
+            if(res!=0L)
+            {
+                httpResponseEntity.setData(res);
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.INVOICE_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("selectUseInvoice 搜索使用的发票>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }

@@ -24,6 +24,6 @@ public interface UseService extends IService<Use> {
   int changeUseByid(Use use);
   //查询
   PageInfo select(Map<String,Object> map) throws ParseException;
-
-  Long getNewNumber();
+  Long addReceiptInvoice(Use use);
+  Use getNewNumber();
 }
