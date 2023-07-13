@@ -27,6 +27,7 @@ public interface BuyService extends IService<Buy> {
    List<Buy> getList(Map<String, Object> map) throws ParseException;
 
    String withdrawal(Map<String, Object> map) throws ParseException;
-    String withdrawalConfirm(Map<String, Object> map) throws ParseException;
+
+//    String withdrawalConfirm(Map<String, Object> map) throws ParseException;
 
 }
