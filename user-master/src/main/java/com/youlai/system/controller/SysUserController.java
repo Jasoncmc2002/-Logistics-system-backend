@@ -22,6 +22,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
+import java.util.ArrayList;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -72,6 +73,24 @@ public class SysUserController {
         boolean result = userService.saveUser(userForm);
         return Result.judge(result);
     }
+
+//    @Operation(summary = "注册用户", security = {@SecurityRequirement(name = "Authorization")})
+    @PostMapping("/signIn")
+//    @PreAuthorize("@ss.hasPerm('sys:user:add')")
+//    @PreventDuplicateSubmit
+    public Result signIn(
+        @RequestBody @Valid UserForm userForm
+    ) {
+        System.out.println("userForm"+userForm);
+        userForm.setGender(1);
+        userForm.setAvatar("https://oss.youlai.tech/youlai-boot/2023/05/16/811270ef31f548af9cffc026dfc3777b.gif");
+        List<Long> id=new ArrayList<>();
+        id.add(3L);
+        userForm.setRoleIds(id);
+        boolean result = userService.saveSignUser(userForm);
+        return Result.judge(result);
+    }
+
 
     @Operation(summary = "用户表单数据", security = {@SecurityRequirement(name = "Authorization")})
     @GetMapping("/{userId}/form")

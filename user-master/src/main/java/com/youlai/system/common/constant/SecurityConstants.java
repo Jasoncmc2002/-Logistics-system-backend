@@ -13,6 +13,8 @@ public interface SecurityConstants {
      */
     String LOGIN_PATH = "/api/v1/auth/login";
 
+    String SIGN_PATH = "/api/v1/users/signIn";
+
     /**
      * Token 前缀
      */

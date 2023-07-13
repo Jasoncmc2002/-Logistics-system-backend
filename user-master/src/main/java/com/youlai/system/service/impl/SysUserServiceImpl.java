@@ -127,6 +127,30 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         return result;
     }
 
+    @Override
+    public boolean saveSignUser(UserForm userForm) {
+
+        String username = userForm.getUsername();
+
+        long count = this.count(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, username));
+        Assert.isTrue(count == 0, "用户名已存在");
+
+        // 实体转换 form->entity
+        SysUser entity = userConverter.form2Entity(userForm);
+
+        // 设置默认加密密码
+        String defaultEncryptPwd = passwordEncoder.encode(userForm.getPassword());
+        entity.setPassword(defaultEncryptPwd);
+
+        // 新增用户
+        boolean result = this.save(entity);
+
+        if (result) {
+            // 保存用户角色
+            userRoleService.saveUserRoles(entity.getId(), userForm.getRoleIds());
+        }
+        return result;
+    }
     /**
      * 更新用户
      *

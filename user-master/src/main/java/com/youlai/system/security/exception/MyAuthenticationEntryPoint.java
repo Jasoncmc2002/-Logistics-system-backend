@@ -21,6 +21,7 @@ import java.io.IOException;
 public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        System.out.println("出现错误");
         ResponseUtils.writeErrMsg(response, ResultCode.TOKEN_INVALID);
     }
 }

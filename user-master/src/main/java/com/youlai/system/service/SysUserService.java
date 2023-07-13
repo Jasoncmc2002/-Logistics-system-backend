@@ -45,6 +45,13 @@ public interface SysUserService extends IService<SysUser> {
      * @return
      */
     boolean saveUser(UserForm userForm);
+    /**
+     * 新增注册用户
+     *
+     * @param userForm 用户表单对象
+     * @return
+     */
+    boolean saveSignUser(UserForm userForm);
 
     /**
      * 修改用户

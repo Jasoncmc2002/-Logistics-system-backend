@@ -27,6 +27,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final AntPathRequestMatcher LOGIN_PATH_REQUEST_MATCHER = new AntPathRequestMatcher(SecurityConstants.LOGIN_PATH, "POST");
+    private static final AntPathRequestMatcher SIGN_PATH_REQUEST_MATCHER = new AntPathRequestMatcher(SecurityConstants.SIGN_PATH, "POST");
 
     private final JwtTokenManager tokenManager;
 
@@ -37,8 +38,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         // 登录接口放行是走过滤器链的方式(验证码校验过滤器)，这里拦截到登录接口需要手动放行
-        if (LOGIN_PATH_REQUEST_MATCHER.matches(request)) {
+        if (LOGIN_PATH_REQUEST_MATCHER.matches(request)||SIGN_PATH_REQUEST_MATCHER.matches(request)) {
             // 手动放行登录接口
+            System.out.println(SIGN_PATH_REQUEST_MATCHER.matches(request));
             chain.doFilter(request, response);
         }else{
             String jwt = RequestUtils.resolveToken(request);

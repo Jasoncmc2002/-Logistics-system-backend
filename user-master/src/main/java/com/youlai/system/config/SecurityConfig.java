@@ -42,7 +42,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(requestMatcherRegistry ->
-                        requestMatcherRegistry.requestMatchers(SecurityConstants.LOGIN_PATH).permitAll()
+                        requestMatcherRegistry.requestMatchers(SecurityConstants.LOGIN_PATH,SecurityConstants.SIGN_PATH).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

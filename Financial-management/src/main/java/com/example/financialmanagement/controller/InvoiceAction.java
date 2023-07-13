@@ -194,4 +194,28 @@ public class InvoiceAction {
         }
         return httpResponseEntity;
     }
+    @RequestMapping(value = "/changeUseByid",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity changeUseByid(@RequestBody Use use) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=useService.changeUseByid(use);
+            if(res==1)
+            {
+                httpResponseEntity.setData(res);
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.INVOICE_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("changeUseByid 搜索使用的发票>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }
