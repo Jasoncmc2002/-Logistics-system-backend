@@ -28,5 +28,8 @@ public interface TaskService extends IService<Task> {
 
     PageInfo selectTaskById(Map<String,Object> map) throws ParseException;
 
+    PageInfo pirntDeliveryNote(Map<String,Object> map) throws ParseException;
+
+
 
 }

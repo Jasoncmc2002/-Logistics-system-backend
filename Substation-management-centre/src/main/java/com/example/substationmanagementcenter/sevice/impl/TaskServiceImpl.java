@@ -1,17 +1,17 @@
 package com.example.substationmanagementcenter.sevice.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.substationmanagementcenter.beans.HttpResponseEntity;
-import com.example.substationmanagementcenter.entity.Customer;
-import com.example.substationmanagementcenter.entity.Orders;
-import com.example.substationmanagementcenter.entity.Postman;
-import com.example.substationmanagementcenter.entity.Task;
+import com.example.substationmanagementcenter.entity.*;
+import com.example.substationmanagementcenter.entity.vo.DeliveryNote;
 import com.example.substationmanagementcenter.entity.vo.TaskOrder;
 import com.example.substationmanagementcenter.feign.FeignApi;
+import com.example.substationmanagementcenter.mapper.CentralStationMapper;
 import com.example.substationmanagementcenter.mapper.TaskMapper;
 import com.example.substationmanagementcenter.sevice.TaskService;
 import com.github.pagehelper.PageHelper;
@@ -45,6 +45,9 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
 
     @Autowired
     private FeignApi feignApi;
+
+    @Autowired
+    private CentralStationMapper centralStationMapper;
 
 
     @Override
@@ -104,20 +107,9 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         for(Task task:res){
             System.out.println("for");
             //由task找对应的order
-            Map map1 = new HashMap<>();
-            map1.put("id",task.getOrderId());
-            System.out.println("111111"+task.getOrderId());
-            HttpResponseEntity resOrder = feignApi.getOrderByid(map1);
-            System.out.println("resOrder"+resOrder);
+            HttpResponseEntity resOrder = feignApi.getOrderByid(task.getOrderId());
             String jsonString1 = JSON.toJSONString(resOrder.getData());  // 将对象转换成json格式数据
             Orders order = JSON.parseObject(jsonString1, Orders.class); // 这样就可以了
-            System.out.println("order"+order);
-
-            //由task找对应的customer
-            HttpResponseEntity resCustomer = feignApi.selectByCustomerId(task.getCustomerId());
-            String jsonString3 = JSON.toJSONString(resCustomer.getData());  // 将对象转换成json格式数据
-            Customer customer = JSON.parseObject(jsonString3, Customer.class); // 这样就可以了
-            System.out.println("customer!!!"+customer);
 
 
             //列表内每一列的数据
@@ -137,8 +129,8 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
             taskOrder.setIsInvoice(order.getIsInvoice());
             taskOrder.setSubstation(task.getSubstation());
             taskOrder.setPostman(task.getPostman());
-            taskOrder.setMobilePhone(customer.getMobilephone());
-            taskOrder.setCustomerAddress(customer.getAddress());
+            taskOrder.setMobilePhone(order.getMobilephone());
+            taskOrder.setCustomerAddress(order.getCustomerAddress());
             taskOrders.add(taskOrder);
         }
         PageInfo pageInfo = new PageInfo(taskOrders);
@@ -196,6 +188,57 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         return pageInfo;
     }
 
+    @Override
+    public PageInfo pirntDeliveryNote(Map<String, Object> map) throws ParseException {
+        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+                Integer.valueOf(String.valueOf(map.get("pageSize"))));
+
+        Task task = taskMapper.selectById(String.valueOf(map.get("taskId")));
+        //由task找对应的order
+        HttpResponseEntity resOrder = feignApi.getOrderByid(task.getOrderId());
+        String jsonString1 = JSON.toJSONString(resOrder.getData());  // 将对象转换成json格式数据
+        Orders order = JSON.parseObject(jsonString1, Orders.class); // 这样就可以了
+
+        //由前端得到good列表
+        List<Good> goods = new ArrayList<>();
+        String jsonString2 = JSON.toJSONString(map.get("goods"));
+        JSONArray jsonArray2 = JSON.parseArray(jsonString2);
+        goods = JSON.parseArray(String.valueOf(jsonArray2),Good.class);
+        System.out.println("goodList"+goods);
+
+        List<DeliveryNote>deliveryNotes = new ArrayList<>();
+
+        DeliveryNote deliveryNote = new DeliveryNote();
+        deliveryNote.setId(task.getId());
+        deliveryNote.setCustomerName(task.getCustomerName());
+        deliveryNote.setMobilephone(order.getMobilephone());
+        deliveryNote.setPostcode(order.getPostcode());
+        deliveryNote.setAddress(task.getAddress());
+        deliveryNote.setDeliveryDate(order.getDeliveryDate());
+        deliveryNote.setSubstation(task.getSubstation());
+        deliveryNote.setIsInvoice(order.getIsInvoice());
+        deliveryNote.setGoodSum(order.getGoodSum());
+        deliveryNote.setTaskType(task.getTaskType());
+        deliveryNote.setRemark(order.getRemark());
+        deliveryNote.setFeedback(String.valueOf(map.get("customerFeedback")));
+        deliveryNote.setSignature(String.valueOf(map.get("customerSignature")));
+
+        for(Good good:goods){
+            //得到对应商品信息
+            QueryWrapper<CentralStation> centralStationQueryWrapper =new QueryWrapper<>();
+            centralStationQueryWrapper.eq("id",good.getGoodId());
+            List<CentralStation> centralStations = centralStationMapper.selectList(centralStationQueryWrapper);
+            CentralStation centralStation = centralStations.get(0);
+            System.out.println("centralStation"+centralStation);
+
+            deliveryNote.setGoodName(centralStation.getGoodName());
+            deliveryNote.setGoodPrice(centralStation.getGoodPrice());
+            deliveryNotes.add(deliveryNote);
+        }
+
+        PageInfo pageInfo = new PageInfo(deliveryNotes);
+        return pageInfo;
+    }
 
 
 }

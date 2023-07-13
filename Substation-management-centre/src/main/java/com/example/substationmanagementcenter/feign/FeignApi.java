@@ -17,8 +17,10 @@ import java.util.Map;
 @FeignClient(name = "api-gateway")
 public interface FeignApi {
 
-  @RequestMapping(value = "/customer/getOrderByid",method = RequestMethod.POST)
-  HttpResponseEntity getOrderByid(Map<String, Object> map);
+//  @RequestMapping(value = "/customer/getOrderByid",method = RequestMethod.POST)
+//  HttpResponseEntity getOrderByid(Map<String, Object> map);
+@RequestMapping(value = "/customer/getOrderByid",method = RequestMethod.POST)
+HttpResponseEntity getOrderByid(Long id);
 
   @RequestMapping(value = "/customer/selectByCustomerId",method = RequestMethod.POST)
   HttpResponseEntity selectByCustomerId(Long id);

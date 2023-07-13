@@ -6,6 +6,7 @@ import com.example.distributionmanagementcenter.entity.CentralStation;
 import com.example.distributionmanagementcenter.entity.StationInOut;
 import com.example.distributionmanagementcenter.mapper.BuyMapper;
 import com.example.distributionmanagementcenter.mapper.CentralStationMapper;
+import com.example.distributionmanagementcenter.mapper.StationInOutMapper;
 import com.example.distributionmanagementcenter.service.BuyService;
 import com.example.distributionmanagementcenter.service.StationInOutService;
 import com.github.pagehelper.PageHelper;
@@ -185,7 +186,6 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
 
     @Override
     public int changeBuyTypeNotify(Map<String, Object> map) throws ParseException {
-        System.out.println("后端Notify"+map);
 
 
 //        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
@@ -248,9 +248,37 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
                     stationInOut.setStationClass(1);
                     stationInOut.setType("中心退货");
                     stationInOutService.save(stationInOut);
-
                 }else {
                      flag=0;
+                }
+            }
+        }
+        if(flag==0){
+            result="Fail";
+        }
+        else{
+            result="Success";
+        }
+        return result;
+    }
+
+    @Override
+    public String withdrawalConfirm(Map<String, Object> map) throws ParseException {
+        int flag=1;
+        String result="";
+        for (Map.Entry<String,Object> entry : map.entrySet()) {
+            if(!Objects.equals(String.valueOf(entry.getValue()), "") &&String.valueOf(entry.getValue())!=null){
+                StationInOut stationInOut = stationInOutService.getById(Long.valueOf(entry.getKey()));
+                CentralStation centralStation=centralStationMapper.selectById(stationInOut.getGoodId());
+                Long number =Long.valueOf(String.valueOf(entry.getValue()));
+                if(number<=centralStation.getWaitAllo()){
+                    stationInOut.setType("中心已退回供应商");
+                    centralStation.setWithdrawal(centralStation.getWithdrawal()+number);
+                    centralStation.setWaitAllo(centralStation.getWaitAllo()-number);
+                    centralStationMapper.updateById(centralStation);
+                    stationInOutService.updateById(stationInOut);
+                }else {
+                    flag=0;
                 }
             }
         }
