@@ -120,7 +120,7 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
     }
     return 1;
   }
-
+ //退货的调度
   @Override
   public int insertWithDrawDispatch(Map<String,Object> map) throws ParseException {
     Allocation allocation=new Allocation();
@@ -194,7 +194,7 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
     String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")),
         DateTimeFormatter.ISO_DATE_TIME).atZone(
         ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
-    if(!map.get("id").equals(0)) {
+    if(!map.get("id").equals("")) {
       Long id = Long.valueOf(String.valueOf(map.get("id")));
       queryWrapper.eq("id", id);
     }
@@ -211,7 +211,7 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
     QueryWrapper<Allocation> queryWrapper = new QueryWrapper<>();
     System.out.println(map);
-    if(!map.get("id").equals(0)) {
+    if(!map.get("").equals("")) {
       Long id = Long.valueOf(String.valueOf(map.get("id")));
       queryWrapper.eq("id", id);
     }

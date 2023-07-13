@@ -397,7 +397,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
       HttpResponseEntity res2 = feignApi.getGoodByid(good.getId());
       String jsonString3 = JSON.toJSONString(res2.getData());  // 将对象转换成json格式数据
       Good goodOr = JSON.parseObject(jsonString3, Good.class);
-      Long number=  goodOr.getGoodNumber()-good.getGoodNumber();//good剩余多少;
+      Long number=  goodOr.getGoodNumber()-good.getChangeNumber();//good剩余多少;
       if(number==0L)//退订商品数量为原来的商品数量
       {
 
@@ -414,6 +414,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
       {
         goodOr.setGoodNumber(number);
         HttpResponseEntity updatehttp= feignApi.updateGoodByid(goodOr);//新good，更新了数量
+        good.setKeyId(Math.toIntExact(orderId));
+        good.setGoodNumber(good.getChangeNumber());
         HttpResponseEntity addGoodhttp= feignApi.addGoods(good);//新good，更新了数量
         Map<String,Object > goodmap=new HashMap<>();
         goodmap.put("good_id",good.getId());

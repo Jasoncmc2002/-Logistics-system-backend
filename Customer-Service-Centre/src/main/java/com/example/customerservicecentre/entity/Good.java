@@ -54,6 +54,12 @@ public class Good implements Serializable {
      * 用户名
      */
     private Long goodNumber;
+
+    @TableField(exist = false)
+    /**
+     * 用户名
+     */
+    private Long changeNumber;
     /**
      * 用户名
      */
