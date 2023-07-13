@@ -947,16 +947,20 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         int res1 = 0;
 
             QueryWrapper<Inoutstation> inoutstationQueryWrapper =new QueryWrapper<>();
-            inoutstationQueryWrapper.eq("id",map.get("inoutStationId"));
-            List<Inoutstation> inoutstations = inoutstationMapper.selectList(inoutstationQueryWrapper);
-            Inoutstation inoutstation = inoutstations.get(0);
+//            inoutstationQueryWrapper.eq("id",map.get("inoutStationId"));
+//            List<Inoutstation> inoutstations = inoutstationMapper.selectList(inoutstationQueryWrapper);
+            Inoutstation inoutstation = inoutstationMapper.selectById(Long.valueOf(map.get(
+                "inoutStaionId").toString()));
             System.out.println("inoutstation!!1"+inoutstation);
 
             //得到对应商品信息,能否退货
             QueryWrapper<CentralStation> centralStationQueryWrapper =new QueryWrapper<>();
             centralStationQueryWrapper.eq("id",inoutstation.getId());
-            List<CentralStation> centralStations = centralStationMapper.selectList(centralStationQueryWrapper);
-            CentralStation centralStation = centralStations.get(0);
+//            List<CentralStation> centralStations = centralStationMapper.selectList(centralStationQueryWrapper);
+//            CentralStation centralStation = centralStations.get(0);
+
+            CentralStation centralStation =
+                centralStationMapper.selectById(inoutstation.getGoodId());
             System.out.println("centralStation"+centralStation);
 
             if(inoutstation.getType() != null &&inoutstation.getType().equals("中心退货")){
@@ -984,9 +988,6 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                 inoutstation.setDistributor(String.valueOf(map.get("distributor")));
                 res1 = inoutstationMapper.insert(inoutstation);
             }
-
-
-
         return res;
     }
 

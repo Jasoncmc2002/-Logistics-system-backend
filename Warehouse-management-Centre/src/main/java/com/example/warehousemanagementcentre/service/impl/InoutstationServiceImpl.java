@@ -64,7 +64,7 @@ public class InoutstationServiceImpl extends ServiceImpl<InoutstationMapper, Ino
 
         inoutstationQueryWrapper.between("date", startDate, endDate);
 
-        if(!map.get("id").equals(0)) {
+        if(!map.get("id").equals("")) {
             Long id = Long.valueOf(String.valueOf(map.get("id")));
             inoutstationQueryWrapper.eq("id", id);
         }

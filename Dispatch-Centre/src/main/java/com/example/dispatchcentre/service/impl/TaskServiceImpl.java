@@ -222,7 +222,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
 
     System.out.println(map);
     QueryWrapper<Task> queryWrapper=new QueryWrapper<>();
-    if(!map.get("id").equals(0)) {
+    if(!map.get("id").equals("")) {
       Long id = Long.valueOf(String.valueOf(map.get("id")));
       queryWrapper.eq("id", id);
     }
