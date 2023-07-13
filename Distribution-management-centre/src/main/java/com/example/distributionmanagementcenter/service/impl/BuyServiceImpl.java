@@ -262,32 +262,32 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
         return result;
     }
 
-    @Override
-    public String withdrawalConfirm(Map<String, Object> map) throws ParseException {
-        int flag=1;
-        String result="";
-        for (Map.Entry<String,Object> entry : map.entrySet()) {
-            if(!Objects.equals(String.valueOf(entry.getValue()), "") &&String.valueOf(entry.getValue())!=null){
-                StationInOut stationInOut = stationInOutService.getById(Long.valueOf(entry.getKey()));
-                CentralStation centralStation=centralStationMapper.selectById(stationInOut.getGoodId());
-                Long number =Long.valueOf(String.valueOf(entry.getValue()));
-                if(number<=centralStation.getWaitAllo()){
-                    stationInOut.setType("中心已退回供应商");
-                    centralStation.setWithdrawal(centralStation.getWithdrawal()+number);
-                    centralStation.setWaitAllo(centralStation.getWaitAllo()-number);
-                    centralStationMapper.updateById(centralStation);
-                    stationInOutService.updateById(stationInOut);
-                }else {
-                    flag=0;
-                }
-            }
-        }
-        if(flag==0){
-            result="Fail";
-        }
-        else{
-            result="Success";
-        }
-        return result;
-    }
+//    @Override
+//    public String withdrawalConfirm(Map<String, Object> map) throws ParseException {
+//        int flag=1;
+//        String result="";
+//        for (Map.Entry<String,Object> entry : map.entrySet()) {
+//            if(!Objects.equals(String.valueOf(entry.getValue()), "") &&String.valueOf(entry.getValue())!=null){
+//                StationInOut stationInOut = stationInOutService.getById(Long.valueOf(entry.getKey()));
+//                CentralStation centralStation=centralStationMapper.selectById(stationInOut.getGoodId());
+//                Long number =Long.valueOf(String.valueOf(entry.getValue()));
+//                if(number<=centralStation.getWaitAllo()){
+//                    stationInOut.setType("中心已退回供应商");
+//                    centralStation.setWithdrawal(centralStation.getWithdrawal()+number);
+//                    centralStation.setWaitAllo(centralStation.getWaitAllo()-number);
+//                    centralStationMapper.updateById(centralStation);
+//                    stationInOutService.updateById(stationInOut);
+//                }else {
+//                    flag=0;
+//                }
+//            }
+//        }
+//        if(flag==0){
+//            result="Fail";
+//        }
+//        else{
+//            result="Success";
+//        }
+//        return result;
+//    }
 }
