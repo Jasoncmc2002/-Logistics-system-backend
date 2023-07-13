@@ -121,6 +121,29 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
     return 1;
   }
 
+  @Override
+  public int insertWithDrawDispatch(Map<String,Object> map) throws ParseException {
+    Allocation allocation=new Allocation();
+    ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+    // 格式化中国时区时间为指定格式的字符串
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String datetime = LocalDateTime.parse(String.valueOf(map.get("allocationDate")),
+        DateTimeFormatter.ISO_DATE_TIME).atZone(
+        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+    Date allodate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datetime);
+    allocation.setAllocationDate(allodate);//日期
+    allocation.setAllocationDate(allodate);//日期
+    Task task=taskService.selectbyId(Long.valueOf(String.valueOf(map.get("taskId"))));
+    allocation.setTaskId(task.getId());
+    allocation.setOrderId(task.getOrderId());
+    allocation.setOutStationId(task.getSubstationId());
+    allocation.setOutStationName(task.getSubstation());
+    allocation.setInStationName("中心库房");
+    allocation.setInStationId(1L);
+    allocation.setAlloType((byte) 4);
+    return 0;
+  }
+
 
   @Override
   public int insertSationDispatch(Allocation allocation) {
@@ -165,12 +188,16 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
     ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
     // 格式化中国时区时间为指定格式的字符串
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    String startDate = LocalDateTime.parse(String.valueOf(map.get("startLine")),
+    String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")),
         DateTimeFormatter.ISO_DATE_TIME).atZone(
         ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
-    String endDate = LocalDateTime.parse(String.valueOf(map.get("endLine")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+    String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")),
+        DateTimeFormatter.ISO_DATE_TIME).atZone(
         ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
-
+    if(!map.get("id").equals(0)) {
+      Long id = Long.valueOf(String.valueOf(map.get("id")));
+      queryWrapper.eq("id", id);
+    }
     queryWrapper.between("allocation_date", startDate, endDate);
     queryWrapper.eq("allo_type",type);
     List<Allocation> res= allocationMapper.selectList(queryWrapper);
@@ -178,29 +205,16 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
     PageInfo pageInfo = new PageInfo(res);
     return pageInfo;
   }
-
   @Override
   public PageInfo getGoodListByAlloId(Map<String, Object> map) {
     PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
     QueryWrapper<Allocation> queryWrapper = new QueryWrapper<>();
-    int type=Integer.valueOf(String.valueOf(map.get("alloType")));
-
     System.out.println(map);
-    queryWrapper.eq("allo_type",type);
     if(!map.get("id").equals(0)) {
       Long id = Long.valueOf(String.valueOf(map.get("id")));
       queryWrapper.eq("id", id);
     }
-    ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
-    // 格式化中国时区时间为指定格式的字符串
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    String startDate = LocalDateTime.parse(String.valueOf(map.get("startLine")),
-        DateTimeFormatter.ISO_DATE_TIME).atZone(
-        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
-    String endDate = LocalDateTime.parse(String.valueOf(map.get("endLine")), DateTimeFormatter.ISO_DATE_TIME).atZone(
-        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
-    queryWrapper.between("allocation_date", startDate, endDate);
     Allocation allocation=allocationMapper.selectOne(queryWrapper);
     HttpResponseEntity res= feignApi.getGoodByOrderId(allocation.getOrderId());
     String jsonString2 = JSON.toJSONString(res.getData());  // 将对象转换成json格式数据
@@ -208,4 +222,33 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
     PageInfo pageInfo = new PageInfo(goodList);
     return pageInfo;
   }
+//  @Override
+//  public PageInfo getGoodListByAlloId(Map<String, Object> map) {
+//    PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+//        Integer.valueOf(String.valueOf(map.get("pageSize"))));
+//    QueryWrapper<Allocation> queryWrapper = new QueryWrapper<>();
+//    int type=Integer.valueOf(String.valueOf(map.get("alloType")));
+//
+//    System.out.println(map);
+//    queryWrapper.eq("allo_type",type);
+//    if(!map.get("id").equals(0)) {
+//      Long id = Long.valueOf(String.valueOf(map.get("id")));
+//      queryWrapper.eq("id", id);
+//    }
+//    ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+//    // 格式化中国时区时间为指定格式的字符串
+//    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//    String startDate = LocalDateTime.parse(String.valueOf(map.get("startLine")),
+//        DateTimeFormatter.ISO_DATE_TIME).atZone(
+//        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+//    String endDate = LocalDateTime.parse(String.valueOf(map.get("endLine")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+//        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+//    queryWrapper.between("allocation_date", startDate, endDate);
+//    Allocation allocation=allocationMapper.selectOne(queryWrapper);
+//    HttpResponseEntity res= feignApi.getGoodByOrderId(allocation.getOrderId());
+//    String jsonString2 = JSON.toJSONString(res.getData());  // 将对象转换成json格式数据
+//    List<Good> goodList = JSON.parseArray(jsonString2,Good.class);
+//    PageInfo pageInfo = new PageInfo(goodList);
+//    return pageInfo;
+//  }
 }

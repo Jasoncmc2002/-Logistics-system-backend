@@ -26,4 +26,5 @@ public interface AllocationService extends IService<Allocation> {
   PageInfo searchbykey(Map<String,Object> map);
   PageInfo getGoodListByAlloId(Map<String, Object> map);
    int insertTaskDispatchlist(Map<String,Object> map) throws ParseException;
+   int insertWithDrawDispatch(Map<String,Object> map) throws ParseException;
 }

@@ -345,6 +345,30 @@ public class OrderAction {
         return httpResponseEntity;
     }
 
+    @RequestMapping(value = "/addOrderGood",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity addOrderGood(@RequestBody Map<String, Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=OrdersService.addOrderGood(map);
+            if(res!=0)
+            {
+                httpResponseEntity.setData(res);
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("getlack 手动调度的订单状态修改>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 
 
 

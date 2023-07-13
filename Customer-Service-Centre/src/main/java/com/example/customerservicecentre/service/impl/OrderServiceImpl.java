@@ -145,6 +145,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
   }
 
   @Override
+  public int addOrderGood(Map<String, Object> map) {
+    String jsonString1 = JSON.toJSONString(map);  // 将对象转换成json格式数据
+    JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
+    Orders order = JSON.parseObject(jsonObject.getString("Orders"), Orders.class); // 这样就可以了
+
+    List<Good> goods=JSON.parseArray(jsonObject.getString("Goods"), Good.class);
+
+    int res = orderMapper.updateById(order);//添加order;
+    Long orderId= order.getId();
+    System.out.println("goodslist"+goods);
+    for(Good good:goods){
+      good.setKeyId(Math.toIntExact(orderId));
+      HttpResponseEntity ss= feignApi.addGoods(good);
+      System.out.println("good添加"+ss);
+    }
+    return res;
+  }
+
+  @Override
   public PageInfo getOrderDis(Map<String, Object> map) {
     System.out.println(map);
     PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
@@ -345,6 +364,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
   @Override
   public Orders getOrderByid(Long id) {
+
     return orderMapper.selectById(id);
   }
 
@@ -374,16 +394,17 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
     //先通过id更新原始订单表的东西
     for(Good good:goods){
-      HttpResponseEntity res2 = feignApi.getGoodByid(String.valueOf(map.get("outStationId")));
+      HttpResponseEntity res2 = feignApi.getGoodByid(good.getId());
       String jsonString3 = JSON.toJSONString(res2.getData());  // 将对象转换成json格式数据
-      Station stationout = JSON.parseObject(jsonString3, Station.class);
-      Long number=  good.getNumber();
-      if(good.getGoodNumber()==0)//退订商品为0
+      Good goodOr = JSON.parseObject(jsonString3, Good.class);
+      Long number=  goodOr.getGoodNumber()-good.getGoodNumber();//good剩余多少;
+      if(number==0L)//退订商品数量为原来的商品数量
       {
-        HttpResponseEntity delete= feignApi.deleteGoodByid(String.valueOf(good.getId()));
+
+        HttpResponseEntity delete = feignApi.deleteGoodByid(String.valueOf(goodOr.getId()));
         good.setKeyId(Math.toIntExact(orderId));
         HttpResponseEntity addGoodhttp= feignApi.addGoods(good);//新good，更新了数量
-        Map<String,Object > goodmap=new HashMap<>();
+        Map<String,Object> goodmap=new HashMap<>();
         goodmap.put("good_id",good.getId());
         goodmap.put("order_id",or_orderId);
         goodmap.put("buy_type",0);
@@ -391,11 +412,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
       }
       else
       {
-        HttpResponseEntity gethttp= feignApi.getGoodByid(good.getId());
-        Good orderGood= (Good) gethttp.getData();//原始的good
-        HttpResponseEntity updatehttp= feignApi.updateGoodByid(good);//新good，更新了数量
-        orderGood.setKeyId(Math.toIntExact(orderId));
-        orderGood.setGoodNumber(orderGood.getGoodNumber()-good.getGoodNumber());
+        goodOr.setGoodNumber(number);
+        HttpResponseEntity updatehttp= feignApi.updateGoodByid(goodOr);//新good，更新了数量
         HttpResponseEntity addGoodhttp= feignApi.addGoods(good);//新good，更新了数量
         Map<String,Object > goodmap=new HashMap<>();
         goodmap.put("good_id",good.getId());

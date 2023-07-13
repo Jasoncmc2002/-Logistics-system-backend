@@ -91,6 +91,24 @@ public class AllocationAction {
         return httpResponseEntity;
     }
 
+    @RequestMapping(value = "/insertWithDrawDispatch",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity insertWithDrawDispatch(@RequestBody Map<String,Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=allocationService.insertWithDrawDispatch(map);
+            if (res==1) {
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }
+        } catch (Exception e) {
+            logger.info("insertWithDrawDispatch 添加库房调度单>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
     @RequestMapping(value = "/updateAllocationbyId",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity updateAllocationbyId(@RequestBody Map<String,Object> map) {

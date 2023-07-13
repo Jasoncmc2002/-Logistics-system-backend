@@ -36,5 +36,6 @@ public interface OrderService extends IService<Orders> {
   List<Orders> getOrderByStationFin(Map<String, Object> map) throws ParseException;
   PageInfo getOrderDis(Map<String, Object> map);
   PageInfo getlack(Map<String, Object> map) throws ParseException;
+  int addOrderGood(Map<String,Object > map);
 
 }
