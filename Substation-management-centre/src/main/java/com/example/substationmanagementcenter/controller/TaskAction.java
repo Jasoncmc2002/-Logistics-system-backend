@@ -93,6 +93,27 @@ public class TaskAction {
         return httpResponseEntity;
     }
 
+    @RequestMapping(value = "/pirntDeliveryNote",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity pirntDeliveryNote(@RequestBody Map<String,Object> map){
+
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            PageInfo pageInfo= taskService.pirntDeliveryNote(map);
+            httpResponseEntity.setData(pageInfo);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+
+        } catch (Exception e) {
+            logger.info("打印派送单pirntDeliveryNote>>>>>"+e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+
+    }
+
     @RequestMapping(value = "/getTaskToDistribute",method = RequestMethod.GET, headers = "Accept"
             + "=application/json")
     public HttpResponseEntity getTaskToDistribute(@RequestBody Map<String,Object> map){

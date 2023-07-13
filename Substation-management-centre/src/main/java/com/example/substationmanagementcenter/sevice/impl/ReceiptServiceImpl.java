@@ -78,8 +78,8 @@ public class ReceiptServiceImpl extends ServiceImpl<ReceiptMapper, Receipt> impl
         //改订单状态
         Map map1 =new HashMap<String,Object>();
         map1.put("id",map.get("id"));
-        map1.put("task_status","已完成");
-        map1.put("order_status","已完成");
+        map1.put("task_status",String.valueOf(map.get("taskStatus")));
+        map1.put("order_status",String.valueOf(map.get("taskStatus")));
         HttpResponseEntity res2= feignApi.changeTaskOrderType(map1);
 
         return (int)res2.getData();
