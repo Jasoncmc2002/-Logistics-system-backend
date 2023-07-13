@@ -38,10 +38,8 @@ public class StationController {
     private StationService stationService;
     @Autowired
     private CentralstationService centralstationService;
-
     @Autowired
     private FeignApi feignApi;
-
     @PostMapping(value = "/{id}")
     public HttpResponseEntity<Station> getById(@PathVariable("id") String id) {
         HttpResponseEntity<Station> httpResponseEntity = new HttpResponseEntity<Station>();
