@@ -152,7 +152,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     Long orderId=task1.getOrderId();
     Map<String, Object> orderMap=new HashMap<>();
     orderMap.put("id",orderId);
-    orderMap.put("orderStatus",map.get("order_status"));
+    orderMap.put("order_status",map.get("order_status"));
     HttpResponseEntity res =feignApi.changeOrderStatusById(orderMap);
     return (int) res.getData();
   }

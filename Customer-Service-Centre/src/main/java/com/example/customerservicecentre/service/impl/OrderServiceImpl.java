@@ -8,8 +8,6 @@ import com.example.customerservicecentre.common.utils.DateUtil;
 import com.example.customerservicecentre.entity.Customer;
 import com.example.customerservicecentre.entity.Good;
 import com.example.customerservicecentre.entity.Orders;
-import com.example.customerservicecentre.entity.Return;
-import com.example.customerservicecentre.entity.Unsubscribe;
 import com.example.customerservicecentre.entity.vo.CreaterWork;
 import com.example.customerservicecentre.feign.FeignApi;
 import com.example.customerservicecentre.mapper.GoodMapper;
@@ -18,11 +16,9 @@ import com.example.customerservicecentre.service.OrderService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -378,7 +374,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
     //先通过id更新原始订单表的东西
     for(Good good:goods){
-      if(good.getGoodNumber()==0)
+      HttpResponseEntity res2 = feignApi.getGoodByid(String.valueOf(map.get("outStationId")));
+      String jsonString3 = JSON.toJSONString(res2.getData());  // 将对象转换成json格式数据
+      Station stationout = JSON.parseObject(jsonString3, Station.class);
+      Long number=  good.getNumber();
+      if(good.getGoodNumber()==0)//退订商品为0
       {
         HttpResponseEntity delete= feignApi.deleteGoodByid(String.valueOf(good.getId()));
         good.setKeyId(Math.toIntExact(orderId));
