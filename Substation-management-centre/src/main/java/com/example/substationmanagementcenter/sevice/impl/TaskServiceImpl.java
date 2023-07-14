@@ -72,14 +72,14 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         if(map.get("startLine") != null && !map.get("startLine").equals("")){
 
             // 格式化中国时区时间为指定格式的字符串
-            String date = LocalDateTime.parse(String.valueOf(map.get("startline")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+            String date = LocalDateTime.parse(String.valueOf(map.get("startLine")), DateTimeFormatter.ISO_DATE_TIME).atZone(
                     ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
             Date startline = simpleDateFormat.parse(date);
             System.out.println("start"+startline);
             queryWrapper.ge("deadline",startline);
         }
         if(map.get("endLine") != null && !map.get("endLine").equals("")){
-            String date = LocalDateTime.parse(String.valueOf(map.get("endline")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+            String date = LocalDateTime.parse(String.valueOf(map.get("endLine")), DateTimeFormatter.ISO_DATE_TIME).atZone(
                     ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
             Date endline = simpleDateFormat.parse(date);
             System.out.println("end!!!"+endline);
@@ -238,6 +238,12 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
 
         PageInfo pageInfo = new PageInfo(deliveryNotes);
         return pageInfo;
+    }
+
+    @Override
+    public Long getOrderIdByTaskId(Map<String, Object> map) {
+        Task task = taskMapper.selectById(String.valueOf(map.get("taskId")));
+        return task.getOrderId();
     }
 
 

@@ -166,14 +166,14 @@ public class ReceiptServiceImpl extends ServiceImpl<ReceiptMapper, Receipt> impl
         if(map.get("startLine") != null && !map.get("startLine").equals("")){
 
             // 格式化中国时区时间为指定格式的字符串
-            String date = LocalDateTime.parse(String.valueOf(map.get("startline")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+            String date = LocalDateTime.parse(String.valueOf(map.get("startLine")), DateTimeFormatter.ISO_DATE_TIME).atZone(
                     ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
             Date startline = simpleDateFormat.parse(date);
             System.out.println("start"+startline);
             queryWrapper.ge("date",startline);
         }
         if(map.get("endLine") != null && !map.get("endLine").equals("")){
-            String date = LocalDateTime.parse(String.valueOf(map.get("endline")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+            String date = LocalDateTime.parse(String.valueOf(map.get("endLine")), DateTimeFormatter.ISO_DATE_TIME).atZone(
                     ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
             Date endline = simpleDateFormat.parse(date);
             System.out.println("end!!!"+endline);

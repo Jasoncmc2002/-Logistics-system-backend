@@ -30,6 +30,8 @@ public interface TaskService extends IService<Task> {
 
     PageInfo pirntDeliveryNote(Map<String,Object> map) throws ParseException;
 
+    Long getOrderIdByTaskId(Map<String,Object> map);
+
 
 
 }
