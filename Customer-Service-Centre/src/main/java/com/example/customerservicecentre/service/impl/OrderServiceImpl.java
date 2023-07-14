@@ -460,6 +460,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     System.out.println(goods);
     for(Good good:goods){
       good.setId(null);
+      good.setGoodNumber(good.getChangeNumber());
       good.setKeyId(Math.toIntExact(orderId));
       HttpResponseEntity ss= feignApi.addGoods(good);
       System.out.println(ss);
