@@ -18,8 +18,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface InvoiceService extends IService<Invoice> {
   String addInvoice(Invoice invoice);
-
-  int addUseInvoice(Map<String, Object> map);
-  Long getUseNumber();
   PageInfo selectInvoice(Map<String, Object> map);
 }

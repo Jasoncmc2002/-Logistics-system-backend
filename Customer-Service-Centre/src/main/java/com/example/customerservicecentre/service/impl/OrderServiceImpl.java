@@ -390,8 +390,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     int res = orderMapper.insert(order);//添加order;
     Long orderId= order.getId();
     Long or_orderId= order.getOrNumber();
-    System.out.println(goods);//先通过id更新
+    Orders OrOrders=orderMapper.selectById(or_orderId);
+    OrOrders.setGoodSum(OrOrders.getGoodSum()-order.getGoodSum());//更新总数量;
+    int res1=orderMapper.updateById(OrOrders);
 
+    System.out.println(goods);//先通过id更新
     //先通过id更新原始订单表的东西
     for(Good good:goods){
       System.out.println("good.getId()"+good.getId());
@@ -401,7 +404,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
       Long number=  goodOr.getGoodNumber()-good.getChangeNumber();//good剩余多少;
       if(number==0L)//退订商品数量为原来的商品数量
       {
-
         HttpResponseEntity delete = feignApi.deleteGoodByid(String.valueOf(goodOr.getId()));
         good.setKeyId(Math.toIntExact(orderId));
         good.setId(null);
@@ -448,11 +450,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     List<Good> goods=JSON.parseArray(jsonObject.getString("Goods"), Good.class);
     Date date = DateUtil.getCreateTime();
     order.setOrderDate(date);
-
+    order.setId(null);
     int res = orderMapper.insert(order);//添加order;
     Long orderId= order.getId();
+//    Long or_orderId= order.getOrNumber();
+//    Orders OrOrders=orderMapper.selectById(or_orderId);
+//    OrOrders.setGoodSum(OrOrders.getGoodSum()-order.getGoodSum());//更新总数量;
+//    int res1=orderMapper.updateById(OrOrders);
     System.out.println(goods);
     for(Good good:goods){
+      good.setId(null);
       good.setKeyId(Math.toIntExact(orderId));
       HttpResponseEntity ss= feignApi.addGoods(good);
       System.out.println(ss);

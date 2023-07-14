@@ -34,8 +34,7 @@ import com.example.financialmanagement.entity.*;
 public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> implements InvoiceService {
   @Autowired
   private InvoiceMapper invoiceMapper;
-  @Autowired
-  private UseServiceImpl useServiceImpl;
+
   @Override
   public String addInvoice(Invoice invoice) {
     System.out.println("invoice"+invoice);
@@ -148,25 +147,6 @@ public class InvoiceServiceImpl extends ServiceImpl<InvoiceMapper, Invoice> impl
         , end).ge("end_number", start).eq("invoiceClass", "领用"));
     return res.isEmpty();
 
-  }
-
-  @Override
-  public int addUseInvoice(Map<String, Object> map) {
-    return 0;
-  }
-
-  @Override
-  public Long getUseNumber() {
-    Use inUse= useServiceImpl.getNewNumber();
-    System.out.println("last"+inUse.getNumber());
-    Long number=inUse.getNumber();
-    while (checkUse(number)){
-      number++;
-      if(number>5000){
-        return 0L;//5000条数据自动退出
-      }
-    }
-   return number;
   }
 
   public boolean checkUse(Long id){

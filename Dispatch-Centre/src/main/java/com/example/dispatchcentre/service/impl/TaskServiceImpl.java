@@ -152,9 +152,20 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     Long orderId=task1.getOrderId();
     Map<String, Object> orderMap=new HashMap<>();
     orderMap.put("id",orderId);
-    orderMap.put("order_status",map.get("order_status"));
+    orderMap.put("orderStatus",map.get("order_status"));
     HttpResponseEntity res =feignApi.changeOrderStatusById(orderMap);
     return (int) res.getData();
+  }
+//通过taskid得到原来订单的taskId
+  @Override
+  public Long getOrTaskId(Long id) {
+    Long orderId=taskMapper.selectById(id).getOrderId();
+    HttpResponseEntity res =feignApi.getOrderByid(orderId);
+    String jsonString2 = JSON.toJSONString(res.getData());  // 将对象转换成json格式数据
+    Orders orders = JSON.parseObject(jsonString2, Orders.class);
+    Long OrOderId=orders.getOrNumber();
+    Long taskId=taskMapper.selectOne(new QueryWrapper<Task>().eq("order_id",OrOderId)).getId();
+    return taskId;
   }
 
 

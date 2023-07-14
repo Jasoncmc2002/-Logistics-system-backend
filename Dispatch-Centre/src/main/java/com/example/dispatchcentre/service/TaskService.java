@@ -27,6 +27,8 @@ public interface TaskService extends IService<Task> {
   PageInfo searchbykey(Map<String,Object> map) ;
   PageInfo selectOrder(Map<String, Object> map);
   int changeTaskOrderType(Map<String,Object > map);
+
+  Long getOrTaskId(Long id);
   List<Task> selectByDate(Map<String, Object> map);
 
   PageInfo getGoodListByTaskId(Map<String, Object> map);

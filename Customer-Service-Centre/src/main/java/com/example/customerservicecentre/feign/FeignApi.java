@@ -37,4 +37,5 @@ public interface FeignApi {
 
   @RequestMapping(value = "/distribute/good/updateBuyByGoodId",method = RequestMethod.POST)
   HttpResponseEntity updateBuyByid(Map<String,Object > map);
+
 }

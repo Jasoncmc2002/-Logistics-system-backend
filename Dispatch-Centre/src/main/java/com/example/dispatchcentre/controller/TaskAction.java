@@ -185,14 +185,20 @@ public class TaskAction {
         return httpResponseEntity;
     }
 
+    @RequestMapping(value = "/getOrTaskId",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity getOrTaskId(@RequestBody Long id) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
 
-
-
-
-
-
-
-
-
-
+        try {
+            httpResponseEntity.setData(taskService.getOrTaskId(id));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+        } catch (Exception e) {
+            logger.info("getOrTaskId 退货登记>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
 }

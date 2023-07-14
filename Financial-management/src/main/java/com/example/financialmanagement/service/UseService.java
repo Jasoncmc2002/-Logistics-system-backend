@@ -22,6 +22,7 @@ public interface UseService extends IService<Use> {
   int addUseInvoice(Use use);
   //退回 、.发票作废、丢失
   int changeUseByid(Use use);
+  int setPutAway(Long number);
   //查询
   PageInfo select(Map<String,Object> map) throws ParseException;
   Long addReceiptInvoice(Use use);

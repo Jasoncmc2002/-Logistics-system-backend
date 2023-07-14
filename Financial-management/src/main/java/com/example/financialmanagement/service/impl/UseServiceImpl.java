@@ -44,7 +44,6 @@ public class UseServiceImpl extends ServiceImpl<UseMapper, Use> implements UseSe
     return res;
   }
 
-
 /*  回执单的发票*/
   @Override
   public Long addReceiptInvoice(Use use) {
@@ -72,6 +71,15 @@ public class UseServiceImpl extends ServiceImpl<UseMapper, Use> implements UseSe
   public int changeUseByid(Use use) {
     int res=useMapper.updateById(use);
     return res;
+  }
+
+  @Override
+  public int setPutAway(Long number) {
+   QueryWrapper<Use> queryWrapper= new QueryWrapper<>();
+    queryWrapper.eq("number",number);
+  Use use=useMapper.selectOne(queryWrapper);
+  use.setType("作废");
+  return useMapper.updateById(use);
   }
 
   @Override
@@ -107,5 +115,7 @@ public class UseServiceImpl extends ServiceImpl<UseMapper, Use> implements UseSe
     queryWrapper.orderByDesc("date").last("limit 1");
     return this.getOne(queryWrapper);
   }
+
+
 
 }
