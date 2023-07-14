@@ -386,7 +386,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     List<Good> goods=JSON.parseArray(jsonObject.getString("Goods"), Good.class);  //现在的
     Date date = DateUtil.getCreateTime();
     order.setReDate(date);//退订日期
-
+    order.setId(null);
     int res = orderMapper.insert(order);//添加order;
     Long orderId= order.getId();
     Long or_orderId= order.getOrNumber();
@@ -394,6 +394,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
     //先通过id更新原始订单表的东西
     for(Good good:goods){
+      System.out.println("good.getId()"+good.getId());
       HttpResponseEntity res2 = feignApi.getGoodByid(good.getId());
       String jsonString3 = JSON.toJSONString(res2.getData());  // 将对象转换成json格式数据
       Good goodOr = JSON.parseObject(jsonString3, Good.class);
@@ -403,6 +404,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
         HttpResponseEntity delete = feignApi.deleteGoodByid(String.valueOf(goodOr.getId()));
         good.setKeyId(Math.toIntExact(orderId));
+        good.setId(null);
         HttpResponseEntity addGoodhttp= feignApi.addGoods(good);//新good，更新了数量
         Map<String,Object> goodmap=new HashMap<>();
         goodmap.put("good_id",good.getId());
@@ -416,11 +418,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
         HttpResponseEntity updatehttp= feignApi.updateGoodByid(goodOr);//新good，更新了数量
         good.setKeyId(Math.toIntExact(orderId));
         good.setGoodNumber(good.getChangeNumber());
+        good.setId(null);
         HttpResponseEntity addGoodhttp= feignApi.addGoods(good);//新good，更新了数量
         Map<String,Object > goodmap=new HashMap<>();
-        goodmap.put("good_id",good.getId());
+        goodmap.put("good_id",goodOr.getGoodId());
         goodmap.put("order_id",or_orderId);
-        goodmap.put("number",good.getId());
+        goodmap.put("number",number);
         HttpResponseEntity updateBuy= feignApi.updateBuyByid(goodmap);//新good，更新了数量
       }
     }
