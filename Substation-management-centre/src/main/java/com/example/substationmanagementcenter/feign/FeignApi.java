@@ -1,6 +1,7 @@
 package com.example.substationmanagementcenter.feign;
 
 import com.example.substationmanagementcenter.beans.HttpResponseEntity;
+import com.example.substationmanagementcenter.entity.Use;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,16 @@ HttpResponseEntity getOrderByid(Long id);
   @RequestMapping(value = "/dispatch/changeTaskOrderType")
   HttpResponseEntity changeTaskOrderType(Map<String,Object> map);
 
-  @RequestMapping(value = "/financial/getUseNumber")
-  HttpResponseEntity getUseNumber(Map<String,Object> map);
+//  @RequestMapping(value = "/financial/getUseNumber")
+//  HttpResponseEntity getUseNumber(Map<String,Object> map);
+
+  @RequestMapping(value = "/financial/addReceiptInvoice")
+  HttpResponseEntity addReceiptInvoice(Use use);
+
+  @RequestMapping(value = "/dispatch/getOrTaskId")
+  Long getOrTaskId(Long id);
+
+  @RequestMapping(value = "/financial/setPutAway")
+  int setPutAway(Long id);
 
 }

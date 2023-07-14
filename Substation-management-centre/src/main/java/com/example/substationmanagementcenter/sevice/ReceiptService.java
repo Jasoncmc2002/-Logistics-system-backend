@@ -22,6 +22,9 @@ public interface ReceiptService extends IService<Receipt> {
 
     int receiptEntry(Map<String,Object> map);
 
+
     List<Receipt> getList() throws ParseException;
+
+    PageInfo selectReceiptByCriteria(Map<String,Object>map) throws ParseException;
 
 }

@@ -59,6 +59,24 @@ public class ReceiptAction {
         return httpResponseEntity;
     }
 
+    @RequestMapping(value = "/selectReceiptByCriteria",method = RequestMethod.POST, headers = "Accept"
+            + "=application/json")
+    public HttpResponseEntity selectReceiptByCriteria(@RequestBody Map<String,Object> map){
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            PageInfo pageInfo= receiptService.selectReceiptByCriteria(map);
+            httpResponseEntity.setData(pageInfo);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+
+        } catch (Exception e) {
+            logger.info("回执查询>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
 
 //    @RequestMapping(value = "/getReceiptByTaskId",method = RequestMethod.POST, headers = "Accept"
 //            + "=application/json")
