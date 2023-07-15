@@ -3,8 +3,10 @@ package com.example.distributionmanagementcenter.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.distributionmanagementcenter.entity.Buy;
+import com.example.distributionmanagementcenter.entity.CentralStation;
 import com.example.distributionmanagementcenter.entity.Good;
 import com.example.distributionmanagementcenter.mapper.BuyMapper;
+import com.example.distributionmanagementcenter.mapper.CentralStationMapper;
 import com.example.distributionmanagementcenter.mapper.GoodMapper;
 import com.example.distributionmanagementcenter.service.GoodService;
 ;
@@ -35,7 +37,7 @@ public class GoodServiceImpl extends ServiceImpl<GoodMapper, Good> implements Go
     @Autowired
     private GoodMapper goodMapper;
     @Autowired
-    private BuyMapper buyMapper;
+    private CentralStationMapper centralStationMapper;
     @Override
     public PageInfo getListByOrderId(Map<String, Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
@@ -114,5 +116,53 @@ public class GoodServiceImpl extends ServiceImpl<GoodMapper, Good> implements Go
         queryWrapper.eq("good_id",goodId);
         List<Good> records= goodMapper.selectList(queryWrapper);
         return records;
+    }
+
+    @Override
+    public boolean saveGood(Good params) {
+        try {
+            CentralStation centralStation=centralStationMapper.selectById(params.getGoodId());
+            centralStation.setWaitAllo(centralStation.getWaitAllo()-params.getGoodNumber());
+            centralStation.setDoneAllo(centralStation.getDoneAllo()+params.getGoodNumber());
+            centralStationMapper.updateById(centralStation);
+            goodMapper.insert(params);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+
+    }
+
+    @Override
+    public boolean deleteGoodById(Long id) {
+        try {
+            Good good = goodMapper.selectById(id);
+            CentralStation centralStation=centralStationMapper.selectById(good.getGoodId());
+            centralStation.setWaitAllo(centralStation.getWaitAllo()+good.getGoodNumber());
+            centralStation.setDoneAllo(centralStation.getDoneAllo()-good.getGoodNumber());
+            centralStationMapper.updateById(centralStation);
+            goodMapper.deleteById(id);
+
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+
+    }
+
+    @Override
+    public boolean updateGood(Good params) {
+        try {
+            Good good =goodMapper.selectById(params.getId());
+            CentralStation centralStation=centralStationMapper.selectById(params.getGoodId());
+            centralStation.setWaitAllo(centralStation.getWaitAllo()-params.getGoodNumber()+good.getGoodNumber());
+            centralStation.setDoneAllo(centralStation.getDoneAllo()+params.getGoodNumber()-good.getGoodNumber());
+            centralStationMapper.updateById(centralStation);
+            goodMapper.updateById(params);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+
     }
 }
