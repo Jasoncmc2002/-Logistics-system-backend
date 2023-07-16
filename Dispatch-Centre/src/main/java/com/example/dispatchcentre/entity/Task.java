@@ -2,6 +2,7 @@ package com.example.dispatchcentre.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.Version;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
@@ -98,4 +99,7 @@ public class Task implements Serializable {
      * 用户名
      */
     private Date getDate;
+    @Version
+    private Integer version;//版本号
+
 }

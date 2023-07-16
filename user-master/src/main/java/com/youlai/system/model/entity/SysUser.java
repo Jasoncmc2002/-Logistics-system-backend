@@ -2,6 +2,7 @@ package com.youlai.system.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.youlai.system.common.base.BaseEntity;
 import lombok.Data;
 
@@ -11,7 +12,7 @@ import lombok.Data;
 @Data
 public class SysUser extends BaseEntity {
     /**
-     * 
+     *
      */
     @TableId(type = IdType.AUTO)
     private Long id;
@@ -65,5 +66,7 @@ public class SysUser extends BaseEntity {
      * 逻辑删除标识(0:未删除;1:已删除)
      */
     private Integer deleted;
+    @Version
+    private Integer version;//版本号
 
 }
