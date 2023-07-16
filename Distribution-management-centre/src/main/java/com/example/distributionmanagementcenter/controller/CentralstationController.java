@@ -213,7 +213,7 @@ public class CentralstationController {
         try{
             PageInfo pageInfo=centralstationService.getListByCondition(map);
 
-            httpResponseEntity.setData(map);
+            httpResponseEntity.setData(pageInfo);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         }catch(Exception e){
