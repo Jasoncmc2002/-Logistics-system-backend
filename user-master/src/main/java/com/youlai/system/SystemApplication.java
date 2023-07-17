@@ -14,10 +14,10 @@ public class SystemApplication {
     public static void main(String[] args) {
         SpringApplication.run(SystemApplication.class, args);
     }
-    @Bean
-    public MybatisPlusInterceptor mybatisPlusInterceptor() {
-        MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
-        mybatisPlusInterceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
-        return mybatisPlusInterceptor;
-    }
+//    @Bean
+//    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+//        MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
+//        mybatisPlusInterceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+//        return mybatisPlusInterceptor;
+//    }
 }

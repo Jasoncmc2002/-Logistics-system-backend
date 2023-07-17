@@ -19,39 +19,26 @@ import java.util.Date;
  */
 @Data
 public class Buy implements Serializable {
-
     private static final long serialVersionUID = 1L;
-
-
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-
     private String goodClass;
-
     private Long goodId;
-
     private String goodName;
-
     private String goodUnit;
-
     private String supply;
-
     private Long number;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date date;
-
-    private int type;
+    private Integer type;
     @TableField(exist = false)
     private String typeName;
     @TableField("buy_type")
     private Byte buyType;
     @TableField(exist = false)
     private String buyTypeName;
-
     @TableField("order_id")
     private Long orderId;
-
     //前端显示专用
     @TableField(exist = false)
     private Long waitAllo;

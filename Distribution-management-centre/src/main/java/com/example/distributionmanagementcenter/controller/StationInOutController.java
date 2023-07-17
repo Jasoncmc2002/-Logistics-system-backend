@@ -42,14 +42,10 @@ public class StationInOutController {
             if(stationInOut!=null)
             {
                 httpResponseEntity.setData(stationInOut);
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
 
+            }
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
             logger.info("getById ID查找出入站记录>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
@@ -63,16 +59,10 @@ public class StationInOutController {
     public HttpResponseEntity<StationInOut> create(@RequestBody StationInOut params) {
         HttpResponseEntity<StationInOut> httpResponseEntity = new HttpResponseEntity<StationInOut>();
         try {
-            boolean flag=stationInOutService.save(params);
-            if(flag)
-            {
+                 stationInOutService.save(params);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
+
 
         } catch (Exception e) {
             logger.info("create 新建出入站记录>>>>>>>>>>>" + e.getLocalizedMessage());
@@ -88,16 +78,10 @@ public class StationInOutController {
 
         HttpResponseEntity<StationInOut> httpResponseEntity = new HttpResponseEntity<StationInOut>();
         try {
-            boolean flag=stationInOutService.removeById(id);
-            if(flag)
-            {
+                stationInOutService.removeById(id);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
+
 
         } catch (Exception e) {
             logger.info("delete 删除出入站记录>>>>>>>>>>>" + e.getLocalizedMessage());
@@ -113,16 +97,10 @@ public class StationInOutController {
 
         HttpResponseEntity<StationInOut> httpResponseEntity = new HttpResponseEntity<StationInOut>();
         try {
-            boolean flag=stationInOutService.updateById(params);
-            if(flag)
-            {
+               stationInOutService.updateById(params);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
+
 
         } catch (Exception e) {
             logger.info("update 更新出入站记录>>>>>>>>>>>" + e.getLocalizedMessage());

@@ -18,29 +18,17 @@ import java.io.Serializable;
 public class Supply implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-
     private String name;
-
     private String address;
-
     private String adminName;
-
     private String phone;
-
     private String bank;
-
     private String bankNumer;
-
     private String fax;
-
     private String postcode;
-
     private String legalPerson;
-
     private String remark;
 
 }

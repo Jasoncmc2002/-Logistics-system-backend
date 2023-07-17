@@ -50,9 +50,6 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
     public PageInfo getListByCondition(Map<String, Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
                 Integer.valueOf(String.valueOf(map.get("pageSize"))));
-//        PageHelper.startPage((Integer)map.get("pageNum"),(Integer)map.get("pageSize"));
-//        Integer goodClassId= Integer.valueOf(String.valueOf(map.get("goodClassId"));
-//        Integer goodSubclassId= Integer.valueOf(String.valueOf(map.get("goodSubclassId")));
         QueryWrapper<CentralStation> queryWrapper = new QueryWrapper<>();
         if(map.get("goodClassId")!=null){
             queryWrapper.eq("good_class_id",map.get("goodClassId"));
@@ -173,15 +170,11 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
 
     @Override
     public String addBuyList(Map<String, Object> map) throws ParseException {
-        int flag=1;
+        int flag=0;
         String result="";
         Map<String,String> list =  (Map<String,String>)map.get("list");
        Date date= new Date();
         if(map.get("time")!=null&&map.get("time")!=""){
-//            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-//            ZonedDateTime time = ZonedDateTime.parse((String) map.get("time"), inputFormatter);
-//            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//            String dateString = outputFormatter.format(time);
             ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
             // 格式化中国时区时间为指定格式的字符串
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -189,12 +182,10 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                     ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
 
             date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateString);
-
         }
         else{
             String dateString=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
            date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateString);
-
         }
 
         for (Map.Entry<String,String> entry : list.entrySet()) {
@@ -215,12 +206,12 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                     centralStation.setWithdrawal(centralStation.getWithdrawal()+number);
                     centralStationMapper.updateById(centralStation);
                 }else {
-                    flag=0;
+                    flag++;
                 }
             }
         }
-        if(flag==0){
-            result="Fail";
+        if(flag!=0){
+            result=null;
         }
         else{
             result="Success";
@@ -232,7 +223,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
     @Override
     public String addRegistList(Map<String, Object> map) throws ParseException {
         String result="";
-        int flag=1;
+        int flag=0;
         Map<String,String> list =  (Map<String,String>)map.get("list");
         Date date= new Date();
         if(map.get("time")!=null&&map.get("time")!=""){
@@ -266,13 +257,13 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                     buyMapper.insert(buy);
 
                 }else {
-                    flag=0;
+                    flag++;
                 }
 
             }
         }
-        if(flag==0){
-            result="Fail";
+        if(flag!=0){
+            result=null;
         }
         else{
             result="Success";

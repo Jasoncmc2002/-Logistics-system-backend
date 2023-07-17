@@ -41,14 +41,10 @@ public class SupplyController {
             if(supply!=null)
             {
                 httpResponseEntity.setData(supply);
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
 
+            }
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
             logger.info("getById ID查找供货商>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
@@ -94,19 +90,13 @@ public class SupplyController {
     public HttpResponseEntity<Supply> create(@RequestBody Supply params) {
         HttpResponseEntity<Supply> httpResponseEntity = new HttpResponseEntity<Supply>();
         try {
-            boolean flag=supplyService.save(params);
-            if(flag)
-            {
+                   supplyService.save(params);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
+
 
         } catch (Exception e) {
-            logger.info("create 新建供货商>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("create 新增供货商>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
@@ -119,16 +109,10 @@ public class SupplyController {
 
         HttpResponseEntity<Supply> httpResponseEntity = new HttpResponseEntity<Supply>();
         try {
-            boolean flag=supplyService.removeById(id);
-            if(flag)
-            {
+                supplyService.removeById(id);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
+
 
         } catch (Exception e) {
             logger.info("delete 删除供货商>>>>>>>>>>>" + e.getLocalizedMessage());
@@ -144,16 +128,11 @@ public class SupplyController {
 
         HttpResponseEntity<Supply> httpResponseEntity = new HttpResponseEntity<Supply>();
         try {
-            boolean flag=supplyService.updateById(params);
-            if(flag)
-            {
+            supplyService.updateById(params);
+
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
+
 
         } catch (Exception e) {
             logger.info("update 更新供货商>>>>>>>>>>>" + e.getLocalizedMessage());

@@ -22,14 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * <p>
- * 库房 前端控制器
- * </p>
- *
- * @author Jason_cai
- * @since 2023-06-19
- */
+
 @RestController
 @RequestMapping("/distribute/station")
 public class StationController {
@@ -48,14 +41,9 @@ public class StationController {
             if(station!=null)
             {
                 httpResponseEntity.setData(station);
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
             }
-
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
             logger.info("getById ID查找站>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);

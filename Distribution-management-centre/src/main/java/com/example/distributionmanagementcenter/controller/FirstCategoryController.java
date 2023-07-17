@@ -39,14 +39,10 @@ public class FirstCategoryController {
             if(firstCategory !=null)
             {
                 httpResponseEntity.setData(firstCategory);
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
 
+            }
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
             logger.info("getById ID查找种类>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
@@ -87,16 +83,10 @@ public class FirstCategoryController {
 
         HttpResponseEntity<FirstCategory> httpResponseEntity = new HttpResponseEntity<FirstCategory>();
         try {
-            boolean flag= firstCategoryService.removeById(id);
-            if(flag)
-            {
+             firstCategoryService.removeById(id);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
+
 
         } catch (Exception e) {
             logger.info("delete 删除种类>>>>>>>>>>>" + e.getLocalizedMessage());

@@ -142,7 +142,6 @@ public class GoodServiceImpl extends ServiceImpl<GoodMapper, Good> implements Go
             centralStation.setDoneAllo(centralStation.getDoneAllo()-good.getGoodNumber());
             centralStationMapper.updateById(centralStation);
             goodMapper.deleteById(id);
-
             return true;
         }catch (Exception e){
             return false;

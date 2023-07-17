@@ -46,14 +46,9 @@ public class CentralstationController {
             if(centralStation!=null)
             {
                 httpResponseEntity.setData(centralStation);
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
             }
-
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
             logger.info("getById ID查找中心库房库存量>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
@@ -100,16 +95,10 @@ public class CentralstationController {
     public HttpResponseEntity<CentralStation> create(@RequestBody CentralStation params) {
         HttpResponseEntity<CentralStation> httpResponseEntity = new HttpResponseEntity<CentralStation>();
         try {
-            boolean flag=centralstationService.save(params);
-            if(flag)
-            {
+                centralstationService.save(params);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
+
 
         } catch (Exception e) {
             logger.info("create 新建中心库房库存量>>>>>>>>>>>" + e.getLocalizedMessage());
@@ -125,19 +114,12 @@ public class CentralstationController {
 
         HttpResponseEntity<CentralStation> httpResponseEntity = new HttpResponseEntity<CentralStation>();
         try {
-            boolean flag=centralstationService.removeById(id);
-            if(flag)
-            {
+            centralstationService.removeById(id);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
 
         } catch (Exception e) {
-            logger.info("delete 删除中心库房库存量>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("delete 删除中心库房>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
@@ -149,17 +131,10 @@ public class CentralstationController {
 
         HttpResponseEntity<CentralStation> httpResponseEntity = new HttpResponseEntity<CentralStation>();
         try {
-            boolean flag=centralstationService.updateById(params);
-            if(flag)
-            {
+              centralstationService.updateById(params);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
 
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
 
         } catch (Exception e) {
             logger.info("update 更新中心库房库存量>>>>>>>>>>>" + e.getLocalizedMessage());
@@ -178,7 +153,7 @@ public class CentralstationController {
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 
         } catch (Exception e) {
-            logger.info("列表更新>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("列表更新中心库房库存量>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }
@@ -217,7 +192,7 @@ public class CentralstationController {
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         }catch(Exception e){
-            logger.info("checkVacancy 缺货查询>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("checkVacancy 缺货检查>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }

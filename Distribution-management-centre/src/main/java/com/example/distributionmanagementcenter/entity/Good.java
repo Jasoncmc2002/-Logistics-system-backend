@@ -64,6 +64,7 @@ public class Good implements Serializable, Comparable<Good>{
 
     private String remark;
 
+    private Integer version;
     //排序
     @Override
     public int compareTo(Good good) {

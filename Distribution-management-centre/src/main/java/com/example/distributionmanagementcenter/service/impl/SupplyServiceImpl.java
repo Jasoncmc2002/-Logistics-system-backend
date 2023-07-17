@@ -51,9 +51,6 @@ private SupplyMapper supplyMapper;
         String addr=(String) map.get("addrKeywords");
         String admin=(String) map.get("adminKeywords");
         String tel=(String) map.get("telKeywords");
-//        if(name!=null&& !Objects.equals(name, "")){
-//            queryWrapper.like("good_name",name);
-//        }
         if(name!=null&&name!=""){
             queryWrapper.like("name",name);
         }

@@ -4,8 +4,6 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-
-//@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 @Data
 public class HttpResponseEntity<T> implements Serializable {
 

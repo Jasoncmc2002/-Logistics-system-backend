@@ -40,15 +40,10 @@ public class SecondaryCategoryController {
             if(secondaryCategory !=null)
             {
                 httpResponseEntity.setData(secondaryCategory);
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
 
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
             }
-
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
             logger.info("getById ID查找种类>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
@@ -90,17 +85,10 @@ public class SecondaryCategoryController {
 
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            boolean flag= secondaryCategoryService.removeById(id);
-            if(flag)
-            {
+              secondaryCategoryService.removeById(id);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setData("删除失败");
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
+
 
         } catch (Exception e) {
             logger.info("delete 删除种类>>>>>>>>>>>" + e.getLocalizedMessage());
@@ -146,10 +134,9 @@ public class SecondaryCategoryController {
     public HttpResponseEntity getList(@RequestBody Map<String, Object> map) {
 
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
-        System.out.println(map);
+
         try{
             PageInfo pageInfo= secondaryCategoryService.getList(map);
-            System.out.println(pageInfo.getPageSize());
             httpResponseEntity.setData(pageInfo);
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);

@@ -35,14 +35,9 @@ public class BuyController {
             if(buy!=null)
             {
                 httpResponseEntity.setData(buy);
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
             }
-
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
         } catch (Exception e) {
             logger.info("getById ID查找订单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
@@ -54,16 +49,9 @@ public class BuyController {
     public HttpResponseEntity<Buy> create(@RequestBody Buy params) {
         HttpResponseEntity<Buy> httpResponseEntity = new HttpResponseEntity<Buy>();
         try {
-            boolean flag=buyService.save(params);
-            if(flag)
-            {
+                buyService.save(params);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
 
         } catch (Exception e) {
             logger.info("create 新建购货单>>>>>>>>>>>" + e.getLocalizedMessage());
@@ -78,17 +66,9 @@ public class BuyController {
 
         HttpResponseEntity<Buy> httpResponseEntity = new HttpResponseEntity<Buy>();
         try {
-            boolean flag=buyService.removeById(id);
-            if(flag)
-            {
+                buyService.removeById(id);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
-
         } catch (Exception e) {
             logger.info("delete 删除购货单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
@@ -103,16 +83,9 @@ public class BuyController {
 
         HttpResponseEntity<Buy> httpResponseEntity = new HttpResponseEntity<Buy>();
         try{
-            boolean flag=buyService.updateById(params);
-            if(flag)
-            {
+               buyService.updateById(params);
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
 
         } catch (Exception e) {
             logger.info("update 更新购货单单>>>>>>>>>>>" + e.getLocalizedMessage());

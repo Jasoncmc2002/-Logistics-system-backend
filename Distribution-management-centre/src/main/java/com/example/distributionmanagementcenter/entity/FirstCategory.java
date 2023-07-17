@@ -26,7 +26,6 @@ public class FirstCategory implements Serializable {
     private Integer id;
     @TableField(value="f_name")
     private String fName;
-
     private String description;
 
 }

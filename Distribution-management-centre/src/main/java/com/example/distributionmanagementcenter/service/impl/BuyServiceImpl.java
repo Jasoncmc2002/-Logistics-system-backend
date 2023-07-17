@@ -46,12 +46,6 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
             queryWrapper.like("supply",map.get("supplyName"));
         }
         if(map.get("startTime")!=null&&map.get("endTime")!=null&&map.get("startTime")!=""&&map.get("endTime")!=""){
-//            DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-//            ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
-//            ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
-//            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//            String startDate = outputFormatter.format(startTime);
-//            String endDate = outputFormatter.format(endTime);
             ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
             // 格式化中国时区时间为指定格式的字符串
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -80,7 +74,6 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
 
           buy.setTypeName(typeName);
             String BuyTypeName="";
-
                 switch (buy.getBuyType()){
                     case 0:
                         BuyTypeName="删除";
@@ -230,7 +223,7 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
     @Override
     public String withdrawal(Map<String, Object> map) throws ParseException {
         System.out.println(map);
-        int flag=1;
+        int flag=0;
         String result="";
         for (Map.Entry<String,Object> entry : map.entrySet()) {
             if(!Objects.equals(String.valueOf(entry.getValue()), "") &&String.valueOf(entry.getValue())!=null){
@@ -249,12 +242,12 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
                     stationInOut.setType("中心退货");
                     stationInOutService.save(stationInOut);
                 }else {
-                     flag=0;
+                     flag++;
                 }
             }
         }
-        if(flag==0){
-            result="Fail";
+        if(flag!=0){
+            result=null;
         }
         else{
             result="Success";

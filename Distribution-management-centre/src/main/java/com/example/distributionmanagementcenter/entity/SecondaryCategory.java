@@ -21,7 +21,6 @@ import java.io.Serializable;
 @TableName("secondary_category")
 @Data
 public class SecondaryCategory implements Serializable {
-
     private static final long serialVersionUID = 1L;
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;

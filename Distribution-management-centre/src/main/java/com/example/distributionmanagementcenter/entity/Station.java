@@ -18,24 +18,15 @@ import java.util.List;
  */
 @Data
 public class Station implements Serializable{
-
     private static final long serialVersionUID = 1L;
-
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-
     private String name;
-
     private String address;
-
     private String admin;
-
     private Integer stationClass;
-
     @TableField(exist = false)
     private String stationClassName;
-
-    @TableField(exist = false)
-    private List<CentralStation> centralStationList;
-
+//    @TableField(exist = false)
+//    private List<CentralStation> centralStationList;
 }
