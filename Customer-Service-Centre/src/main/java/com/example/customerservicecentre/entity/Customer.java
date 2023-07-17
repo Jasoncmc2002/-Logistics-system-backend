@@ -2,7 +2,9 @@ package com.example.customerservicecentre.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.Version;
 import java.io.Serializable;
+import lombok.Data;
 
 /**
  * <p>
@@ -12,6 +14,7 @@ import java.io.Serializable;
  * @author yangfuchao
  * @since 2023-06-19
  */
+@Data
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -67,99 +70,7 @@ public class Customer implements Serializable {
      */
     private String email;
 
-    public Long getId() {
-        return id;
-    }
+    @Version
+    private Integer version;//版本号
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getIdcard() {
-        return idcard;
-    }
-
-    public void setIdcard(String idcard) {
-        this.idcard = idcard;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getAddressphone() {
-        return addressphone;
-    }
-
-    public void setAddressphone(String addressphone) {
-        this.addressphone = addressphone;
-    }
-
-    public String getMobilephone() {
-        return mobilephone;
-    }
-
-    public void setMobilephone(String mobilephone) {
-        this.mobilephone = mobilephone;
-    }
-
-    public Byte getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Byte isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public String getWork() {
-        return work;
-    }
-
-    public void setWork(String work) {
-        this.work = work;
-    }
-
-    public String getPostcode() {
-        return postcode;
-    }
-
-    public void setPostcode(String postcode) {
-        this.postcode = postcode;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-        ", id = " + id +
-        ", name = " + name +
-        ", idcard = " + idcard +
-        ", address = " + address +
-        ", addressphone = " + addressphone +
-        ", mobilephone = " + mobilephone +
-        ", isDeleted = " + isDeleted +
-        ", work = " + work +
-        ", postcode = " + postcode +
-        ", email = " + email +
-        "}";
-    }
 }

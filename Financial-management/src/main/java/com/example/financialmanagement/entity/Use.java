@@ -3,6 +3,7 @@ package com.example.financialmanagement.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
@@ -66,5 +67,7 @@ public class Use implements Serializable {
      * 用户名
      */
     private String station;
+    @Version
+    private Integer version;//版本号
 
 }

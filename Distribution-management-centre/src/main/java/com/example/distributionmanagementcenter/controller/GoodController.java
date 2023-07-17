@@ -76,16 +76,13 @@ public class GoodController {
     public HttpResponseEntity<Good> create(@RequestBody Good params) {
         HttpResponseEntity<Good> httpResponseEntity = new HttpResponseEntity<Good>();
         try {
-            boolean flag=goodService.save(params);
-            if(flag)
-            {
+
+                if(goodService.saveGood(params)){
+                    httpResponseEntity.setData(params);
+                }
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
+
 
         } catch (Exception e) {
             logger.info("create 新建货物>>>>>>>>>>>" + e.getLocalizedMessage());
@@ -96,20 +93,17 @@ public class GoodController {
     }
 
     @PostMapping(value = "/delete/{id}")
-    public HttpResponseEntity<Good> delete(@PathVariable("id") String id) {
+    public HttpResponseEntity delete(@PathVariable("id") String id) {
 
-        HttpResponseEntity<Good> httpResponseEntity = new HttpResponseEntity<Good>();
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity<Good>();
         try {
-            boolean flag=goodService.removeById(id);
-            if(flag)
-            {
+            Long idParse=Long.valueOf(id);
+            if(goodService.deleteGoodById(idParse)){
+             httpResponseEntity.setData("Successfully delete");
+            }
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
+
 
         } catch (Exception e) {
             logger.info("delete 删除货物>>>>>>>>>>>" + e.getLocalizedMessage());
@@ -124,16 +118,12 @@ public class GoodController {
 
         HttpResponseEntity<Good> httpResponseEntity = new HttpResponseEntity<Good>();
         try{
-            boolean flag=goodService.updateById(params);
-            if(flag)
-            {
+               if( goodService.updateGood(params)){
+                   httpResponseEntity.setData(params);
+               }
+
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
 
         } catch (Exception e) {
             logger.info("update 更新货物>>>>>>>>>>>" + e.getLocalizedMessage());

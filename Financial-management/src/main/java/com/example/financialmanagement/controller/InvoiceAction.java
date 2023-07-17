@@ -145,37 +145,13 @@ public class InvoiceAction {
         return httpResponseEntity;
     }
 
-    @RequestMapping(value = "/getUseNumber",method = RequestMethod.POST, headers = "Accept"
-        + "=application/json")
-    public HttpResponseEntity getUseNumber() {
-        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
-        try {
-            Long res=invoiceService.getUseNumber();
-            if(res!=0L)
-            {
-                httpResponseEntity.setData(res);
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.INVOICE_FAIL);
-            }
-
-        } catch (Exception e) {
-            logger.info("selectUseInvoice 搜索使用的发票>>>>>>>>>>>" + e.getLocalizedMessage());
-            httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
-        }
-        return httpResponseEntity;
-    }
-
     @RequestMapping(value = "/addReceiptInvoice",method = RequestMethod.POST, headers = "Accept"
         + "=application/json")
     public HttpResponseEntity addReceiptInvoice(@RequestBody Use use) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
             Long res=useService.addReceiptInvoice(use);
+            System.out.println(res);
             if(res!=0L)
             {
                 httpResponseEntity.setData(res);
@@ -218,4 +194,30 @@ public class InvoiceAction {
         }
         return httpResponseEntity;
     }
+
+    @RequestMapping(value = "/setPutAway",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity setPutAway(@RequestBody Long id) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            int res=useService.setPutAway(id);
+            if(res==1)
+            {
+                httpResponseEntity.setData(res);
+                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else
+            {
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.INVOICE_FAIL);
+            }
+
+        } catch (Exception e) {
+            logger.info("changeUseByid 搜索使用的发票>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
 }
