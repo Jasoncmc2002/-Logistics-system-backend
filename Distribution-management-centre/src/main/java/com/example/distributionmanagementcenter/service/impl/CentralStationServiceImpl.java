@@ -105,7 +105,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                 centralStation.setIsReturnName("是");
             }
             if(centralStation.getIsReturn()==0){
-                centralStation.setIsReturnName("是");
+                centralStation.setIsReturnName("否");
             }
             if(centralStation.getIsChange()==1){
              centralStation.setIsChangeName("是");

@@ -87,10 +87,12 @@ public class SupplyController {
     }
 
     @PostMapping(value = "/create")
-    public HttpResponseEntity<Supply> create(@RequestBody Supply params) {
-        HttpResponseEntity<Supply> httpResponseEntity = new HttpResponseEntity<Supply>();
+    public HttpResponseEntity create(@RequestBody Supply params) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-                   supplyService.save(params);
+            if(supplyService.save(params)){
+                  httpResponseEntity.setData("Success");
+            }
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 
@@ -105,14 +107,16 @@ public class SupplyController {
 
 
     @PostMapping(value = "/delete/{id}")
-    public HttpResponseEntity<Supply> delete(@PathVariable("id") String id) {
+    public HttpResponseEntity delete(@PathVariable("id") String id) {
 
-        HttpResponseEntity<Supply> httpResponseEntity = new HttpResponseEntity<Supply>();
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-                supplyService.removeById(id);
+                boolean flag=supplyService.removeById(id);
+                if(flag){
+                    httpResponseEntity.setData("Success");
+                }
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-
 
         } catch (Exception e) {
             logger.info("delete 删除供货商>>>>>>>>>>>" + e.getLocalizedMessage());
@@ -124,15 +128,15 @@ public class SupplyController {
 
 
     @PostMapping(value = "/update")
-    public HttpResponseEntity<Supply> update(@RequestBody Supply params) {
+    public HttpResponseEntity update(@RequestBody Supply params) {
 
-        HttpResponseEntity<Supply> httpResponseEntity = new HttpResponseEntity<Supply>();
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            supplyService.updateById(params);
-
+               if(supplyService.updateById(params)){
+                   httpResponseEntity.setData("Success");
+               }
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-
 
         } catch (Exception e) {
             logger.info("update 更新供货商>>>>>>>>>>>" + e.getLocalizedMessage());
