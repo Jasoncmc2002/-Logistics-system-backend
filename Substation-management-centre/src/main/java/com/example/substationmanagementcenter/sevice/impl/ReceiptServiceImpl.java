@@ -107,6 +107,7 @@ public class ReceiptServiceImpl extends ServiceImpl<ReceiptMapper, Receipt> impl
             System.out.println("resUserNumber.getData()!!"+resUserNumber.getData());
 //            JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
             Long userNumber = Long.valueOf(jsonString1);
+            feignApi.setPutAway(receipt.getInvoiceNumber());
 
             receipt.setInvoiceNumber(userNumber);
 
