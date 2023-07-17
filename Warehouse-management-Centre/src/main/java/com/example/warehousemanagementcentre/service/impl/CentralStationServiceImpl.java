@@ -7,6 +7,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.warehousemanagementcentre.beans.HttpResponseEntity;
 import com.example.warehousemanagementcentre.entity.*;
+import com.example.warehousemanagementcentre.entity.vo.AllDistribute;
+import com.example.warehousemanagementcentre.entity.vo.AllOutStation;
+import com.example.warehousemanagementcentre.entity.vo.OutStationNote;
 import com.example.warehousemanagementcentre.entity.vo.ResultInCentral;
 import com.example.warehousemanagementcentre.feign.FeignApi;
 import com.example.warehousemanagementcentre.mapper.AllocationMapper;
@@ -264,8 +267,8 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                     Map map1 =new HashMap<String,Object>();
                     map1.put("id",inoutstation.getTaskId());
                     System.out.println(inoutstation.getTaskId());
-                    map1.put("task_status","中心库房出库");
-                    map1.put("order_status",null);
+                    map1.put("task_status",null);
+                    map1.put("order_status","中心库房出库");
                     HttpResponseEntity res2= feignApi.changeTaskOrderType(map1);
 
                     //改调拨单状态
@@ -821,7 +824,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         Map map2 =new HashMap<String,Object>();
         map2.put("id",map.get("alloId"));
         System.out.println(map.get("alloId"));
-        map2.put("allo_type","5");
+        map2.put("allo_type","6");
         HttpResponseEntity res1 = feignApi.updateAllocationbyId(map2);
 
         int res2= (int) res1.getData();  // 将对象转换成json格式数据
@@ -920,7 +923,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         Map map2 =new HashMap<String,Object>();
         map2.put("id",map.get("alloId"));
         System.out.println(map.get("alloId"));
-        map2.put("allo_type","6");
+        map2.put("allo_type","7");
         HttpResponseEntity res4 = feignApi.updateAllocationbyId(map2);
 
         int res2= (int) res4.getData();  // 将对象转换成json格式数据
@@ -950,7 +953,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
 //            inoutstationQueryWrapper.eq("id",map.get("inoutStationId"));
 //            List<Inoutstation> inoutstations = inoutstationMapper.selectList(inoutstationQueryWrapper);
             Inoutstation inoutstation = inoutstationMapper.selectById(Long.valueOf(map.get(
-                "inoutStaionId").toString()));
+                "inoutStationId").toString()));
             System.out.println("inoutstation!!1"+inoutstation);
 
             //得到对应商品信息,能否退货
@@ -991,6 +994,124 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         return res;
     }
 
+    @Override
+    public PageInfo printOutCentral(Map<String, Object> map) throws ParseException{
+        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+                Integer.valueOf(String.valueOf(map.get("pageSize"))));
+
+        //筛选task
+        QueryWrapper<Inoutstation> queryWrapper = new QueryWrapper<>();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+        if(map.get("startLine") != null && !map.get("startLine").equals("")){
+
+            // 格式化中国时区时间为指定格式的字符串
+            String date = LocalDateTime.parse(String.valueOf(map.get("startLine")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                    ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+            Date startline = simpleDateFormat.parse(date);
+            System.out.println("start"+startline);
+            queryWrapper.ge("date",startline);
+        }
+        if(map.get("endLine") != null && !map.get("endLine").equals("")){
+            String date = LocalDateTime.parse(String.valueOf(map.get("endLine")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                    ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+            Date endline = simpleDateFormat.parse(date);
+            System.out.println("end!!!"+endline);
+            queryWrapper.lt("date",endline);
+        }
+        if(map.get("goodName") != null && !map.get("goodName").equals("")){
+            System.out.println("goodName");
+            queryWrapper.eq("good_name",map.get("goodName"));
+        }
+
+        queryWrapper.eq("type","调拨出库");
+        List<Inoutstation> res = inoutstationMapper.selectList(queryWrapper);
+        List<AllOutStation> res1 = new ArrayList<>();
+
+
+        AllOutStation allOutStation = new AllOutStation();
+        allOutStation.setGoodNumberSum(Long.valueOf(0));
+        allOutStation.setPriceSum(0);
+        allOutStation.setOutStationNotes(new ArrayList<>());
+        for (Inoutstation inoutstation:res){
+            OutStationNote outStationNote = new OutStationNote();
+            outStationNote.setGoodId(inoutstation.getGoodId());
+            outStationNote.setGoodName(inoutstation.getGoodName());
+            outStationNote.setGoodPrice(inoutstation.getGoodPrice());
+            outStationNote.setNumber(inoutstation.getNumber());
+            outStationNote.setGoodFactory(inoutstation.getGoodFactory());
+            outStationNote.setRemark(inoutstation.getRemark());
+            outStationNote.setDate(inoutstation.getDate());
+
+            allOutStation.getOutStationNotes().add(outStationNote);
+            allOutStation.setGoodNumberSum(allOutStation.getGoodNumberSum()+inoutstation.getNumber());
+            allOutStation.setPriceSum(allOutStation.getPriceSum()+inoutstation.getGoodPrice()*inoutstation.getNumber());
+        }
+        System.out.println("res!!1"+res);
+        res1.add(allOutStation);
+        //设置给前端的返回值
+        PageInfo pageInfo = new PageInfo(res1);
+
+        return pageInfo;
+    }
+
+    @Override
+    public PageInfo printDistribute(Map<String, Object> map) throws ParseException {
+        PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
+                Integer.valueOf(String.valueOf(map.get("pageSize"))));
+
+        //筛选task
+        QueryWrapper<Inoutstation> queryWrapper = new QueryWrapper<>();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
+        if(map.get("stationName") != null && !map.get("stationName").equals("")){
+            System.out.println("goodName");
+            queryWrapper.eq("station_name",map.get("stationName"));
+        }
+        if(map.get("startLine") != null && !map.get("startLine").equals("")){
+
+            // 格式化中国时区时间为指定格式的字符串
+            String date = LocalDateTime.parse(String.valueOf(map.get("startLine")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                    ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+            Date startline = simpleDateFormat.parse(date);
+            System.out.println("start"+startline);
+            queryWrapper.ge("date",startline);
+        }
+        if(map.get("endLine") != null && !map.get("endLine").equals("")){
+            String date = LocalDateTime.parse(String.valueOf(map.get("endLine")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+                    ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+            Date endline = simpleDateFormat.parse(date);
+            System.out.println("end!!!"+endline);
+            queryWrapper.lt("date",endline);
+        }
+        if(map.get("goodName") != null && !map.get("goodName").equals("")){
+            System.out.println("goodName");
+            queryWrapper.eq("good_name",map.get("goodName"));
+        }
+
+        queryWrapper.eq("type","调拨入库");
+        List<Inoutstation> res = inoutstationMapper.selectList(queryWrapper);
+        List<AllDistribute> res1 = new ArrayList<>();
+
+
+        AllDistribute allDistribute = new AllDistribute();
+        allDistribute.setGoodNumberSum(Long.valueOf(0));
+        allDistribute.setPriceSum(0);
+        allDistribute.setInoutstations(new ArrayList<>());
+        for (Inoutstation inoutstation:res){
+            allDistribute.getInoutstations().add(inoutstation);
+            allDistribute.setGoodNumberSum(allDistribute.getGoodNumberSum()+inoutstation.getNumber());
+            allDistribute.setPriceSum(allDistribute.getPriceSum()+inoutstation.getGoodPrice()*inoutstation.getNumber());
+        }
+        System.out.println("res!!1"+res);
+        res1.add(allDistribute);
+        //设置给前端的返回值
+        PageInfo pageInfo = new PageInfo(res1);
+
+        return pageInfo;
+    }
 
 
 }
