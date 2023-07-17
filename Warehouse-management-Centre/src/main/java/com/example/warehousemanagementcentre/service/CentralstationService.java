@@ -2,9 +2,9 @@ package com.example.warehousemanagementcentre.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.warehousemanagementcentre.entity.CentralStation;
-import com.example.warehousemanagementcentre.entity.vo.ResultInCentral;
 import com.github.pagehelper.PageInfo;
 
+import java.text.ParseException;
 import java.util.Map;
 
 /**
@@ -47,6 +47,9 @@ public interface CentralstationService extends IService<CentralStation> {
     int returnGoodsOutSub(Map<String,Object> map);
 
     int centralStationReturn(Map<String,Object>map);
+
+    PageInfo printOutCentral(Map<String,Object> map) throws ParseException;
+    PageInfo printDistribute(Map<String,Object> map) throws ParseException;
 
 
 }
