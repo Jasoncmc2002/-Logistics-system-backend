@@ -56,10 +56,13 @@ public class StationInOutController {
 
 
     @PostMapping(value = "/create")
-    public HttpResponseEntity<StationInOut> create(@RequestBody StationInOut params) {
-        HttpResponseEntity<StationInOut> httpResponseEntity = new HttpResponseEntity<StationInOut>();
+    public HttpResponseEntity create(@RequestBody StationInOut params) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-                 stationInOutService.save(params);
+                 boolean flag=stationInOutService.save(params);
+            if(flag){
+                httpResponseEntity.setData("Success");
+            }
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 

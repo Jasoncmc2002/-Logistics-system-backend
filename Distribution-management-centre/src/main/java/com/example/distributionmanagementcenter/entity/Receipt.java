@@ -15,11 +15,9 @@ import java.io.Serializable;
 public class Receipt implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
-    @ExcelProperty(value = "回复类型")
-    private Integer replyClass;
+
 //    @ExcelProperty(value = "用户名")
     @ExcelIgnore
     private String customerName;
@@ -37,8 +35,8 @@ public class Receipt implements Serializable {
 //    @ExcelProperty(value = "商品名称")
 @ExcelIgnore
     private String goodName;
-    @ExcelProperty(value = "购买数量")
-    private String number;
+//    @ExcelProperty(value = "购买数量")
+//    private String number;
     @ExcelProperty(value = "商品价格")
     private Double price;
     @ExcelIgnore
