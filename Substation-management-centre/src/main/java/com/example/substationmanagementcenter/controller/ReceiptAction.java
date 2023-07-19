@@ -45,6 +45,9 @@ public class ReceiptAction {
             {
                 httpResponseEntity.setCode(Constans.SUCCESS_CODE);
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+            }else if(res == 2){
+                httpResponseEntity.setCode(Constans.EXIST_CODE);
+                httpResponseEntity.setMessage(Constans.INVOICE_PUT_AWAY_ERROR);
             }else
             {
                 httpResponseEntity.setCode(Constans.EXIST_CODE);

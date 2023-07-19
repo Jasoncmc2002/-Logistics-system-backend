@@ -59,6 +59,11 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         return pageInfo;
     }
 
+    //新建一个TaskOrder类，用于给前端返回两表的综合信息
+    //使用QueryWrapper对任务单进行条件筛选，转化输入的时间的时区使其符合上海地区的时间
+    //可选的筛选条件有"startLine"、"endLine"、"taskType"、"taskStatus"、"substation"、"postman"，通过if判断进行筛选条件的选择
+    //将符合前端输入的筛选条件的任务单列表进行遍历，同时通过微服务找到每个任务单对应的订单
+    //将这些信息整合成一个TaskOrder的列表，存于一个pageInfo中并返回给前端
     @Override
     public PageInfo getTaskListByCriteria(Map<String,Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
@@ -137,6 +142,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         return pageInfo;
     }
 
+    //根据前端传来的“id”找到对应的任务单，给任务单分配配送员并将任务单状态更新成“已分配”
     @Override
     public int updateTaskPostmanById(Map<String, Object> map) {
         UpdateWrapper<Task> updateWrapper = new UpdateWrapper<>();
@@ -145,10 +151,6 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
             System.out.println("!!!!!");
             updateWrapper.set("task_status","已分配");
         }
-//        String jsonString1 = JSON.toJSONString(map);  // 将对象转换成json格式数据
-//        JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
-//        Postman postman = JSON.parseObject(jsonObject.getString("postman"), Postman.class); // 这样就可以了
-
         updateWrapper.set("postman",map.get("postman"));
         Integer rows = taskMapper.update(null, updateWrapper);
         return rows;
@@ -188,6 +190,9 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         return pageInfo;
     }
 
+    //新建一个DeliveryNote类，用于给前端返回两表的综合信息
+    //由前端传回的“taskId”找到对应的任务单再由此找到对应的订单
+    //遍历前端传回的货物列表，结合任务单和对应订单的信息得到deliveryNote列表，并通过pageInfo返回前端
     @Override
     public PageInfo pirntDeliveryNote(Map<String, Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
