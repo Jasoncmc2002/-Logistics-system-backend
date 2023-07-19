@@ -29,14 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-/**
- * <p>
- * 库房出库 服务实现类
- * </p>
- *
- * @author Jason_Cai
- * @since 2023-06-20
- */
+
 @Service
 @Transactional(rollbackFor=Exception.class)
 public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, StationInOut> implements StationInOutService {
@@ -81,8 +74,14 @@ public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, Sta
         List<StationInOut> records= stationInOutMapper.selectList(queryWrapper);
        for(StationInOut station:records){
            String goodName="";
+           String goodFactory="";
+           String goodUnit="";
            if(centralStationMapper.selectById(station.getGoodId())!=null){
                goodName=centralStationMapper.selectById(station.getGoodId()).getGoodName();
+               goodFactory=centralStationMapper.selectById(station.getGoodId()).getGoodFactory();
+               station.setGoodFactory(goodFactory);
+               goodUnit=centralStationMapper.selectById(station.getGoodId()).getGoodUnit();
+               station.setGoodUnit(goodUnit);
            }
            else{
                goodName="EMPTY";
@@ -90,15 +89,31 @@ public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, Sta
            station.setGoodName(goodName);
 
            String stationName="";
+           Integer stationClass=0;
            if(stationMapper.selectById(station.getStationId())!=null){
                stationName=stationMapper.selectById(station.getStationId()).getName();
+               stationClass=stationMapper.selectById(station.getStationId()).getStationClass();
+               station.setStationClass(stationClass);
            }
            else{
                stationName="EMPTY";
            }
            station.setStationName(stationName);
+           String stationClassName="";
+           if(station.getStationClass()==1){
+               stationClassName="中心库房";
+           }
+           else{
+               if(station.getStationClass()==2){
+                   stationClassName="分站库房";
+               }
+               else{
+                   stationClassName="EMPTY";
+               }
+
+           }
+           station.setStationClassName(stationClassName);
            //刷新掉不对应的字段
-           System.out.println(station);
            stationInOutMapper.updateById(station);
        }
         PageInfo pageInfo = new PageInfo(records);
@@ -116,16 +131,6 @@ public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, Sta
         Integer goodId=(Integer)map.get("good_id");
         String outType=(String)map.get("outType");
 
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Date startTime =sdf.parse((String) map.get("startTime"));
-//        Date endTime = sdf.parse((String) map.get("endTime"));
-
-//        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-//        ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
-//        ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
-//        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        String startDate = outputFormatter.format(startTime);
-//        String endDate = outputFormatter.format(endTime);
         ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
         // 格式化中国时区时间为指定格式的字符串
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

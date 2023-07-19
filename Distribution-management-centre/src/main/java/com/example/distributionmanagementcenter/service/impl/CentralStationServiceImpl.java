@@ -133,15 +133,21 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         CentralStation centralStation=centralStationMapper.selectById(Integer.valueOf(String.valueOf(map.get("id"))));
 
         Long num =Long.valueOf(String.valueOf(map.get("goodNumber")));
-        if(num <=centralStation.getWaitAllo()){
-          centralStation.setWaitAllo(centralStation.getWaitAllo()- num);
-          centralStation.setDoneAllo(centralStation.getDoneAllo()+ num);
-          centralStation.setVacancy(0L);
+        if(centralStation.getWaitAllo()!=null&&centralStation.getWarn()!=null){
+            if(centralStation.getWaitAllo()<centralStation.getWarn()){
+                centralStation.setVacancy(centralStation.getWarn()-centralStation.getWaitAllo());
+            }
+            else{
+                if(num <=centralStation.getWaitAllo()){
+                    centralStation.setWaitAllo(centralStation.getWaitAllo()- num);
+                    centralStation.setDoneAllo(centralStation.getDoneAllo()+ num);
+                    centralStation.setVacancy(0L);
+                }
+                else{
+                    centralStation.setVacancy(num-centralStation.getWaitAllo());
+                }
+            }
         }
-        else{
-            centralStation.setVacancy(num-centralStation.getWaitAllo());
-        }
-
         return centralStation;
     }
 
@@ -157,15 +163,22 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
 
     @Override
     public int updateList(Map<String, Object> map) throws ParseException {
+        int flag=0;
         List<Integer> list = (List<Integer>) map.get("idList");
-        for(Integer integer :list){
-            CentralStation centralStation = new CentralStation();
-            centralStation.setId(integer.longValue());
-            centralStation.setMax(Long.valueOf((String)map.get("max")));
-            centralStation.setWarn(Long.valueOf((String)map.get("warn")));
-            centralStationMapper.updateById(centralStation);
+        if( (Long.valueOf((String)map.get("max")))<=(Long.valueOf((String)map.get("warn")))){
+            flag=0;
+        }else{
+            for(Integer integer :list){
+                CentralStation centralStation = new CentralStation();
+                centralStation.setId(integer.longValue());
+                centralStation.setMax(Long.valueOf((String)map.get("max")));
+                centralStation.setWarn(Long.valueOf((String)map.get("warn")));
+                centralStationMapper.updateById(centralStation);
+            }
+            flag=1;
         }
-        return 0;
+
+        return flag;
     }
 
     @Override
@@ -200,10 +213,10 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                Long number =Long.valueOf(entry.getValue());
                buy.setNumber(number);
                 buy.setDate(date);
+                buy.setSupply((String)map.get("supply"));
                 if(number<=centralStation.getMax()-centralStation.getWaitAllo()){
                     buyMapper.insert(buy);
-                    centralStation.setWaitAllo(centralStation.getWaitAllo()-number);
-                    centralStation.setWithdrawal(centralStation.getWithdrawal()+number);
+                    centralStation.setWaitAllo(centralStation.getWaitAllo()+number);
                     centralStationMapper.updateById(centralStation);
                 }else {
                     flag++;
@@ -233,7 +246,6 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
             String dateString = LocalDateTime.parse(String.valueOf(map.get("time")), DateTimeFormatter.ISO_DATE_TIME).atZone(
                     ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
             date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateString);
-
         }
         else{
             String dateString=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
@@ -253,6 +265,7 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
                 Long number =Long.valueOf(entry.getValue());
                 buy.setNumber(number);
                 buy.setDate(date);
+                buy.setSupply((String)map.get("supply"));
                 if(number<=centralStation.getMax()-centralStation.getWaitAllo()){
                     buyMapper.insert(buy);
 

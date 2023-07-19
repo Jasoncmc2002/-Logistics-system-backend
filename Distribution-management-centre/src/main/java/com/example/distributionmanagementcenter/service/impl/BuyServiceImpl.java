@@ -3,9 +3,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.distributionmanagementcenter.entity.Buy;
 import com.example.distributionmanagementcenter.entity.CentralStation;
+import com.example.distributionmanagementcenter.entity.FirstCategory;
 import com.example.distributionmanagementcenter.entity.StationInOut;
 import com.example.distributionmanagementcenter.mapper.BuyMapper;
 import com.example.distributionmanagementcenter.mapper.CentralStationMapper;
+import com.example.distributionmanagementcenter.mapper.FirstCategoryMapper;
 import com.example.distributionmanagementcenter.mapper.StationInOutMapper;
 import com.example.distributionmanagementcenter.service.BuyService;
 import com.example.distributionmanagementcenter.service.StationInOutService;
@@ -36,7 +38,9 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
       @Autowired
       private CentralStationMapper centralStationMapper;
       @Autowired
-      private StationInOutService stationInOutService;
+      private StationInOutMapper stationInOutMapper;
+      @Autowired
+      private FirstCategoryMapper firstCategoryMapper;
     @Override
     public PageInfo getListByDateSupply(Map<String, Object> map) throws ParseException {
         PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
@@ -97,8 +101,9 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
             buy.setGoodName(centralStation.getGoodName());
             buy.setWaitAllo(centralStation.getWaitAllo());
             buy.setWithdrawal(centralStation.getWithdrawal());
+            FirstCategory firstCategory = firstCategoryMapper.selectById(centralStation.getGoodClassId());
+            buy.setGoodClass(firstCategory.getFName());
             buyMapper.updateById(buy);
-
         }
         PageInfo pageInfo = new PageInfo(records);
         return pageInfo;
@@ -110,17 +115,6 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
         String supplyName=(String)map.get("supplyName");
         System.out.println("后端"+map);
 
-
-//        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-//        ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
-//        ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
-//        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        String startDate = outputFormatter.format(startTime);
-//        String endDate = outputFormatter.format(endTime);
-
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Date startTime =sdf.parse((String) map.get("startTime"));
-//        Date endTime = sdf.parse((String) map.get("endTime"));
         ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
         // 格式化中国时区时间为指定格式的字符串
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -181,17 +175,6 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
     public int changeBuyTypeNotify(Map<String, Object> map) throws ParseException {
 
 
-//        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-//        ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
-//        ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
-//        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        String startDate = outputFormatter.format(startTime);
-//        String endDate = outputFormatter.format(endTime);
-
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Date startTime =sdf.parse((String) map.get("startTime"));
-//        Date endTime = sdf.parse((String) map.get("endTime"));
-
         ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
         // 格式化中国时区时间为指定格式的字符串
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -240,7 +223,7 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
                     stationInOut.setGoodUnit(centralStation.getGoodUnit());
                     stationInOut.setStationClass(1);
                     stationInOut.setType("中心退货");
-                    stationInOutService.save(stationInOut);
+                    stationInOutMapper.insert(stationInOut);
                 }else {
                      flag++;
                 }

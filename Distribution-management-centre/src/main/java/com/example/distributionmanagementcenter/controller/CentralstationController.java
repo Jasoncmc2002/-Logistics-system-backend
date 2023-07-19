@@ -144,11 +144,13 @@ public class CentralstationController {
         return httpResponseEntity;
     }
     @PostMapping("/updateList")
-    public HttpResponseEntity<CentralStation> updateList(@RequestBody Map<String, Object> map) {
+    public HttpResponseEntity updateList(@RequestBody Map<String, Object> map) {
 
-        HttpResponseEntity<CentralStation> httpResponseEntity = new HttpResponseEntity<CentralStation>();
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
         try {
-            centralstationService.updateList(map);
+            if(centralstationService.updateList(map)==1){
+                httpResponseEntity.setData("Success");
+            }
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 

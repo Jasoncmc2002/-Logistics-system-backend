@@ -28,4 +28,5 @@ public interface GoodService extends IService<Good> {
      boolean saveGood(Good params);
     boolean deleteGoodById(Long id);
     boolean updateGood(Good params);
+    public PageInfo getList(Map<String, Object> map) throws ParseException;
 }
