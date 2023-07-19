@@ -29,14 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-/**
- * <p>
- * 库房出库 服务实现类
- * </p>
- *
- * @author Jason_Cai
- * @since 2023-06-20
- */
+
 @Service
 @Transactional(rollbackFor=Exception.class)
 public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, StationInOut> implements StationInOutService {
@@ -90,15 +83,31 @@ public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, Sta
            station.setGoodName(goodName);
 
            String stationName="";
+           Integer stationClass=0;
            if(stationMapper.selectById(station.getStationId())!=null){
                stationName=stationMapper.selectById(station.getStationId()).getName();
+               stationClass=stationMapper.selectById(station.getStationId()).getStationClass();
+               station.setStationClass(stationClass);
            }
            else{
                stationName="EMPTY";
            }
            station.setStationName(stationName);
+           String stationClassName="";
+           if(station.getStationClass()==1){
+               stationClassName="中心库房";
+           }
+           else{
+               if(station.getStationClass()==2){
+                   stationClassName="分站库房";
+               }
+               else{
+                   stationClassName="EMPTY";
+               }
+
+           }
+           station.setStationClassName(stationClassName);
            //刷新掉不对应的字段
-           System.out.println(station);
            stationInOutMapper.updateById(station);
        }
         PageInfo pageInfo = new PageInfo(records);
