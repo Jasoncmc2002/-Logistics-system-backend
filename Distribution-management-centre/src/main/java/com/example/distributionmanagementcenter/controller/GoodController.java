@@ -51,6 +51,20 @@ public class GoodController {
         }
         return httpResponseEntity;
     }
+    @PostMapping(value = "/getList")
+    public HttpResponseEntity getList(@RequestBody Map<String, Object> map) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            httpResponseEntity.setData(goodService.getList(map));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+        } catch (Exception e) {
+            logger.info("获取订单信息数据>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
     @PostMapping(value = "/getByOrderId")
     public HttpResponseEntity getByOrderId(@RequestBody Map<String, Object> map) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();

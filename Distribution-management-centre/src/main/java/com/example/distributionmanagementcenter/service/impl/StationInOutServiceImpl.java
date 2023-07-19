@@ -74,8 +74,14 @@ public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, Sta
         List<StationInOut> records= stationInOutMapper.selectList(queryWrapper);
        for(StationInOut station:records){
            String goodName="";
+           String goodFactory="";
+           String goodUnit="";
            if(centralStationMapper.selectById(station.getGoodId())!=null){
                goodName=centralStationMapper.selectById(station.getGoodId()).getGoodName();
+               goodFactory=centralStationMapper.selectById(station.getGoodId()).getGoodFactory();
+               station.setGoodFactory(goodFactory);
+               goodUnit=centralStationMapper.selectById(station.getGoodId()).getGoodUnit();
+               station.setGoodUnit(goodUnit);
            }
            else{
                goodName="EMPTY";
@@ -125,16 +131,6 @@ public class StationInOutServiceImpl extends ServiceImpl<StationInOutMapper, Sta
         Integer goodId=(Integer)map.get("good_id");
         String outType=(String)map.get("outType");
 
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Date startTime =sdf.parse((String) map.get("startTime"));
-//        Date endTime = sdf.parse((String) map.get("endTime"));
-
-//        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSX");
-//        ZonedDateTime startTime = ZonedDateTime.parse((String) map.get("startTime"), inputFormatter);
-//        ZonedDateTime endTime = ZonedDateTime.parse((String) map.get("endTime"), inputFormatter);
-//        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        String startDate = outputFormatter.format(startTime);
-//        String endDate = outputFormatter.format(endTime);
         ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
         // 格式化中国时区时间为指定格式的字符串
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
