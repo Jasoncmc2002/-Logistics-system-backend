@@ -59,7 +59,8 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
      * @return
      */
     @Override
-    public BiResponse genChartByAi(MultipartFile multipartFile, GenChartByAiRequest genChartByAiRequest, HttpServletRequest request) {
+    public BiResponse genChartByAi(MultipartFile multipartFile, GenChartByAiRequest genChartByAiRequest,
+        HttpServletRequest request) {
         String chartName = genChartByAiRequest.getChartName();
         String goal = genChartByAiRequest.getGoal();
         String chartType = genChartByAiRequest.getChartType();
@@ -67,7 +68,8 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
 //        User loginUser = userService.getLoginUser(request);
         // 校验
         ThrowUtils.throwIf(StringUtils.isBlank(goal), ErrorCode.PARAMS_ERROR, "图表分析目标为空");
-        ThrowUtils.throwIf(StringUtils.isNotBlank(chartName) && chartName.length() > 200, ErrorCode.PARAMS_ERROR, "图表名称过长");
+        ThrowUtils.throwIf(StringUtils.isNotBlank(chartName) && chartName.length() > 200,
+            ErrorCode.PARAMS_ERROR, "图表名称过长");
         ThrowUtils.throwIf(StringUtils.isBlank(chartType), ErrorCode.PARAMS_ERROR, "图表类型为空");
 
         // 校验文件
@@ -148,7 +150,8 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
      * @return
      */
     @Override
-    public BiResponse genChartByAiAsync(MultipartFile multipartFile, GenChartByAiRequest genChartByAiRequest, HttpServletRequest request) {
+    public BiResponse genChartByAiAsync(MultipartFile multipartFile, GenChartByAiRequest genChartByAiRequest,
+        HttpServletRequest request) {
         String chartName = genChartByAiRequest.getChartName();
         String goal = genChartByAiRequest.getGoal();
         String chartType = genChartByAiRequest.getChartType();
@@ -156,7 +159,8 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart> implements
 //        User loginUser = userService.getLoginUser(request);
         // 校验
         ThrowUtils.throwIf(StringUtils.isBlank(goal), ErrorCode.PARAMS_ERROR, "图表分析目标为空");
-        ThrowUtils.throwIf(StringUtils.isNotBlank(chartName) && chartName.length() > 200, ErrorCode.PARAMS_ERROR, "图表名称过长");
+        ThrowUtils.throwIf(StringUtils.isNotBlank(chartName) && chartName.length() > 200,
+            ErrorCode.PARAMS_ERROR, "图表名称过长");
         ThrowUtils.throwIf(StringUtils.isBlank(chartType), ErrorCode.PARAMS_ERROR, "图表类型为空");
 
         // 校验文件

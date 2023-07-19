@@ -42,7 +42,6 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 
   @Override
   public int updatebyId(Customer customer) {
-    System.out.println("testcustoeer");
     int res=customerMapper.updateById(customer);
     return res;
   }
@@ -73,7 +72,6 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
       return customerMapper.deleteById(id);
     }
       return 0;
-
   }
 
 /*  按照客户名、电话或身份证号查找*/
@@ -115,5 +113,13 @@ public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> i
 //    System.out.println(res);
     PageInfo pageInfo = new PageInfo(res);
     return pageInfo;
+  }
+
+  @Override
+  public Customer getUserByUserId(int id) {
+    QueryWrapper<Customer> queryWrapper=new QueryWrapper();
+    queryWrapper.eq("user_id",id);
+    Customer res= customerMapper.selectOne(queryWrapper);
+    return res;
   }
 }

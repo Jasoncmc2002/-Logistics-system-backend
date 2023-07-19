@@ -70,6 +70,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     return res;
   }
 
+  @Override
   public PageInfo getOrdersByCriteria(Map<String, Object> map) throws ParseException {
     PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
@@ -78,12 +79,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
     // 格式化中国时区时间为指定格式的字符串
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
-        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
-    String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
-        ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
-
-
+    String startDate ="2019-07-10 00:00:00";
+    String endDate ="2045-07-10 00:00:00";
+    if(map.get("startTime")!=""&&map.get("startTime")!=null) {
+     startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")),
+          DateTimeFormatter.ISO_DATE_TIME).atZone(
+          ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+    }
+    if(map.get("endTime")!=""&&map.get("endTime")!=null) {
+      endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")),
+          DateTimeFormatter.ISO_DATE_TIME).atZone(
+          ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
+    }
+    System.out.println(map);
     // 判断name属性是否为空，如果不为空则作为查询条件
     if (!map.get("customerName").equals("")) {
       queryWrapper.like("customer_name", map.get("customerName"));
@@ -94,6 +102,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     if (!map.get("receiveName").equals("")) {
       queryWrapper.like("receive_name", map.get("receiveName"));
     }
+
+    System.out.println("startDate"+startDate);
       queryWrapper.between("order_date", startDate, endDate);
 
     if (!map.get("orderType").equals("")) {
@@ -110,7 +120,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     return pageInfo;
 }
 
-
+  @Override
   public PageInfo getlack(Map<String, Object> map) throws ParseException {
     PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
@@ -154,8 +164,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
     int res = orderMapper.updateById(order);//添加order;
     Long orderId= order.getId();
+
     System.out.println("goodslist"+goods);
     for(Good good:goods){
+      Date  now= DateUtil.getCreateTime();
+      good.setGoodDate(now);
       good.setKeyId(Math.toIntExact(orderId));
       HttpResponseEntity ss= feignApi.addGoods(good);
       System.out.println("good添加"+ss);
@@ -172,9 +185,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
     // 格式化中国时区时间为指定格式的字符串
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+    String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")),
+        DateTimeFormatter.ISO_DATE_TIME).atZone(
         ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
-    String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+    String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")),
+        DateTimeFormatter.ISO_DATE_TIME).atZone(
         ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
     queryWrapper.between("order_date", startDate, endDate);
     if (!map.get("orderType").equals("")) {
@@ -480,10 +495,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
     String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
         ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
 
-
-    orderWrapper.or().eq("order_type", "新订")
-        .or().eq("order_type", "退货");
-    orderWrapper.eq("order_status","完成");
+    orderWrapper.and(i -> i.or().eq("order_type", "新订")
+            .or().eq("order_type", "退货"));
+    orderWrapper.eq("order_status","已完成");
+    orderWrapper.eq("substation",map.get("station"));
 
 
     /* 根据订单表查询结果获取对应的order_id列表*/

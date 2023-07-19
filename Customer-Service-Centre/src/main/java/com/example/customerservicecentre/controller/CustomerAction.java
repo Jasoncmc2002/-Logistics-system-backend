@@ -202,4 +202,22 @@ public class CustomerAction {
         }
         return httpResponseEntity;
     }
+
+    @RequestMapping(value = "/getUserByUserId",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity getUserByUserId(@RequestBody int Id) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try {
+            Customer res = customerService.getUserByUserId(Id);
+            httpResponseEntity.setData(res);
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+        } catch (Exception e) {
+            logger.info("search 搜索客户信息>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+    }
+
 }

@@ -70,6 +70,7 @@ public class Customer implements Serializable {
      */
     private String email;
 
+    private int userId;
     @Version
     private Integer version;//版本号
 
