@@ -120,9 +120,11 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
     ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
     // 格式化中国时区时间为指定格式的字符串
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+    String startDate = LocalDateTime.parse(String.valueOf(map.get("startTime")),
+        DateTimeFormatter.ISO_DATE_TIME).atZone(
         ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
-    String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
+    String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")),
+        DateTimeFormatter.ISO_DATE_TIME).atZone(
         ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
 
 

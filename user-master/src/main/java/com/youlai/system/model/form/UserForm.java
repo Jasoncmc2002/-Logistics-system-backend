@@ -26,7 +26,7 @@ public class UserForm {
     private String username;
 
     @Schema(description="密码")
-    @NotBlank(message = "密码不能为空")
+//    @NotBlank(message = "密码不能为空")
     private String password;
 
 

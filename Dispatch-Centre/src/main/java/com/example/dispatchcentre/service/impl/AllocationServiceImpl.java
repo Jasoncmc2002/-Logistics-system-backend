@@ -144,7 +144,6 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
     return 0;
   }
 
-
   @Override
   public int insertSationDispatch(Allocation allocation) {
     int res=allocationMapper.insert(allocation);
@@ -211,7 +210,7 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
         Integer.valueOf(String.valueOf(map.get("pageSize"))));
     QueryWrapper<Allocation> queryWrapper = new QueryWrapper<>();
     System.out.println(map);
-    if(!map.get("").equals("")) {
+    if(!map.get("id").equals("")) {
       Long id = Long.valueOf(String.valueOf(map.get("id")));
       queryWrapper.eq("id", id);
     }

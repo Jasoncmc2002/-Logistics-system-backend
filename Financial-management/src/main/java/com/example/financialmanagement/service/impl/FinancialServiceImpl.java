@@ -61,7 +61,8 @@ public class FinancialServiceImpl {
 //    JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
 //    System.out.println("test");
       List<Good> goodsList = JSON.parseArray(jsonString2,Good.class);
-
+      if(goodsList==null)
+        continue;
       for (Good goods : goodsList) {
         String category = goods.getGoodSubclass();
         String name = goods.getGoodName();
@@ -80,16 +81,20 @@ public class FinancialServiceImpl {
         switch (order.getOrderType()) {
           case "新订":
             categoryStats.put("新订(数量)",
-                Integer.parseInt(String.valueOf(categoryStats.getOrDefault("新订(数量)", 0))) + quantity);
+                Integer.parseInt(String.valueOf(categoryStats.getOrDefault("新订(数量)",
+                    0))) + quantity);
             categoryStats.put("新订(金额)",
-                Double.parseDouble(String.valueOf(categoryStats.getOrDefault("新订(金额)", 0.0))) + price * quantity);
+                Double.parseDouble(String.valueOf(categoryStats.getOrDefault("新订(金额)",
+                    0.0))) + price * quantity);
             getMoney+=price * quantity;
             break;
           case "退货":
             categoryStats.put("退货(数量)",
-                Integer.parseInt(String.valueOf(categoryStats.getOrDefault("退货(数量)", 0))) + quantity);
+                Integer.parseInt(String.valueOf(categoryStats.getOrDefault("退货(数量)",
+                    0))) + quantity);
             categoryStats.put("退货(金额)",
-                Double.parseDouble(String.valueOf(categoryStats.getOrDefault("退货(金额)", 0.0))) + price * quantity);
+                Double.parseDouble(String.valueOf(categoryStats.getOrDefault("退货(金额)",
+                    0.0))) + price * quantity);
             returnMoney+=price * quantity;
             break;
         }
@@ -129,10 +134,9 @@ public class FinancialServiceImpl {
     return moneyStationList;
   }
 
-
   public ResultSupply settlementSupply(Map<String, Object> map)  {
-    PageHelper.startPage(Integer.valueOf(String.valueOf(map.get("pageNum"))),
-        Integer.valueOf(String.valueOf(map.get("pageSize"))));
+    PageHelper.startPage(Integer.parseInt(String.valueOf(map.get("pageNum"))),
+        Integer.parseInt(String.valueOf(map.get("pageSize"))));
     //0是删除，1是已经进货，2是已经支付（已操作），3是已经操作对应中心库房入库
     System.out.println(map);
     HttpResponseEntity res= feignApi.getBuyBySupplyFin(map);
@@ -185,12 +189,10 @@ public class FinancialServiceImpl {
       //从输入库表单查buyType
       map.put("stationType","1");
       map.put("outType","退货出库");
-
       map.put("good_id",buy.getGoodId());
       HttpResponseEntity res3= feignApi.getStationByGoodIdDate(map);
       String jsonString3 = JSON.toJSONString(res3.getData());  // 将对象转换成json格式数据
-//    JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
-//    System.out.println("test");
+
       List<Inoutstation> inoutstationList =JSON.parseArray(jsonString3, Inoutstation.class);
 
       for (Inoutstation infor : inoutstationList) {

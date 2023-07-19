@@ -66,7 +66,7 @@ public class SysUser extends BaseEntity {
      * 逻辑删除标识(0:未删除;1:已删除)
      */
     private Integer deleted;
-    @Version
-    private Integer version;//版本号
+//    @Version
+//    private Integer version;//版本号
 
 }
