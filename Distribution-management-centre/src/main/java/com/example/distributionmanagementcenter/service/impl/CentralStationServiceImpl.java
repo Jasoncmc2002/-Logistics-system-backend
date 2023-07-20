@@ -284,4 +284,11 @@ public class CentralStationServiceImpl extends ServiceImpl<CentralStationMapper,
         return result;
     }
 
+  @Override
+  public CentralStation getAliGoodName(String name) throws ParseException {
+      QueryWrapper<CentralStation>  queryWrapper=new QueryWrapper();
+    queryWrapper.eq("good_name",name);
+    CentralStation centralStation=centralStationMapper.selectOne(queryWrapper);
+    return centralStation;
+  }
 }

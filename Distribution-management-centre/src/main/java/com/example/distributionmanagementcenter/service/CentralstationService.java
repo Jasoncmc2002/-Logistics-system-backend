@@ -27,4 +27,6 @@ public interface CentralstationService extends IService<CentralStation> {
 
    String addRegistList(Map<String, Object> map) throws ParseException;
 
+  CentralStation getAliGoodName(String name) throws ParseException;
+
 }

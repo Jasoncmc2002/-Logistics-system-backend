@@ -38,11 +38,11 @@ public class SwaggerConfig {
                         )
                 )
                 .info(new Info()
-                        .title("youlai-boot 接口文档")
+                        .title("智慧物流系统 接口文档")
                         .version("2.0.0")
                         .description("接口文档")
                         .license(new License().name("Apache 2.0")
-                                .url("https://www.youlai.tech"))
+                                .url("https://gitee.com/yofchio/shixun"))
                 );
     }
 

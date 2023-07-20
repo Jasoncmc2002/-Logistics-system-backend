@@ -7,16 +7,21 @@ package com.example.financialmanagement.controller;
  */
 
 
+import com.alibaba.fastjson.JSON;
 import com.aliyun.goodstech20191230.models.ClassifyCommodityResponse;
 import com.aliyun.tea.TeaException;
 import com.aliyun.tea.TeaModel;
 import com.example.financialmanagement.beans.HttpResponseEntity;
 import com.example.financialmanagement.common.Constans;
+import com.example.financialmanagement.entity.CentralStation;
+import com.example.financialmanagement.feign.FeignApi;
 import com.example.financialmanagement.service.impl.AliyunOss;
+import com.example.financialmanagement.service.impl.FinancialServiceImpl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,8 +34,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class AiliyunGoodAction {
   private final Logger logger = LoggerFactory.getLogger(FinancialAction.class);
 
+  @Autowired
+  public  FeignApi feignApi;
 
-  public static com.aliyun.goodstech20191230.Client createClient(String accessKeyId, String accessKeySecret) throws Exception {
+  public static com.aliyun.goodstech20191230.Client createClient(String accessKeyId,
+      String accessKeySecret) throws Exception {
         /*
           初始化配置对象com.aliyun.teaopenapi.models.Config
           Config对象存放AccessKeyId、AccessKeySecret、endpoint等配置
@@ -42,6 +50,7 @@ public class AiliyunGoodAction {
     config.endpoint = "goodstech.cn-shanghai.aliyuncs.com";
     return new com.aliyun.goodstech20191230.Client(config);
   }
+
   @RequestMapping(value = "/goodAili",method = RequestMethod.POST,consumes =
       MediaType.MULTIPART_FORM_DATA_VALUE, headers = "Accept"
       + "=application/json")
@@ -49,7 +58,8 @@ public class AiliyunGoodAction {
     HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
     try {
       String url= AliyunOss.uploadFile(file);
-      String res=getGood(url);
+      System.out.println("url"+url);
+      CentralStation res=getGood(url);
       if(res!=null)
       {
         httpResponseEntity.setData(res);
@@ -58,9 +68,8 @@ public class AiliyunGoodAction {
       }else
       {
         httpResponseEntity.setCode(Constans.EXIST_CODE);
-        httpResponseEntity.setMessage(Constans.ADD_FAIL);
+        httpResponseEntity.setMessage(Constans.Aili_FAIL);
       }
-
     } catch (Exception e) {
       logger.info("goodAili 阿里云的商品分类>>>>>>>>>>>" + e.getLocalizedMessage());
       httpResponseEntity.setCode(Constans.EXIST_CODE);
@@ -69,7 +78,7 @@ public class AiliyunGoodAction {
     return httpResponseEntity;
   }
 
-    public static String getGood( String url) throws Exception {
+    public  CentralStation getGood( String url) throws Exception {
 
     // 创建AccessKey ID和AccessKey Secret，请参考https://help.aliyun.com/document_detail/175144.html。
     // 如果您使用的是RAM用户的AccessKey，还需要为子账号授予权限AliyunVIAPIFullAccess，请参考https://help.aliyun.com/document_detail/145025.html。
@@ -104,12 +113,20 @@ public class AiliyunGoodAction {
       System.out.println("Score: " + score);
       System.out.println("CategoryName: " + categoryName);
       System.out.println("statusCode: " + statusCode);
+
+      HttpResponseEntity resgood= feignApi.getAliGoodName(categoryName);
+      /*查询并统计结果*/
+      String jsonString2 = JSON.toJSONString(resgood.getData());  // 将对象转换成json格式数据
+
+      CentralStation centralStation = JSON.parseObject(jsonString2,CentralStation.class);
+      return centralStation;
     } catch (TeaException teaException) {
       // 获取整体报错信息
       System.out.println(com.aliyun.teautil.Common.toJSONString(teaException));
       // 获取单个字段
       System.out.println(teaException.getCode());
     }
-    return "get";
+
+    return null;
   }
 }

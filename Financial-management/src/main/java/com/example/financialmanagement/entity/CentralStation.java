@@ -1,6 +1,7 @@
 package com.example.financialmanagement.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
@@ -29,13 +30,13 @@ public class CentralStation implements Serializable {
     /**
      * 用户名
      */
-    private String goodClass;
-
-    /**
-     * 用户名
-     */
     private String goodName;
 
+    @TableField("good_class_id")
+    private Integer goodClassId;
+
+    @TableField("good_subclass_id")
+    private Integer goodSubclassId;
     /**
      * 用户名
      */

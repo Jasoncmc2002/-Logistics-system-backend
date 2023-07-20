@@ -70,6 +70,7 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
   }
   @Override
   public int insertTaskDispatchlist(Map<String,Object> map) throws ParseException {
+    System.out.println("insertTaskDispatchlist");
     String jsonString1 = JSON.toJSONString(map);  // 将对象转换成json格式数据
     JSONObject jsonObject = JSON.parseObject(jsonString1); // 在转回去
     List<Orders> order = JSON.parseArray(jsonObject.getString("Orders"), Orders.class); // 这样就可以了

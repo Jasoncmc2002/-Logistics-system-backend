@@ -236,4 +236,21 @@ public class CentralstationController {
 
     }
 
+    @RequestMapping(value = "/getAliGoodName",method = RequestMethod.POST, headers = "Accept"
+        + "=application/json")
+    public HttpResponseEntity getAliGoodName(@RequestBody String name) {
+        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+        try{
+            httpResponseEntity.setData(centralstationService.getAliGoodName(name));
+            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+        }catch(Exception e){
+            logger.info("addRegister 新增购货入库调拨单列表>>>>>>>>>>>" + e.getLocalizedMessage());
+            httpResponseEntity.setCode(Constans.EXIST_CODE);
+            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+        }
+        return httpResponseEntity;
+
+    }
+
 }

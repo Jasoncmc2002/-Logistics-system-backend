@@ -38,6 +38,9 @@ public interface FeignApi {
   @RequestMapping(value = "/distribute/central-station/{id}",method = RequestMethod.POST)
   HttpResponseEntity getStockByGoodId(@PathVariable("id")String id);
 
+  @RequestMapping(value = "/distribute/central-station/getAliGoodName",method = RequestMethod.POST)
+  HttpResponseEntity getAliGoodName(String name);
+
   @RequestMapping(value = "/distribute/stationInOut/getListByConditions1")
   HttpResponseEntity getStationByGoodIdDate(Map<String,Object> map);
 

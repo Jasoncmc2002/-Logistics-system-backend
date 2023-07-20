@@ -133,15 +133,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
         ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
     String endDate = LocalDateTime.parse(String.valueOf(map.get("endTime")), DateTimeFormatter.ISO_DATE_TIME).atZone(
         ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
-
-
     queryWrapper.between("order_date", startDate, endDate);
 
 //    if (!map.get("orderType").equals("")) {
 //      queryWrapper.eq("order_type", map.get("orderType"));
 //    }
 
-    queryWrapper.eq("order_type", "缺货");
+    queryWrapper.eq("order_status", "缺货");
 
     List<Orders> res= orderMapper.selectList(queryWrapper);
     for (Orders orders:res ) {
@@ -508,7 +506,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
 
     return orderList;
   }
-
 
   public List<CreaterWork> getCreaterWorkMap(Map<String, Map<String, Object>> map,String creater){
     List<CreaterWork> createrWorkList=new ArrayList<>();

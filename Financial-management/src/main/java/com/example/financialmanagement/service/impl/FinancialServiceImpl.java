@@ -253,4 +253,13 @@ public class FinancialServiceImpl {
     HttpResponseEntity res=  feignApi.changeBuyTypeNotify(map);
      return (int) res.getData();
    }
+
+   public CentralStation getAilipayGood(String name){
+     HttpResponseEntity resgood= feignApi.getAliGoodName(name);
+     /*查询并统计结果*/
+     String jsonString2 = JSON.toJSONString(resgood.getData());  // 将对象转换成json格式数据
+
+     CentralStation centralStation = JSON.parseObject(jsonString2,CentralStation.class);
+       return centralStation;
+   }
 }
