@@ -173,8 +173,6 @@ public class BuyServiceImpl extends ServiceImpl<BuyMapper, Buy> implements BuySe
 
     @Override
     public int changeBuyTypeNotify(Map<String, Object> map) throws ParseException {
-
-
         ZoneId chinaZoneId = ZoneId.of("Asia/Shanghai");
         // 格式化中国时区时间为指定格式的字符串
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");

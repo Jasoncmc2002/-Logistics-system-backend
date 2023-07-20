@@ -175,12 +175,13 @@ private FeignApi feignApi;
         // List<Task> list = JSONObject.parseObject(JSON.toJSONString(httpResponseEntity1.getData()), ArrayList.class);
 
         List<Task> list=(List<Task>) httpResponseEntity1.getData();
+
         List<Long> idList = new ArrayList<Long>();
         //指定时间内的所有任务单
         for(Object object:list){
             String jsonObject= JSON.toJSONString(object);
             Task task= JSONObject.parseObject(jsonObject, Task.class);
-            idList.add(Long.valueOf(task.getOrderId()));
+            idList.add(Long.valueOf(task.getId()));
         }
       List<Analyze> result =  new ArrayList<Analyze>();
         for(Long id :idList){
@@ -209,6 +210,7 @@ private FeignApi feignApi;
            }
         }
         Collections.sort(result);
+        System.out.println(result);
         PageInfo pageInfo = new PageInfo(result);
         return pageInfo;
     }
