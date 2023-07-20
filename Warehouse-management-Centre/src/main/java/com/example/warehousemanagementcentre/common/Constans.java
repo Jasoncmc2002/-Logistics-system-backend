@@ -173,4 +173,6 @@ public class Constans {
 
     public static final String Good_NOT_EXIST = "商品不存在";
 
+    public static final String Change_Central_ERROR="修改库存失败";
+
 }
