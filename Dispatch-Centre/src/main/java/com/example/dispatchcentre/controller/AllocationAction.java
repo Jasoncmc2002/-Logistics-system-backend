@@ -50,7 +50,7 @@ public class AllocationAction {
         } catch (Exception e) {
             logger.info("addTaskDispatch 添加任务调度单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -68,7 +68,7 @@ public class AllocationAction {
         } catch (Exception e) {
             logger.info("addSationDispatch 添加库房调度单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -86,7 +86,7 @@ public class AllocationAction {
         } catch (Exception e) {
             logger.info("addSationDispatch 添加库房调度单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -104,7 +104,7 @@ public class AllocationAction {
         } catch (Exception e) {
             logger.info("insertWithDrawDispatch 添加库房调度单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -122,7 +122,7 @@ public class AllocationAction {
         } catch (Exception e) {
             logger.info("updateAllocationbyId 更新调度单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -139,7 +139,7 @@ public class AllocationAction {
         } catch (Exception e) {
             logger.info("getAllocation 得到所有的调度单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -156,7 +156,7 @@ public class AllocationAction {
         } catch (Exception e) {
             logger.info("getGoodListByAlloId good得到调度单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -173,7 +173,7 @@ public class AllocationAction {
         } catch (Exception e) {
             logger.info("getGoodListByAlloId good得到调度单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }

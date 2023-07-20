@@ -64,7 +64,7 @@ public class CustomerAction {
         } catch (Exception e) {
             logger.info("addUser 添加客户>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -83,11 +83,10 @@ public class CustomerAction {
                 httpResponseEntity.setCode(Constans.EXIST_CODE);
                 httpResponseEntity.setMessage(Constans.UPDATE_FAIL);
             }
-
         } catch (Exception e) {
             logger.info("updateUser 更新客户信息>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -107,7 +106,7 @@ public class CustomerAction {
         } catch (Exception e) {
             logger.info("updateUser 更新客户信息>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -132,7 +131,7 @@ public class CustomerAction {
         } catch (Exception e) {
             logger.info("delectUserByid 删除客户信息>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -149,7 +148,7 @@ public class CustomerAction {
         } catch (Exception e) {
             logger.info("search 搜索客户信息>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -166,7 +165,7 @@ public class CustomerAction {
         } catch (Exception e) {
             logger.info("selectOrderbyCustomer 客户订单信息>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -182,7 +181,7 @@ public class CustomerAction {
         } catch (Exception e) {
             logger.info("selectByCustomerId 通过id得到客户>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -198,7 +197,7 @@ public class CustomerAction {
         } catch (Exception e) {
             logger.info("getUUId getuuid>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -215,7 +214,7 @@ public class CustomerAction {
         } catch (Exception e) {
             logger.info("search 搜索客户信息>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }

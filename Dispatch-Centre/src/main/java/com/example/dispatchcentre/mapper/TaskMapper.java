@@ -1,7 +1,7 @@
 package com.example.dispatchcentre.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.example.dispatchcentre.entity.Task;
+import com.example.dispatchcentre.feign.Task;
 
 
 /**

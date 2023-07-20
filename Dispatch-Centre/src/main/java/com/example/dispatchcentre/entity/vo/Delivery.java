@@ -1,7 +1,7 @@
 package com.example.dispatchcentre.entity.vo;
 
 import com.example.dispatchcentre.entity.Good;
-import com.example.dispatchcentre.entity.Task;
+import com.example.dispatchcentre.feign.Task;
 import com.github.pagehelper.PageInfo;
 import lombok.Data;
 

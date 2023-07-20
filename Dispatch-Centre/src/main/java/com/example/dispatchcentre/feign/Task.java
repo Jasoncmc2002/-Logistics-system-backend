@@ -1,4 +1,4 @@
-package com.example.dispatchcentre.entity;
+package com.example.dispatchcentre.feign;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

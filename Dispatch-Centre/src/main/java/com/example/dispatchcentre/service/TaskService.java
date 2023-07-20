@@ -1,7 +1,7 @@
 package com.example.dispatchcentre.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.example.dispatchcentre.entity.Task;
+import com.example.dispatchcentre.feign.Task;
 import com.example.dispatchcentre.entity.vo.Delivery;
 import com.github.pagehelper.PageInfo;
 import java.text.ParseException;

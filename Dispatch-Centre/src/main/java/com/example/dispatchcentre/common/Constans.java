@@ -12,7 +12,7 @@ public class Constans {
     public static final String SUCCESS_CODE = "666"; //成功状态码
     public static final String EXIST_CODE = "20001"; //失败状态码
 
-    public static final String EXIST_MESSAGE="系统异常";
+    public static final String null_MESSAGE="数据为空";
     public static final String DELETE_MESSAGE="删除成功";
 
     public static final String SUSPEND_MESSAGE="状态修改成功";
@@ -35,10 +35,10 @@ public class Constans {
      * Created by wln on 2018/8/7
      * Descriptions:项目状态码
      */
-    public static final String PROJECT_EXIST_MESSAGE="有(历史)问卷，不可以删除";
+    public static final String PROJECT_null_MESSAGE="有(历史)问卷，不可以删除";
     //ycf
     public static final String PROJECT_EXIST_NAME = "项目名已存在";
-    public static final String QUESTION_EXIST_MESSAGE="项目有发布中的问卷，不可以进行操作";
+    public static final String QUESTION_null_MESSAGE="项目有发布中的问卷，不可以进行操作";
     public static final String QUESTION_COUNT_MESSAGE="项目可以编辑";
     public static final String PROJECT_EXIST_QUESTION = "项目中已存在同名且同类型问卷";
 

@@ -51,7 +51,7 @@ public class OrderAction {
         } catch (Exception e) {
             logger.info("addOrder 添加订单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -69,7 +69,7 @@ public class OrderAction {
         } catch (Exception e) {
             logger.info("getOrdersByCriteria 搜索订单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -89,7 +89,7 @@ public class OrderAction {
         } catch (Exception e) {
             logger.info("addOrder 添加订单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -107,7 +107,7 @@ public class OrderAction {
         } catch (Exception e) {
             logger.info("getAllOrder 返回所有>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -125,7 +125,7 @@ public class OrderAction {
         } catch (Exception e) {
             logger.info("getOrderByid 通过id得到单个order信息>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -143,7 +143,7 @@ public class OrderAction {
         } catch (Exception e) {
             logger.info("changeOrderStatusById 通过id得到改变order的状态>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -167,7 +167,7 @@ public class OrderAction {
         } catch (Exception e) {
             logger.info("addReturn 添加退换货单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -191,7 +191,7 @@ public class OrderAction {
         } catch (Exception e) {
             logger.info("checkReturn 检查是否可以退换货>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -214,7 +214,7 @@ public class OrderAction {
         } catch (Exception e) {
             logger.info("addUnsubscribe 添加退订单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -240,7 +240,7 @@ public class OrderAction {
         } catch (Exception e) {
             logger.info("checkUnsubscribe 检查是否可以退订>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -265,7 +265,7 @@ public class OrderAction {
         } catch (Exception e) {
             logger.info("getOrderByStationFin 多种条件找oderlist>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -290,7 +290,7 @@ public class OrderAction {
         } catch (Exception e) {
             logger.info("getOrderDis 调度中心查询>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -315,7 +315,7 @@ public class OrderAction {
         } catch (Exception e) {
             logger.info("getOrderDis 调度中心查询>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -340,7 +340,7 @@ public class OrderAction {
         } catch (Exception e) {
             logger.info("getlack 手动调度的订单状态修改>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -365,7 +365,7 @@ public class OrderAction {
         } catch (Exception e) {
             logger.info("getlack 手动调度的订单状态修改>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }

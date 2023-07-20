@@ -1,16 +1,14 @@
 package com.example.dispatchcentre.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.example.dispatchcentre.beans.HttpResponseEntity;
 import com.example.dispatchcentre.common.utils.DateUtil;
-import com.example.dispatchcentre.entity.Allocation;
 import com.example.dispatchcentre.entity.Good;
 import com.example.dispatchcentre.entity.Orders;
-import com.example.dispatchcentre.entity.Task;
+import com.example.dispatchcentre.feign.Task;
 import com.example.dispatchcentre.entity.vo.Delivery;
 import com.example.dispatchcentre.feign.FeignApi;
 import com.example.dispatchcentre.mapper.TaskMapper;
@@ -22,7 +20,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
@@ -67,16 +64,24 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
         ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
     Date deaddate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(deadline);
     task.setDeadline(deaddate);
-    if(orders.getOrderType()=="新订"){
-      task.setTaskType("送货");
-    }else if(orders.getOrderType()=="换货"){
-      task.setTaskType("换货");
-    }else if(orders.getOrderType()=="退货"){
-      task.setTaskType("退货");
-    }else if(orders.getOrderType()=="送货收款"){
-      task.setTaskType("送货收款");
+    switch (orders.getOrderType()) {
+      case "新订":
+        task.setTaskType("送货");
+        task.setTaskStatus("已调度");
+        break;
+      case "换货":
+        task.setTaskType("换货");
+        task.setTaskStatus("已调度");
+        break;
+      case "退货":
+        task.setTaskType("退货");
+        task.setTaskStatus("可分配");
+        break;
+      case "送货收款":
+        task.setTaskType("送货收款");
+        task.setTaskStatus("已调度");
+        break;
     }
-    task.setTaskStatus("已调度");
     task.setSubstation(map.get("substation").toString());
     task.setAddress(orders.getCustomerAddress());
     task.setPrintNumber(0);
@@ -101,7 +106,6 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
 
   @Override
   public PageInfo selectAll(Map<String, Object> map) {
-
     return null;
   }
 
@@ -147,7 +151,9 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements Ta
   public int changeTaskOrderType(Map<String, Object> map) {
     Task task=new Task();
     task.setId( Long.valueOf(String.valueOf(map.get("id"))));
-    task.setTaskStatus(String.valueOf(map.get("task_status")));
+    if(map.get("task_status")!=""){
+      task.setTaskStatus(String.valueOf(map.get("task_status")));
+    }
     taskMapper.updateById(task);
     Task task1=new Task();
     task1 =taskMapper.selectById(Long.valueOf(String.valueOf(map.get("id"))));

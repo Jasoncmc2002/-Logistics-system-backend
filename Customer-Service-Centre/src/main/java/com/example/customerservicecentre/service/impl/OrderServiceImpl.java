@@ -421,11 +421,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
         good.setKeyId(Math.toIntExact(orderId));
         good.setId(null);
         HttpResponseEntity addGoodhttp= feignApi.addGoods(good);//新good，更新了数量
-        Map<String,Object> goodmap=new HashMap<>();
-        goodmap.put("good_id",good.getId());
-        goodmap.put("order_id",or_orderId);
-        goodmap.put("buy_type",0);
-        HttpResponseEntity deletebuy= feignApi.deleteBuyByGoodid(goodmap);//删除对应的buy
+//        Map<String,Object> goodmap=new HashMap<>();
+//        goodmap.put("good_id",good.getId());
+//        goodmap.put("order_id",or_orderId);
+//        goodmap.put("buy_type",0);
+//        HttpResponseEntity deletebuy= feignApi.deleteBuyByGoodid(goodmap);//删除对应的buy
       }
       else
       {
@@ -435,11 +435,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Orders> implement
         good.setGoodNumber(good.getChangeNumber());
         good.setId(null);
         HttpResponseEntity addGoodhttp= feignApi.addGoods(good);//新good，更新了数量
-        Map<String,Object > goodmap=new HashMap<>();
-        goodmap.put("good_id",goodOr.getGoodId());
-        goodmap.put("order_id",or_orderId);
-        goodmap.put("number",number);
-        HttpResponseEntity updateBuy= feignApi.updateBuyByid(goodmap);//新good，更新了数量
+//        Map<String,Object > goodmap=new HashMap<>();
+//        goodmap.put("good_id",goodOr.getGoodId());
+//        goodmap.put("order_id",or_orderId);
+//        goodmap.put("number",number);
+//        HttpResponseEntity updateBuy= feignApi.updateBuyByid(goodmap);//新good，更新了数量
       }
     }
     return res;

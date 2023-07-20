@@ -1,24 +1,17 @@
 package com.example.dispatchcentre.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.dispatchcentre.beans.HttpResponseEntity;
 import com.example.dispatchcentre.common.Constans;
-import com.example.dispatchcentre.entity.Task;
+import com.example.dispatchcentre.feign.Task;
 import com.example.dispatchcentre.service.TaskService;
 import com.github.pagehelper.PageInfo;
-import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -57,7 +50,7 @@ public class TaskAction {
         } catch (Exception e) {
             logger.info("addTask 添加订单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -74,7 +67,7 @@ public class TaskAction {
         } catch (Exception e) {
             logger.info("getTasksByCriteria 搜索订单>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -92,7 +85,7 @@ public class TaskAction {
         } catch (Exception e) {
             logger.info("changeTaskOrderType 根据id，改变task和order的>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -110,7 +103,7 @@ public class TaskAction {
         } catch (Exception e) {
             logger.info("changeTaskOrderType 根据id，改变task和order的>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -127,7 +120,7 @@ public class TaskAction {
         } catch (Exception e) {
             logger.info("changeTaskOrderType 根据id，改变task和order的>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -144,7 +137,7 @@ public class TaskAction {
         } catch (Exception e) {
             logger.info("updateTaskById 根据id，改变task的>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -162,7 +155,7 @@ public class TaskAction {
         } catch (Exception e) {
             logger.info("getDelivery 领货>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -180,7 +173,7 @@ public class TaskAction {
         } catch (Exception e) {
             logger.info("getGoodByTaskId 退货登记>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }
@@ -197,7 +190,7 @@ public class TaskAction {
         } catch (Exception e) {
             logger.info("getOrTaskId 退货登记>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+            httpResponseEntity.setMessage(Constans.null_MESSAGE);
         }
         return httpResponseEntity;
     }

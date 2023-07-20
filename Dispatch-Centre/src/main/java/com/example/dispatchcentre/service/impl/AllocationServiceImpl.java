@@ -11,7 +11,7 @@ import com.example.dispatchcentre.entity.Allocation;
 import com.example.dispatchcentre.entity.Good;
 import com.example.dispatchcentre.entity.Orders;
 import com.example.dispatchcentre.entity.Station;
-import com.example.dispatchcentre.entity.Task;
+import com.example.dispatchcentre.feign.Task;
 import com.example.dispatchcentre.feign.FeignApi;
 import com.example.dispatchcentre.mapper.AllocationMapper;
 import com.example.dispatchcentre.service.AllocationService;
@@ -22,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
@@ -91,7 +90,13 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
       allocation.setOrderId(order1.getId());
       allocation.setInStationId(order1.getSubstationId());
       allocation.setOutStationId(1L);
-
+      allocation.setAlloType((byte) 1);//未完成中心出库
+     if(order1.getOrderType().equals("退货"))
+     {
+       allocation.setOutStationId(order1.getSubstationId());
+       allocation.setInStationId(1L);
+       allocation.setAlloType((byte) 4);//未完成中心出库
+     }
       String deadline = LocalDateTime.parse(String.valueOf(map.get("allocationDate")),
           DateTimeFormatter.ISO_DATE_TIME).atZone(
           ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
@@ -100,7 +105,7 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
 
       Date date = DateUtil.getCreateTime();
       allocation.setCreatDate(date);//创建时间
-      allocation.setAlloType((byte) 1);//未完成中心出库
+
       HttpResponseEntity res = feignApi.getById(String.valueOf(order1.getSubstationId()));
       String jsonString2 = JSON.toJSONString(res.getData());  // 将对象转换成json格式数据
       Station stationin = JSON.parseObject(jsonString2, Station.class);
@@ -114,6 +119,8 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
       orderMap.put("orderStatus","已调度");
       HttpResponseEntity res7= feignApi.changeOrderStatusById(orderMap);
       System.out.println(res7);
+      if(order1.getOrderType().equals("退货"))
+        continue;
       int res3 = allocationMapper.insert(allocation);
       if (res3 == 0) {
         return res3;
@@ -133,7 +140,6 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
         ZoneOffset.UTC).withZoneSameInstant(chinaZoneId).format(formatter);
     Date allodate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datetime);
     allocation.setAllocationDate(allodate);//日期
-    allocation.setAllocationDate(allodate);//日期
     Task task=taskService.selectbyId(Long.valueOf(String.valueOf(map.get("taskId"))));
     allocation.setTaskId(task.getId());
     allocation.setOrderId(task.getOrderId());
@@ -141,8 +147,9 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
     allocation.setOutStationName(task.getSubstation());
     allocation.setInStationName("中心库房");
     allocation.setInStationId(1L);
-    allocation.setAlloType((byte) 4);
-    return 0;
+    allocation.setAlloType((byte) 5);
+    int res= allocationMapper.insert(allocation);
+    return res;
   }
 
   @Override
@@ -214,6 +221,10 @@ public class AllocationServiceImpl extends ServiceImpl<AllocationMapper, Allocat
     if(!map.get("id").equals("")) {
       Long id = Long.valueOf(String.valueOf(map.get("id")));
       queryWrapper.eq("id", id);
+    }
+    if(!map.get("alloType").equals("")) {
+      int type=Integer.valueOf(String.valueOf(map.get("alloType")));
+      queryWrapper.eq("allo_type", type);
     }
     Allocation allocation=allocationMapper.selectOne(queryWrapper);
     HttpResponseEntity res= feignApi.getGoodByOrderId(allocation.getOrderId());
