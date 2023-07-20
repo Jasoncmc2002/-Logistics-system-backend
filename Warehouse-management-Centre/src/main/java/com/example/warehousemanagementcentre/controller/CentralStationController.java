@@ -31,73 +31,73 @@ public class CentralStationController {
     private InoutstationService inoutstationService;
 
 
-    @RequestMapping(value = "/searchBuy",method = RequestMethod.GET, headers = "Accept"
-            + "=application/json")
-    public HttpResponseEntity searchBuy(@RequestBody Map<String,Object> map) {
-        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
-        try {
-            PageInfo pageInfo = centralstationService.selectBuy(map);
-            httpResponseEntity.setData(pageInfo);
-            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-        } catch (Exception e) {
-            logger.info("search 搜索购货单信息>>>>>>>>>>>" + e.getLocalizedMessage());
-            httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
-        }
-        return httpResponseEntity;
-    }
-
-
-    @RequestMapping(value = "/inStation",method = RequestMethod.POST, headers = "Accept"
-            + "=application/json")
-    public HttpResponseEntity inStation(@RequestBody Map<String,Object> map) {
-        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
-        try {
-            System.out.println(map);
-            int res=centralstationService.toInStation(map);
-            if(res==1)
-            {
-                httpResponseEntity.setData(res);
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
-
-        } catch (Exception e) {
-            logger.info("中心客房入库>>>>>>>>>>>" + e.getLocalizedMessage());
-            httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
-        }
-        return httpResponseEntity;
-    }
-
-    @RequestMapping(value = "/outStation",method = RequestMethod.POST, headers = "Accept"
-            + "=application/json")
-    public HttpResponseEntity outStation(@RequestBody Map<String,Object> map) {
-        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
-        try {
-            int res=centralstationService.toOutStation(map);
-            if(res==1)
-            {
-                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
-                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
-            }else
-            {
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.ADD_FAIL);
-            }
-
-        } catch (Exception e) {
-            logger.info("中心库房出库>>>>>>>>>>>" + e.getLocalizedMessage());
-            httpResponseEntity.setCode(Constans.EXIST_CODE);
-            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
-        }
-        return httpResponseEntity;
-    }
+//    @RequestMapping(value = "/searchBuy",method = RequestMethod.GET, headers = "Accept"
+//            + "=application/json")
+//    public HttpResponseEntity searchBuy(@RequestBody Map<String,Object> map) {
+//        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+//        try {
+//            PageInfo pageInfo = centralstationService.selectBuy(map);
+//            httpResponseEntity.setData(pageInfo);
+//            httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+//            httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+//        } catch (Exception e) {
+//            logger.info("search 搜索购货单信息>>>>>>>>>>>" + e.getLocalizedMessage());
+//            httpResponseEntity.setCode(Constans.EXIST_CODE);
+//            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+//        }
+//        return httpResponseEntity;
+//    }
+//
+//
+//    @RequestMapping(value = "/inStation",method = RequestMethod.POST, headers = "Accept"
+//            + "=application/json")
+//    public HttpResponseEntity inStation(@RequestBody Map<String,Object> map) {
+//        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+//        try {
+//            System.out.println(map);
+//            int res=centralstationService.toInStation(map);
+//            if(res==1)
+//            {
+//                httpResponseEntity.setData(res);
+//                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+//                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+//            }else
+//            {
+//                httpResponseEntity.setCode(Constans.EXIST_CODE);
+//                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+//            }
+//
+//        } catch (Exception e) {
+//            logger.info("中心客房入库>>>>>>>>>>>" + e.getLocalizedMessage());
+//            httpResponseEntity.setCode(Constans.EXIST_CODE);
+//            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+//        }
+//        return httpResponseEntity;
+//    }
+//
+//    @RequestMapping(value = "/outStation",method = RequestMethod.POST, headers = "Accept"
+//            + "=application/json")
+//    public HttpResponseEntity outStation(@RequestBody Map<String,Object> map) {
+//        HttpResponseEntity httpResponseEntity = new HttpResponseEntity();
+//        try {
+//            int res=centralstationService.toOutStation(map);
+//            if(res==1)
+//            {
+//                httpResponseEntity.setCode(Constans.SUCCESS_CODE);
+//                httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
+//            }else
+//            {
+//                httpResponseEntity.setCode(Constans.EXIST_CODE);
+//                httpResponseEntity.setMessage(Constans.ADD_FAIL);
+//            }
+//
+//        } catch (Exception e) {
+//            logger.info("中心库房出库>>>>>>>>>>>" + e.getLocalizedMessage());
+//            httpResponseEntity.setCode(Constans.EXIST_CODE);
+//            httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
+//        }
+//        return httpResponseEntity;
+//    }
 
 
     @RequestMapping(value = "/searchInCentral",method = RequestMethod.POST, headers = "Accept"
@@ -129,17 +129,13 @@ public class CentralStationController {
                 httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
             }else if(res==2){
                 httpResponseEntity.setCode(Constans.RETURN_FAILED_CODE);
-                httpResponseEntity.setMessage(Constans.STORAGE_SHORTAGE);
-            }else if(res == 3){
-                httpResponseEntity.setCode(Constans.EXIST_CODE);
-                httpResponseEntity.setMessage(Constans.Good_NOT_EXIST);
-            }else
-            {
+                httpResponseEntity.setMessage(Constans.Change_Central_ERROR);
+            }else{
                 httpResponseEntity.setCode(Constans.RETURN_FAILED_CODE);
                 httpResponseEntity.setMessage(Constans.RETURN_FAILED_MESSAGE);
             }
         } catch (Exception e) {
-            logger.info("search 搜索购货单信息>>>>>>>>>>>" + e.getLocalizedMessage());
+            logger.info("中心购货入库>>>>>>>>>>>" + e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);
             httpResponseEntity.setMessage(Constans.EXIST_MESSAGE);
         }

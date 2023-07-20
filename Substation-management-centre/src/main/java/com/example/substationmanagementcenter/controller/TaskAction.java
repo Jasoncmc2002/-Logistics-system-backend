@@ -59,7 +59,6 @@ public class TaskAction {
             httpResponseEntity.setCode(Constans.SUCCESS_CODE);
             httpResponseEntity.setMessage(Constans.STATUS_MESSAGE);
 
-
         } catch (Exception e) {
             logger.info("通过各种东西查询task>>>>>"+e.getLocalizedMessage());
             httpResponseEntity.setCode(Constans.EXIST_CODE);

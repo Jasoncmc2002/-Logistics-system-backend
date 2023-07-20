@@ -20,11 +20,6 @@ public interface CentralstationService extends IService<CentralStation> {
 
     PageInfo selectBuy(Map<String,Object> map);
 
-    int toInStation(Map<String,Object> map);
-
-    int toOutStation(Map<String,Object> map);
-
-
 
 
 

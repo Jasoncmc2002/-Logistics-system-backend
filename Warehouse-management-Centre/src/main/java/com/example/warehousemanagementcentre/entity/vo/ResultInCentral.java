@@ -11,6 +11,8 @@ import java.util.Date;
  */
 @Data
 public class ResultInCentral {
+
+    private Long buyId;
 //    private PageInfo pageInfo;
     private Long centralGoodId;
     //供应商
