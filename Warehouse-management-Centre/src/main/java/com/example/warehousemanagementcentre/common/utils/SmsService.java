@@ -14,7 +14,7 @@ package com.example.warehousemanagementcentre.common.utils;//package com.example
 //    public static void send(String phone,String key){
 ////第二个参数为自己独有的accessKeyid，第三个参数为自己独有的accessKeySecret
 //        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou",
-//                "LTAI5tH4QaUkeQnKqPsfZJJQ","AyI8ZQZJGocUNZumlhVne9A3Bby8Xn");
+//                "","");
 //        IAcsClient client = new DefaultAcsClient(profile);
 //        CommonRequest request = new CommonRequest();//组装请求对象
 //        //request.setProtocol(ProtocolType.HTTPS);
