@@ -1,10 +1,11 @@
 package com.yang.bi.service;
 
 import com.yang.bi.model.dto.user.UserRegisterRequest;
+import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.annotation.Resource;
+
 
 /**
  * 用户服务测试

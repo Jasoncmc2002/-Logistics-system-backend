@@ -1,10 +1,10 @@
 package com.yang.bi.service;
 
 import com.yang.bi.mapper.ChartMapper;
+import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 

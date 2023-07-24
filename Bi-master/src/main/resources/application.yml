@@ -13,9 +13,9 @@ spring:
   # todo 需替换配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://62.234.23.101:3306/logistics?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://localhost:3306/logistics?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false
     username: root
-    password: Neu123
+    password: 123456
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       initial-size: 10
@@ -41,8 +41,8 @@ spring:
   # rabbitmq 信息
   # TODO 修改成自己的配置
   rabbitmq:
-    host: 62.234.23.101
-    password: Neu123
+    host: localhost
+    password: 123456
     username: root
     port: 5672
     listener:
@@ -51,9 +51,9 @@ spring:
   data:
     redis:
       database: 1
-      host: 62.234.23.101
+      host: localhost
       port: 6379
-      password: Neu123
+      password: 123456
       timeout: 5000
 
 
